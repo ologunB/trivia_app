@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "673204323130",
+    "firebase_url": "https://ideamarketsplace-default-rtdb.firebaseio.com",
+    "project_id": "ideamarketsplace",
+    "storage_bucket": "ideamarketsplace.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673204323130:android:d3f67d56831a63a1a8c603",
+        "android_client_info": {
+          "package_name": "com.ideasmarket.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673204323130-8b6ov6u6tqjggffgke25jglgk76les37.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ideasmarket.app",
+            "certificate_hash": "c6e94cdc70d739c33571dad023b3455635423255"
+          }
+        },
+        {
+          "client_id": "673204323130-fdgptjdmc1nrk3h4vkjfc8um9bc49lgt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS778WgGYLO5KqLdUDialU9vM-ihmt5nA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673204323130-fdgptjdmc1nrk3h4vkjfc8um9bc49lgt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "673204323130-tabc8l83m43ld88ven3s4qdpi1ek7q1u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ideasmarket.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673204323130:android:1c22cff5b2c8f7cea8c603",
+        "android_client_info": {
+          "package_name": "com.trivia.appp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "673204323130-182na4ove9e9sjo6aviv1pb2m8u85edi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trivia.appp",
+            "certificate_hash": "c6e94cdc70d739c33571dad023b3455635423255"
+          }
+        },
+        {
+          "client_id": "673204323130-fdgptjdmc1nrk3h4vkjfc8um9bc49lgt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS778WgGYLO5KqLdUDialU9vM-ihmt5nA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "673204323130-fdgptjdmc1nrk3h4vkjfc8um9bc49lgt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "673204323130-tabc8l83m43ld88ven3s4qdpi1ek7q1u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ideasmarket.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
