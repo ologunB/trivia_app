@@ -197,7 +197,37 @@ class _SignupScreenState extends State<SignupScreen> {
                           }
                         },
                       ),
+                      SizedBox(height: 60.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: 'Or signup through   ',
+                              style: GoogleFonts.poppins(
+                                  color: AppColors.white,
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w900),
+                              children: [
+                                if (!isLoading)
+                                  WidgetSpan(
+                                    child: InkWell(
+                                        onTap: () {
+                                          signInWithGoogle(context);
+                                        },
+                                        child: Image.asset(
+                                          'images/google.png',
+                                          height: 25.h,
+                                        )),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(height: 80.h),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -343,13 +373,13 @@ class _SignupScreenState extends State<SignupScreen> {
       await googleSignIn.signOut();
 
       final GoogleSignInAccount googleSignInAccount =
-          await googleSignIn.signIn();
+      await googleSignIn.signIn();
       print(googleSignInAccount);
 
       if (googleSignInAccount != null) {
         try {
           final GoogleSignInAuthentication googleSignInAuthentication =
-              await googleSignInAccount.authentication;
+          await googleSignInAccount.authentication;
 
           final AuthCredential credential = GoogleAuthProvider.credential(
             accessToken: googleSignInAuthentication.accessToken,
@@ -357,7 +387,7 @@ class _SignupScreenState extends State<SignupScreen> {
           );
 
           final UserCredential value =
-              await _firebaseAuth.signInWithCredential(credential);
+          await _firebaseAuth.signInWithCredential(credential);
 
           if (value.user != null) {
             FirebaseFirestore.instance
@@ -410,9 +440,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 exception: e,
                 title: "Error",
               );
-              setState(() {
-                isLoading = false;
-              });
+
               return;
             });
           } else {
@@ -435,7 +463,7 @@ class _SignupScreenState extends State<SignupScreen> {
           });
           showExceptionAlertDialog(
             context: buildContext,
-            exception: e,
+            exception: e.message?? e.toString(),
             title: "Error",
           );
         }

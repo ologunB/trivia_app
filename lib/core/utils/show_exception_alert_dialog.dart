@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mms_app/core/utils/show_alert_dialog.dart';
-import 'package:mms_app/screens/widgets/snackbar.dart';
+ import 'package:mms_app/screens/widgets/snackbar.dart';
 
 Future<void> showExceptionAlertDialog({
   @required BuildContext context,

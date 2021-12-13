@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
-import 'package:mms_app/app/colors.dart';
-import 'package:mms_app/core/routes/router.dart';
+ import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
 import 'package:mms_app/core/utils/navigator.dart';
 import 'package:mms_app/screens/widgets/utils.dart';

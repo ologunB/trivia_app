@@ -219,6 +219,35 @@ class _LoginScreenState extends State<LoginScreen> {
                           RichText(
                             textAlign: TextAlign.center,
                             text: TextSpan(
+                              text: 'Or signin through   ',
+                              style: GoogleFonts.poppins(
+                                  color: AppColors.white,
+                                  fontSize: 13.sp,
+                                  fontWeight: FontWeight.w900),
+                              children: [
+                                if (!isLoading)
+                                  WidgetSpan(
+                                    child: InkWell(
+                                        onTap: () {
+                                          signInWithGoogle(context);
+                                        },
+                                        child: Image.asset(
+                                          'images/google.png',
+                                          height: 25.h,
+                                        )),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 60.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
                               text: 'Don’t have an account yet? ',
                               style: GoogleFonts.poppins(
                                   color: AppColors.white,
@@ -419,9 +448,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 exception: e,
                 title: "Error",
               );
-              setState(() {
-                isLoading = false;
-              });
+
               return;
             });
           } else {
@@ -444,7 +471,7 @@ class _LoginScreenState extends State<LoginScreen> {
           });
           showExceptionAlertDialog(
             context: buildContext,
-            exception: e,
+            exception: e.message?? e.toString(),
             title: "Error",
           );
         }

@@ -4,8 +4,7 @@ import 'package:mms_app/core/models/login_response.dart';
 
 const String kUserBox = 'userBoxoioi';
 const String profileKey = 'profilejgv';
-const String isFirstKey = 'isTheFirstfesgd';
-const String orderTypeKey = 'orderTypeKeyfeghjyuyuy';
+const String isFirstKey = 'isTheFibrbstfesgd';
 
 class AppCache {
   static Future<void> init() async {
@@ -24,16 +23,6 @@ class AppCache {
     return data;
   }
 
-  static void setOrderType(String a) {
-    _userBox.put(orderTypeKey, a);
-  }
-
-  static String getOrderType() {
-    final String data =
-        _userBox.get(orderTypeKey, defaultValue: 'All');
-    return data;
-  }
-
   static void setUser(Map<String, dynamic> user) {
     _userBox.put(profileKey, user);
   }
@@ -47,10 +36,6 @@ class AppCache {
     return user;
   }
 
-  static UserType get userType {
-    return getUser.type == 'customer' ? UserType.USER : UserType.TRUCKER;
-  }
-
   static Future<void> clear() async {
     await _userBox.clear();
   }
@@ -59,5 +44,3 @@ class AppCache {
     _userBox.delete(key);
   }
 }
-
-enum UserType { USER, TRUCKER }

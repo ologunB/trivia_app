@@ -8,8 +8,6 @@ class Utils {
     await SystemChannels.textInput.invokeMethod<dynamic>('TextInput.hide');
   }
 
-  static String googleMapKey = 'AIzaSyCJjJyC3Of4b4joSoyhtRYGxIvD_Tu7EAg';
-  //AIzaSyA5LaDK0Riho7NWVfUMmWaCOdgPk26WZH8
   static String isValidPassword(String value) {
     value = value.trim();
     if (value.isEmpty) {
@@ -23,7 +21,7 @@ class Utils {
 
   static String isValidName(String value) {
     if (value.isEmpty) {
-      return 'Field cannot be Empty';
+      return 'Name cannot be empty';
     }
     return null;
   }
@@ -60,28 +58,6 @@ class Utils {
       return;
     }
     currentFocus.unfocus();
-  }
-
-  static String conversationId(String from, String to) {
-    String val = '';
-    if (from.hashCode > to.hashCode) {
-      val = from + to;
-    } else {
-      val = to + from;
-    }
-    return val;
-  }
-
-  static String last2(String a) {
-    List<String> b = a.split(',').reversed.toList();
-    int length = b.length;
-    if (length > 3) {
-      return b[2].trim() + ', ' + b[1].trim();
-    } else if (length > 2) {
-      return b[2].trim() + ', ' + b[1].trim();
-    } else {
-      return a;
-    }
   }
 }
 
