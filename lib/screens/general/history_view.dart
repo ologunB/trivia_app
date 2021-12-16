@@ -9,7 +9,6 @@ import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/models/question_model.dart';
 import 'package:mms_app/core/routes/router.dart';
-import 'package:mms_app/core/storage/local_storage.dart';
 import 'package:mms_app/screens/widgets/answer_textfield.dart';
 import 'package:mms_app/screens/widgets/app_empty_widget.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
@@ -25,20 +24,18 @@ class HistoryView extends StatefulWidget {
 class _HistoryViewState extends State<HistoryView> {
   StreamSubscription listener1, listener2;
 
-  QuestionModel completeData;
-
   List<QuestionModel> questions = [];
-
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String uid = AppCache.getUser.uid;
-  String date = Utils.getPresentDate();
 
   @override
   void initState() {
     listener2 = firestore.collection('Questions').snapshots().listen((event) {
       questions.clear();
       event.docs.forEach((element) {
-        questions.add(QuestionModel.fromJson(element.data()));
+        QuestionModel model = QuestionModel.fromJson(element.data());
+        if (model.category != Utils.getPresentDate()) {
+          questions.add(model);
+        }
       });
       setState(() {});
     });
@@ -123,7 +120,7 @@ class _HistoryViewState extends State<HistoryView> {
   Widget item(QuestionModel element) {
     return InkWell(
       onTap: () {
-        navigateTo(context, HistoryDetailsView());
+        navigateTo(context, HistoryDetailsView(category: element.category));
       },
       child: Container(
         padding: EdgeInsets.all(20.h),

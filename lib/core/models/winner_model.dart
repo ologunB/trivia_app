@@ -1,32 +1,32 @@
-class QuestionModel {
-  String answer;
-  String question;
+class WinnerModel {
+  String name;
+  String amount;
   String updatedAt;
   String uid;
   String id;
   String createdAt;
-  String category;
+  int position;
   String story;
 
-  QuestionModel.fromJson(dynamic json) {
-    question = json['question'];
-    answer = json['answer'];
+  WinnerModel.fromJson(dynamic json) {
+    amount = json['amount'];
+    name = json['name'];
     id = json['id'];
     uid = json['uid'];
     createdAt = json['created_at'];
-    category = json['category'];
+    position = json['position'];
     updatedAt = json['updated_at'];
     story = json['story'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['question'] = question;
-    data['answer'] = answer;
+    data['amount'] = amount;
+    data['name'] = name;
     data['id'] = id;
     data['uid'] = uid;
     data['created_at'] = createdAt;
-    data['category'] = category;
+    data['position'] = position;
     data['updated_at'] = updatedAt;
     data['story'] = story;
     return data;
