@@ -6,7 +6,8 @@ class WinnerModel {
   String id;
   String createdAt;
   int position;
-  String story;
+  String category;
+  String type;
 
   WinnerModel.fromJson(dynamic json) {
     amount = json['amount'];
@@ -14,9 +15,10 @@ class WinnerModel {
     id = json['id'];
     uid = json['uid'];
     createdAt = json['created_at'];
-    position = json['position'];
+    position = json['position'].toInt();
     updatedAt = json['updated_at'];
-    story = json['story'];
+    category = json['category'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,7 +30,8 @@ class WinnerModel {
     data['created_at'] = createdAt;
     data['position'] = position;
     data['updated_at'] = updatedAt;
-    data['story'] = story;
+    data['category'] = category;
+    data['type'] = type;
     return data;
   }
 }

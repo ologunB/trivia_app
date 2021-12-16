@@ -121,7 +121,10 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                                 )),
                         ),
                         Text(
-                          '20,000',
+                          winners
+                              .firstWhere((element) => element.uid == uid)
+                              .amount
+                              .toAmount(),
                           textAlign: TextAlign.center,
                           style: GoogleFonts.rajdhani(
                               fontWeight: FontWeight.w700,
@@ -141,7 +144,33 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                                 )),
                         ),
                       ],
-                    )
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 18.h),
+                      child: Text(
+                        '\n' +
+                            winners
+                                .firstWhere((element) => element.uid == uid)
+                                .type,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.rajdhani(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 40.sp,
+                            foreground: Paint()
+                              ..shader = LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: <Color>[
+                                  Color(0xffE67E0A),
+                                  Color(0xffF2B136),
+                                  Color(0xffFFE865),
+                                  Color(0xffFF9C65),
+                                ],
+                              ).createShader(
+                                Rect.fromLTWH(1.0, 0.0, 250, 50.0),
+                              )),
+                      ),
+                    ),
                   ],
                 ),
               SizedBox(height: 20.h),
@@ -161,7 +190,15 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                       return Container(
                         padding: EdgeInsets.all(14.h),
                         decoration: BoxDecoration(
-                            gradient: isWinner
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(index == 0 ? 8.h : 0),
+                              topRight: Radius.circular(index == 0 ? 8.h : 0),
+                              bottomRight: Radius.circular(
+                                  index == winners.length - 1 ? 8.h : 0),
+                              bottomLeft: Radius.circular(
+                                  index == winners.length - 1 ? 8.h : 0),
+                            ),
+                            gradient: model.uid == uid
                                 ? LinearGradient(
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
@@ -181,24 +218,24 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                                 model.name,
                                 other: true,
                                 fontSize: 22.sp,
-                                color: isWinner
+                                color: model.uid == uid
                                     ? AppColors.white
                                     : Color(0xff6B0B7B),
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             SizedBox(width: 12.h),
-                            if (isWinner)
-                              Image.asset('images/claim.png', width: 65.h),
+                            if (model.uid == uid)
+                              InkWell(
+                                  onTap: () {},
+                                  child: Image.asset('images/claim.png',
+                                      width: 65.h)),
                           ],
                         ),
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return Container(
-                        height: 1.h,
-                        color: AppColors.primary,
-                      );
+                      return Container(height: 1.h, color: AppColors.primary);
                     },
                     itemCount: winners.length),
               ),

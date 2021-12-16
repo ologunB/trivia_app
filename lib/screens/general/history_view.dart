@@ -77,7 +77,6 @@ class _HistoryViewState extends State<HistoryView> {
                           groupBy: (element) => element.category,
                           groupSeparatorBuilder: (String groupByValue) {
                             List<String> list = groupByValue.split('-');
-                            print(list);
                             return Padding(
                               padding: EdgeInsets.only(bottom: 16.h),
                               child: Row(

@@ -78,6 +78,10 @@ extension customStringExtension on String {
     return newWord;
   }
 
+
+  toAmount() {
+    return NumberFormat("#,###.##", "en_US").format(double.tryParse(this) ?? 0.00);
+  }
   getSingleInitial() {
     return this.split('')[0].toUpperCase();
   }

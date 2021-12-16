@@ -32,6 +32,8 @@ class _HomeViewState extends State<HomeView> {
   String uid = AppCache.getUser.uid;
   String date = Utils.getPresentDate();
 
+  String instructions = '';
+
   @override
   void initState() {
     Query query1 = firestore
@@ -64,6 +66,15 @@ class _HomeViewState extends State<HomeView> {
       event.docs.forEach((element) {
         winners.add(WinnerModel.fromJson(element.data()));
       });
+      setState(() {});
+    });
+
+    firestore.collection('Utils').doc('instructions').get().then((event) {
+      if (event.exists) {
+        instructions = event.data()['text'];
+        setState(() {});
+      }
+
       setState(() {});
     });
 
@@ -117,7 +128,7 @@ class _HomeViewState extends State<HomeView> {
                           Padding(
                             padding: EdgeInsets.only(right: 60.h),
                             child: regularText(
-                              '5 Winners that answer all 5 Trivia Questions of the day correctly Will be chosen to win N2000 cash each.',
+                              instructions,
                               fontSize: 13.sp,
                               color: AppColors.white,
                             ),
