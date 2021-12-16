@@ -30,7 +30,7 @@ dependencies:
   google_sign_in:
   firebase_messaging: ^10.0.0
   flutter_local_notifications: ^5.0.0+4
-  eva_icons_flutter: ^3.0.2
+  grouped_list: ^4.1.0
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,4 @@
-package com.trivia.appp
+package com.trivia.app
 
 import io.flutter.embedding.android.FlutterActivity
 

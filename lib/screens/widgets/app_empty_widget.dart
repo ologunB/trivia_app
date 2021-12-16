@@ -15,15 +15,20 @@ class AppEmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.screenHeight / (ratio ??3),
+      height: SizeConfig.screenHeight / (ratio ?? 3),
       alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            'images/empty.png',
-            height: 100.h,
+          Icon(
+            Icons.hourglass_empty_rounded,
+            color: AppColors.white,
+            size: 50.h,
           ),
+          // Image.asset(
+          //   'images/empty.png',
+          //   height: 100.h,
+          // ),
           SizedBox(height: 10.h),
           regularText(
             text,

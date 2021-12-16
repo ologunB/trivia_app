@@ -51,7 +51,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 80.h),
+                  padding: EdgeInsets.only(bottom: 80.h, right: 30.h, left: 30.h),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -78,7 +78,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                                 SizedBox(height: 30.h),
                                 buttonWithBorder(
                                   'Sign up',
-                                  height: 80.h,
+                                  height: 60.h,
                                   onTap: () {
                                     navigateReplacement(
                                         context, SignupScreen());
@@ -87,7 +87,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                                 SizedBox(height: 20.h),
                                 buttonWithBorder(
                                   'Sign in',
-                                  height: 80.h,
+                                  height: 60.h,
                                   onTap: () {
                                     navigateReplacement(context, LoginScreen());
                                   },
@@ -95,7 +95,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                               ],
                             )
                           : buttonWithBorder(
-                              'Next',
+                              _index == 0 ? "Let’s Combat!" : 'Next',
+                              height: 60.h,
                               onTap: () {
                                 controller.nextPage(
                                     duration: Duration(milliseconds: 800),

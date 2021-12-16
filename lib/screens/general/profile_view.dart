@@ -64,7 +64,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 Expanded(
                                   child: buttonWithBorder2(
                                     'YES',
-                                    buttonColor: AppColors.red,
+                                    buttonColor: AppColors.white,
                                     fontSize: 17.sp,
                                     height: 40.h,
                                     textColor: AppColors.white,
@@ -82,9 +82,9 @@ class _ProfileViewState extends State<ProfileView> {
                                     'NO',
                                     buttonColor: AppColors.white,
                                     fontSize: 17.sp,
-                                    borderColor: AppColors.red,
+                                    borderColor: AppColors.white,
                                     height: 40.h,
-                                    textColor: AppColors.red,
+                                    textColor: AppColors.white,
                                     fontWeight: FontWeight.w400,
                                     onTap: () {
                                       Navigator.pop(context);

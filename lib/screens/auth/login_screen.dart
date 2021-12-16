@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mms_app/app/colors.dart';
@@ -94,7 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         body: Form(
           key: formKey,
-          autovalidate: autoValidate,
+          autovalidateMode: autoValidate
+              ? AutovalidateMode.always
+              : AutovalidateMode.disabled,
           child: Container(
             width: SizeConfig.screenWidth,
             height: SizeConfig.screenHeight,
@@ -121,28 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'Sign in',
-                            style: GoogleFonts.poppins(
-                                    fontSize: 48.sp,
-                                    fontWeight: FontWeight.w800,
-                                    foreground: Paint()
-                                      ..shader = linearGradient)
-                                .copyWith(
-                              foreground: Paint()
-                                ..style = PaintingStyle.stroke
-                                ..strokeWidth = 2.5
-                                ..color = AppColors.primary
-                                ..shader = LinearGradient(
-                                  colors: <Color>[
-                                    AppColors.secondary,
-                                    AppColors.primary,
-                                  ],
-                                ).createShader(
-                                  Rect.fromLTWH(0.0, 0.0, 300.0, 70.0),
-                                ),
-                            ),
-                          ),
+                          header('Sign in'),
                         ],
                       ),
                       Row(
@@ -202,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 20.h),
                       buttonWithBorder(
                         'Sign in',
-                        height: 90.h,
+                        height: 65.h,
                         busy: isLoading,
                         onTap: () {
                           autoValidate = true;
@@ -471,7 +453,7 @@ class _LoginScreenState extends State<LoginScreen> {
           });
           showExceptionAlertDialog(
             context: buildContext,
-            exception: e.message?? e.toString(),
+            exception: e.message ?? e.toString(),
             title: "Error",
           );
         }

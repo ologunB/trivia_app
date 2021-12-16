@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mms_app/screens/auth/splash_view.dart';
+ import 'package:mms_app/screens/general/main_layout.dart';
 
 import 'core/routes/router.dart';
 import 'core/storage/local_storage.dart';
@@ -23,15 +24,15 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown
   ]);
-  runApp(CourtApp());
+  runApp(TriviaApp());
 }
 
-class CourtApp extends StatelessWidget {
+class TriviaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'User',
+      title: 'Trivia',
       theme: ThemeData(
         textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
         primaryColor: Colors.white,

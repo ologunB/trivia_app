@@ -6,16 +6,23 @@ import 'package:mms_app/app/size_config/extensions.dart';
 
 class AnswerTextField extends StatelessWidget {
   final String hintText;
+  final bool readOnly;
   final TextEditingController controller;
 
-  AnswerTextField({this.hintText, this.controller});
+  AnswerTextField({this.hintText, this.controller, this.readOnly = false});
 
   @override
   Widget build(BuildContext context) {
     return CupertinoTextField(
       cursorColor: AppColors.white.withOpacity(0.4),
       cursorWidth: 1.w,
+      maxLines: 3,
+      minLines: 1,
+      textCapitalization: TextCapitalization.sentences,
+      textInputAction: TextInputAction.newline,
+      enableInteractiveSelection: false,
       cursorHeight: 20.h,
+      readOnly: readOnly,
       style: GoogleFonts.poppins(
         fontWeight: FontWeight.w500,
         fontSize: 12.sp,

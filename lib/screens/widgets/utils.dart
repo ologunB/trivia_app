@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
   static void offKeyboard() async {
@@ -17,6 +18,10 @@ class Utils {
     } else {
       return null;
     }
+  }
+
+  static String getPresentDate() {
+    return DateFormat('dd-MM-yyyy').format(DateTime.now());
   }
 
   static String isValidName(String value) {

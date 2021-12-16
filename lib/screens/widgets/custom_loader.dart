@@ -9,18 +9,18 @@ class CustomLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       height: SizeConfig.screenHeight / 3,
       alignment: Alignment.center,
       child: SpinKitFadingCube(
-        itemBuilder: (BuildContext context, int index) {
+        itemBuilder: (context, index) {
           return DecoratedBox(
             decoration: BoxDecoration(
-              color: index.isEven ? AppColors.red : AppColors.grey,
+              color: index.isEven ? AppColors.primary : AppColors.secondary,
             ),
           );
         },
-        size: 40.h
+        size: 40.h,
       ),
     );
   }

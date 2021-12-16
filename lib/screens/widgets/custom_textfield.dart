@@ -94,23 +94,23 @@ class CustomTextField extends StatelessWidget {
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.primary, width: .5.h),
-          borderRadius: BorderRadius.circular(10.h),
+          borderRadius: BorderRadius.circular(16.h),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.primary, width: .5.h),
-          borderRadius: BorderRadius.circular(10.h),
+          borderRadius: BorderRadius.circular(16.h),
         ),
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.primary, width: .5.h),
-          borderRadius: BorderRadius.circular(10.h),
+          borderRadius: BorderRadius.circular(16.h),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.primary, width: .5.h),
-          borderRadius: BorderRadius.circular(10.h),
+          borderRadius: BorderRadius.circular(16.h),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColors.primary, width: .5.h),
-          borderRadius: BorderRadius.circular(10.h),
+          borderRadius: BorderRadius.circular(16.h),
         ),
       ),
       obscureText: obscureText,

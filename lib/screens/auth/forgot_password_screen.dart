@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/core/utils/show_alert_dialog.dart';
@@ -10,7 +9,6 @@ import 'package:mms_app/screens/widgets/snackbar.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
-
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key key}) : super(key: key);
@@ -50,7 +48,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         ),
         body: Form(
           key: formKey,
-          autovalidate: autoValidate,
+          autovalidateMode: autoValidate
+              ? AutovalidateMode.always
+              : AutovalidateMode.disabled,
           child: Container(
             width: SizeConfig.screenWidth,
             height: SizeConfig.screenHeight,
@@ -77,29 +77,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'Forgot\nPassword',
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                                    fontSize: 48.sp,
-                                    fontWeight: FontWeight.w800,
-                                    foreground: Paint()
-                                      ..shader = linearGradient)
-                                .copyWith(
-                              foreground: Paint()
-                                ..style = PaintingStyle.stroke
-                                ..strokeWidth = 2.5
-                                ..color = AppColors.primary
-                                ..shader = LinearGradient(
-                                  colors: <Color>[
-                                    AppColors.secondary,
-                                    AppColors.primary,
-                                  ],
-                                ).createShader(
-                                  Rect.fromLTWH(0.0, 0.0, 300.0, 70.0),
-                                ),
-                            ),
-                          ),
+                          header('Forgot Password'),
                         ],
                       ),
                       Row(
@@ -126,7 +104,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       SizedBox(height: 60.h),
                       buttonWithBorder(
                         'Proceed',
-                        height: 90.h,
+                        height: 65.h,
                         busy: isLoading,
                         onTap: () {
                           if (Utils.validateEmail(passEmail.text) != null) {

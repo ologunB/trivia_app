@@ -95,7 +95,9 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
         body: Form(
           key: formKey,
-          autovalidate: autoValidate,
+          autovalidateMode: autoValidate
+              ? AutovalidateMode.always
+              : AutovalidateMode.disabled,
           child: Container(
             width: SizeConfig.screenWidth,
             height: SizeConfig.screenHeight,
@@ -122,28 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            'Sign up',
-                            style: GoogleFonts.poppins(
-                                    fontSize: 48.sp,
-                                    fontWeight: FontWeight.w800,
-                                    foreground: Paint()
-                                      ..shader = linearGradient)
-                                .copyWith(
-                              foreground: Paint()
-                                ..style = PaintingStyle.stroke
-                                ..strokeWidth = 2.5
-                                ..color = AppColors.primary
-                                ..shader = LinearGradient(
-                                  colors: <Color>[
-                                    AppColors.secondary,
-                                    AppColors.primary,
-                                  ],
-                                ).createShader(
-                                  Rect.fromLTWH(0.0, 0.0, 300.0, 70.0),
-                                ),
-                            ),
-                          ),
+                          header('Sign up'),
                         ],
                       ),
                       Row(
@@ -187,7 +168,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(height: 30.h),
                       buttonWithBorder(
                         'Sign up',
-                        height: 90.h,
+                        height: 65.h,
                         busy: isLoading,
                         onTap: () {
                           autoValidate = true;
@@ -227,7 +208,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         ],
                       ),
                       SizedBox(height: 80.h),
-
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -373,13 +353,13 @@ class _SignupScreenState extends State<SignupScreen> {
       await googleSignIn.signOut();
 
       final GoogleSignInAccount googleSignInAccount =
-      await googleSignIn.signIn();
+          await googleSignIn.signIn();
       print(googleSignInAccount);
 
       if (googleSignInAccount != null) {
         try {
           final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication;
+              await googleSignInAccount.authentication;
 
           final AuthCredential credential = GoogleAuthProvider.credential(
             accessToken: googleSignInAuthentication.accessToken,
@@ -387,7 +367,7 @@ class _SignupScreenState extends State<SignupScreen> {
           );
 
           final UserCredential value =
-          await _firebaseAuth.signInWithCredential(credential);
+              await _firebaseAuth.signInWithCredential(credential);
 
           if (value.user != null) {
             FirebaseFirestore.instance
@@ -463,7 +443,7 @@ class _SignupScreenState extends State<SignupScreen> {
           });
           showExceptionAlertDialog(
             context: buildContext,
-            exception: e.message?? e.toString(),
+            exception: e.message ?? e.toString(),
             title: "Error",
           );
         }

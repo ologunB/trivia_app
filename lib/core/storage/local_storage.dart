@@ -4,7 +4,7 @@ import 'package:mms_app/core/models/login_response.dart';
 
 const String kUserBox = 'userBoxoioi';
 const String profileKey = 'profilejgv';
-const String isFirstKey = 'isTheFibrbstfesgd';
+const String isFirstKey = 'isTheFddibrbstfesgd';
 
 class AppCache {
   static Future<void> init() async {
