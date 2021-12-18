@@ -122,8 +122,8 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
   }
 
   _changePage(index) async {
-  //  String a = await FirebaseAuth.instance.currentUser.getIdToken();
-   // log(a);
+    String a = await FirebaseAuth.instance.currentUser.getIdToken();
+    log(a);
     currentIndex = index;
     bottomNavbarController.jumpToPage(index);
     setState(() {});

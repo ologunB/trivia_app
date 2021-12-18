@@ -21,9 +21,9 @@ class NotificationManager {
 
   /// Create a [AndroidNotificationChannel] for heads up notifications
   static AndroidNotificationChannel channel = const AndroidNotificationChannel(
-    'court_runner_notification_id', // id
-    'Court Runner Notification', // title
-    'This channel is used for important notifications about court runner',
+    'trivia_notification_id', // id
+    'Trivia Notification', // title
+    'This channel is used for important notifications about trivia blog',
     // description
     importance: Importance.high,
     enableVibration: true,
@@ -43,14 +43,14 @@ class NotificationManager {
         channel.name,
         channel.description,
         importance: Importance.max,
-        icon: 'logo',
+        icon: 'ic_launcher',
       );
       const IOSNotificationDetails iSODetails = IOSNotificationDetails();
       final NotificationDetails generalNotificationDetails =
           NotificationDetails(android: androidDetails, iOS: iSODetails);
 
       if (notification != null) {
-        flutterLocalNotificationsPlugin.show(message.data['uid'].hashCode,
+        flutterLocalNotificationsPlugin.show(message.data['id'].hashCode,
             notification.title, notification.body, generalNotificationDetails,
             payload: jsonEncode(message.data));
       }
@@ -77,8 +77,9 @@ class NotificationManager {
       log.d(message.data);
       log.d(message.notification);
       if (message.notification.title != null) {
-        flutterLocalNotificationsPlugin.cancel(message.data['uid'].hashCode);
-        show(message);
+        flutterLocalNotificationsPlugin.cancel(message.data['id'].hashCode);
+        locator<NavigationService>().navigateTo(CongratsView, arguments: message.data);
+       // show(message);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
@@ -88,7 +89,8 @@ class NotificationManager {
         handleData(message.data);
       }
     });
-  }
+
+   }
 
   static Future<String> messagingToken() async {
     return _firebaseMessaging.getToken();
@@ -119,7 +121,7 @@ class NotificationManager {
     );
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('logo');
+        AndroidInitializationSettings('ic_launcher');
     final IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(onDidReceiveLocalNotification:
             (int id, String title, String body, String payload) async {
@@ -138,7 +140,6 @@ class NotificationManager {
 
   static Future<dynamic> selectNotification(String payload) async {
     log.d(payload);
-
     if (payload != null) {
       final dynamic data = jsonDecode(payload);
       log.d('payload is: ' + data.toString());
@@ -149,6 +150,10 @@ class NotificationManager {
   }
 
   static Future<void> handleData(dynamic data) async {
-    locator<NavigationService>().navigateTo(MainView);
+    if (data['type'] == 'new-trivia') {
+      locator<NavigationService>().navigateTo(MainView);
+    } else if (data['type'] == 'winning') {
+      locator<NavigationService>().navigateTo(CongratsView, arguments: data);
+    }
   }
 }

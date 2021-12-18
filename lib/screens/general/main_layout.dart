@@ -6,6 +6,7 @@ import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
 import 'package:mms_app/screens/general/profile_view.dart';
 import 'package:mms_app/screens/widgets/floating_navbar.dart';
+import 'package:mms_app/screens/widgets/notification_manager.dart';
 import 'history_view.dart';
 import 'home_view.dart';
 
@@ -36,22 +37,18 @@ class _MainLayoutState extends State<MainLayout> {
       AppCache.setUser(event.data());
     });
 
-    things();
     getToken();
     super.initState();
   }
 
   Future<void> getToken() async {
-    String messagingToken; // = await NotificationManager.messagingToken();
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+    FirebaseDatabase.instance.setPersistenceCacheSizeBytes(100000000);
+    await NotificationManager.initialize();
+    String messagingToken  = await NotificationManager.messagingToken();
     await FirebaseFirestore.instance.collection('Tokens').doc(uid).set(
       {'token': messagingToken},
     );
-  }
-
-  Future<void> things() async {
-    FirebaseDatabase.instance.setPersistenceEnabled(true);
-    FirebaseDatabase.instance.setPersistenceCacheSizeBytes(100000000);
-    //   await NotificationManager.initialize();
   }
 
   @override
@@ -70,8 +67,7 @@ class _MainLayoutState extends State<MainLayout> {
         items: [
           FloatingNavBarItem(img: Icons.history, page: HistoryView()),
           FloatingNavBarItem(img: Icons.home, page: HomeView()),
-          FloatingNavBarItem(
-              img: Icons.person_outline_outlined, page: ProfileView()),
+          FloatingNavBarItem(img: Icons.person_outline_outlined, page: ProfileView()),
         ],
       ),
     );

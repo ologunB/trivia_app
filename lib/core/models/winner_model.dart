@@ -8,6 +8,7 @@ class WinnerModel {
   int position;
   String category;
   String type;
+  bool isClaimed;
 
   WinnerModel.fromJson(dynamic json) {
     amount = json['amount'];
@@ -19,6 +20,7 @@ class WinnerModel {
     updatedAt = json['updated_at'];
     category = json['category'];
     type = json['type'];
+    isClaimed = json['is_claimed'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,6 +34,7 @@ class WinnerModel {
     data['updated_at'] = updatedAt;
     data['category'] = category;
     data['type'] = type;
+    data['is_claimed'] = isClaimed;
     return data;
   }
 }

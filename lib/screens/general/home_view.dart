@@ -13,7 +13,6 @@ import 'package:mms_app/screens/widgets/app_empty_widget.dart';
 import 'package:mms_app/screens/widgets/snackbar.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
-
 import 'history_details_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -22,7 +21,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  StreamSubscription listener1, listener2, listener3;
+  StreamSubscription listener1, listener2, listener3, listener4;
 
   List<QuestionModel> questions = [];
   List<QuestionModel> answers = [];
@@ -36,11 +35,12 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    Query query1 = firestore
+    listener1 = firestore
         .collection('Answers')
         .where('category', isEqualTo: date)
-        .where('uid', isEqualTo: uid);
-    listener1 = query1.snapshots().listen((event) {
+        .where('uid', isEqualTo: uid)
+        .snapshots()
+        .listen((event) {
       answers.clear();
       event.docs.forEach((element) {
         answers.add(QuestionModel.fromJson(element.data()));
@@ -48,9 +48,11 @@ class _HomeViewState extends State<HomeView> {
       setState(() {});
     });
 
-    Query query2 =
-        firestore.collection('Questions').where('category', isEqualTo: date);
-    listener2 = query2.snapshots().listen((event) {
+    listener2 = firestore
+        .collection('Questions')
+        .where('category', isEqualTo: date)
+        .snapshots()
+        .listen((event) {
       questions.clear();
       event.docs.forEach((element) {
         questions.add(QuestionModel.fromJson(element.data()));
@@ -59,9 +61,11 @@ class _HomeViewState extends State<HomeView> {
       setState(() {});
     });
 
-    Query query3 =
-        firestore.collection('Winners').where('category', isEqualTo: date);
-    listener3 = query3.snapshots().listen((event) {
+    listener3 = firestore
+        .collection('Winners')
+        .where('category', isEqualTo: date)
+        .snapshots()
+        .listen((event) {
       winners.clear();
       event.docs.forEach((element) {
         winners.add(WinnerModel.fromJson(element.data()));
@@ -69,13 +73,15 @@ class _HomeViewState extends State<HomeView> {
       setState(() {});
     });
 
-    firestore.collection('Utils').doc('instructions').get().then((event) {
+    listener4 = firestore
+        .collection('Utils')
+        .doc('instructions')
+        .snapshots()
+        .listen((event) {
       if (event.exists) {
         instructions = event.data()['text'];
         setState(() {});
       }
-
-      setState(() {});
     });
 
     super.initState();
@@ -86,6 +92,7 @@ class _HomeViewState extends State<HomeView> {
     listener1?.cancel();
     listener2?.cancel();
     listener3?.cancel();
+    listener4.cancel();
     super.dispose();
   }
 

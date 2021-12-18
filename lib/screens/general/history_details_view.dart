@@ -8,7 +8,9 @@ import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/models/question_model.dart';
 import 'package:mms_app/core/models/winner_model.dart';
+import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
+import 'package:mms_app/screens/general/payment_screen.dart';
 import 'package:mms_app/screens/widgets/answer_textfield.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
@@ -225,9 +227,12 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                               ),
                             ),
                             SizedBox(width: 12.h),
-                            if (model.uid == uid)
+                            if (model.uid == uid &&
+                                ((model?.isClaimed ?? false) == false))
                               InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    navigateTo(context, PaymentScreen());
+                                  },
                                   child: Image.asset('images/claim.png',
                                       width: 65.h)),
                           ],

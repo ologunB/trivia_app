@@ -178,35 +178,38 @@ class _SignupScreenState extends State<SignupScreen> {
                           }
                         },
                       ),
-                      SizedBox(height: 60.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: 'Or signup through   ',
-                              style: GoogleFonts.poppins(
-                                  color: AppColors.white,
-                                  fontSize: 13.sp,
-                                  fontWeight: FontWeight.w900),
-                              children: [
-                                if (!isLoading)
-                                  WidgetSpan(
-                                    child: InkWell(
-                                        onTap: () {
-                                          signInWithGoogle(context);
-                                        },
-                                        child: Image.asset(
-                                          'images/google.png',
-                                          height: 25.h,
-                                        )),
-                                  ),
-                              ],
-                            ),
+                       if (showGoogleButton)
+                        Padding(
+                          padding: EdgeInsets.only(top: 60.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              RichText(
+                                textAlign: TextAlign.center,
+                                text: TextSpan(
+                                  text: 'Or signup through   ',
+                                  style: GoogleFonts.poppins(
+                                      color: AppColors.white,
+                                      fontSize: 13.sp,
+                                      fontWeight: FontWeight.w900),
+                                  children: [
+                                    if (!isLoading)
+                                      WidgetSpan(
+                                        child: InkWell(
+                                            onTap: () {
+                                              signInWithGoogle(context);
+                                            },
+                                            child: Image.asset(
+                                              'images/google.png',
+                                              height: 25.h,
+                                            )),
+                                      ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
                       SizedBox(height: 80.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

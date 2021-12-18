@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mms_app/screens/auth/splash_view.dart';
- import 'package:mms_app/screens/general/main_layout.dart';
 
 import 'core/routes/router.dart';
 import 'core/storage/local_storage.dart';
