@@ -101,7 +101,7 @@ class _HistoryViewState extends State<HistoryView> {
                           itemBuilder: (context, QuestionModel element) =>
                               item(element),
                           itemComparator: (a, b) =>
-                              a.createdAt.compareTo(b.createdAt),
+                              (a?.createdAt ?? '').compareTo(b?.createdAt ?? ''),
                           useStickyGroupSeparators: true,
                           floatingHeader: true,
                           order: GroupedListOrder.DESC,

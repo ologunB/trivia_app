@@ -13,7 +13,7 @@ class QuestionModel {
     answer = json['answer'];
     id = json['id'];
     uid = json['uid'];
-    createdAt = json['created_at'];
+    createdAt = json['created_at'] ??'1';
     category = json['category'];
     updatedAt = json['updated_at'];
     story = json['story'];

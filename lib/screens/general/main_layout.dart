@@ -46,6 +46,7 @@ class _MainLayoutState extends State<MainLayout> {
     FirebaseDatabase.instance.setPersistenceCacheSizeBytes(100000000);
     await NotificationManager.initialize();
     String messagingToken  = await NotificationManager.messagingToken();
+    print(messagingToken);
     await FirebaseFirestore.instance.collection('Tokens').doc(uid).set(
       {'token': messagingToken},
     );

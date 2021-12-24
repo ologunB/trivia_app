@@ -222,6 +222,7 @@ class _HomeViewState extends State<HomeView> {
                       Map<String, dynamic> data = model.toJson();
                       data.update(
                           'answer', (value) => controllers[index].text.trim());
+                      data.putIfAbsent('name', () => AppCache.getUser.name);
                       data.update('uid', (value) => uid);
                       try {
                         firestore.collection('Answers').add(data);

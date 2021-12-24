@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mms_app/app/colors.dart';
+import 'package:mms_app/screens/widgets/snackbar.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
@@ -31,6 +34,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
         ),
         body: Container(
+            padding: EdgeInsets.all(30.h),
             width: SizeConfig.screenWidth,
             height: SizeConfig.screenHeight,
             decoration: BoxDecoration(
@@ -42,11 +46,36 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   regularText(
-                    'Payment goes here',
-                    fontSize: 20.sp,
+                    'Message Support to claim your price with the following details :\n\n1. Your name.\n\n2. Any means of Identification.\n\n3. Date of trivia\n\n',
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.white,
                   ),
+                  Row(
+                    children: [
+                      SelectableText(
+                        'support@trivia.com.ng',
+                        style: GoogleFonts.poppins(
+                          color: Colors.blueAccent,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(width: 10.h),
+                      InkWell(
+                        onTap: () {
+                          Clipboard.setData(
+                              ClipboardData(text: 'support@trivia.com.ng'));
+                          showSnackBar(context, null, 'Email Copied');
+                        },
+                        child: Icon(
+                          Icons.copy_rounded,
+                          color: AppColors.white,
+                          size: 24.h,
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             )));
