@@ -2,6 +2,7 @@ class QuestionModel {
   String answer;
   String question;
   String updatedAt;
+  String scheduledAt;
   String uid;
   String id;
   String createdAt;
@@ -16,6 +17,7 @@ class QuestionModel {
     createdAt = json['created_at'] ??'1';
     category = json['category'];
     updatedAt = json['updated_at'];
+    scheduledAt = json['scheduled_at'];
     story = json['story'];
   }
 
@@ -28,6 +30,7 @@ class QuestionModel {
     data['created_at'] = createdAt;
     data['category'] = category;
     data['updated_at'] = updatedAt;
+    data['scheduled_at'] = scheduledAt;
     data['story'] = story;
     return data;
   }

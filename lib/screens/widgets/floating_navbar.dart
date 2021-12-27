@@ -43,23 +43,29 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
               bottom: 20.h,
               child: SafeArea(
                 child: Container(
-                  height: 65.h,
                   margin: EdgeInsets.symmetric(horizontal: 40.h),
-                  width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.h),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [0, 2],
-                        colors: <Color>[
-                          Color(0xff432FBF),
-                          Color(0xffE86FCE),
-                        ],
-                      )),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: _widgetsBuilder(widget.items),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30.h),
+                  ),
+                  child: Container(
+                    height: 65.h,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.h),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          stops: [0, 2],
+                          colors: <Color>[
+                            Color(0xff432FBF),
+                            Color(0xffE86FCE),
+                          ],
+                        )),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: _widgetsBuilder(widget.items),
+                    ),
                   ),
                 ),
               ),
@@ -122,8 +128,12 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
   }
 
   _changePage(index) async {
-    String a = await FirebaseAuth.instance.currentUser.getIdToken();
-    log(a);
+    try {
+      String a = ''; // = await FirebaseAuth.instance.currentUser.getIdToken();
+      log(a);
+    } catch (e) {
+      print(e?.message);
+    }
     currentIndex = index;
     bottomNavbarController.jumpToPage(index);
     setState(() {});

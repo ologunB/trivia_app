@@ -20,9 +20,9 @@ class WinnerModel {
     updatedAt = json['updated_at'];
     category = json['category'];
     type = json['type'];
-    isClaimed = json['is_claimed'];
+    isClaimed = json['claimed'] ?? true;
   }
-
+/*
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['amount'] = amount;
@@ -34,7 +34,7 @@ class WinnerModel {
     data['updated_at'] = updatedAt;
     data['category'] = category;
     data['type'] = type;
-    data['is_claimed'] = isClaimed;
+    data['claimed'] = isClaimed;
     return data;
-  }
+  }*/
 }

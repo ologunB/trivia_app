@@ -19,41 +19,17 @@ class NotificationManager {
 
   /// Create a [AndroidNotificationChannel] for heads up notifications
   static AndroidNotificationChannel channel = const AndroidNotificationChannel(
-    'trivia_notification_id', // id
-    'Trivia Notification', // title
+    'trivia_notification_id',
+    'Trivia Notification',
     'This channel is used for important notifications about trivia blog',
-    // description
     importance: Importance.high,
     enableVibration: true,
     playSound: true,
+
   );
 
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
-  static Future<void> show(RemoteMessage message) async {
-    if (message != null) {
-      final RemoteNotification notification = message.notification;
-
-      final AndroidNotificationDetails androidDetails =
-          AndroidNotificationDetails(
-        channel.id,
-        channel.name,
-        channel.description,
-        importance: Importance.max,
-        icon: 'ic_launcher',
-      );
-      const IOSNotificationDetails iSODetails = IOSNotificationDetails();
-      final NotificationDetails generalNotificationDetails =
-          NotificationDetails(android: androidDetails, iOS: iSODetails);
-
-      if (notification != null) {
-        flutterLocalNotificationsPlugin.show(message.data['id'].hashCode,
-            notification.title, notification.body, generalNotificationDetails,
-            payload: jsonEncode(message.data));
-      }
-    }
-  }
 
   static Logger log = Logger();
 
@@ -74,8 +50,9 @@ class NotificationManager {
       log.d(message.notification);
       if (message.notification.title != null) {
         flutterLocalNotificationsPlugin.cancel(message.data['id'].hashCode);
-        locator<NavigationService>().navigateTo(CongratsView, arguments: message.data);
-       // show(message);
+        locator<NavigationService>()
+            .navigateTo(CongratsView, arguments: message.data);
+        // show(message);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
@@ -85,8 +62,7 @@ class NotificationManager {
         handleData(message.data);
       }
     });
-
-   }
+  }
 
   static Future<String> messagingToken() async {
     return _firebaseMessaging.getToken();
@@ -117,7 +93,7 @@ class NotificationManager {
     );
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_launcher');
+        AndroidInitializationSettings('logo');
     final IOSInitializationSettings initializationSettingsIOS =
         IOSInitializationSettings(onDidReceiveLocalNotification:
             (int id, String title, String body, String payload) async {

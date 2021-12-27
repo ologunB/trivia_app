@@ -45,11 +45,15 @@ class _MainLayoutState extends State<MainLayout> {
     FirebaseDatabase.instance.setPersistenceEnabled(true);
     FirebaseDatabase.instance.setPersistenceCacheSizeBytes(100000000);
     await NotificationManager.initialize();
-    String messagingToken  = await NotificationManager.messagingToken();
-    print(messagingToken);
-    await FirebaseFirestore.instance.collection('Tokens').doc(uid).set(
-      {'token': messagingToken},
-    );
+    if (AppCache.getNotification()) {
+      String messagingToken = await NotificationManager.messagingToken();
+      print(messagingToken);
+      await FirebaseFirestore.instance.collection('Tokens').doc(uid).set(
+        {'token': messagingToken},
+      );
+    } else {
+      await FirebaseFirestore.instance.collection('Tokens').doc(uid).delete();
+    }
   }
 
   @override
@@ -68,7 +72,8 @@ class _MainLayoutState extends State<MainLayout> {
         items: [
           FloatingNavBarItem(img: Icons.history, page: HistoryView()),
           FloatingNavBarItem(img: Icons.home, page: HomeView()),
-          FloatingNavBarItem(img: Icons.person_outline_outlined, page: ProfileView()),
+          FloatingNavBarItem(
+              img: Icons.person_outline_outlined, page: ProfileView()),
         ],
       ),
     );

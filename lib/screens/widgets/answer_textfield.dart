@@ -15,7 +15,7 @@ class AnswerTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoTextField(
       cursorColor: AppColors.white.withOpacity(0.4),
-      cursorWidth: 1.w,
+      cursorWidth: 1.h,
       maxLines: 3,
       minLines: 1,
       textCapitalization: TextCapitalization.sentences,
@@ -28,6 +28,7 @@ class AnswerTextField extends StatelessWidget {
         fontSize: 12.sp,
         color: AppColors.white,
       ),
+      padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 8.h),
       placeholderStyle: GoogleFonts.poppins(
         fontSize: 12.sp,
         color: AppColors.white.withOpacity(.2),
@@ -35,7 +36,7 @@ class AnswerTextField extends StatelessWidget {
       placeholder: hintText ?? 'Type in answer...',
       decoration: BoxDecoration(
           color: Colors.white.withOpacity(.07),
-          borderRadius: BorderRadius.circular(6.h)),
+          borderRadius: BorderRadius.circular(8.h)),
       controller: controller,
     );
   }

@@ -63,53 +63,72 @@ class _HistoryViewState extends State<HistoryView> {
                 image: AssetImage('images/authbg.png'), fit: BoxFit.cover),
           ),
           child: SafeArea(
-              child: Padding(
-            padding: EdgeInsets.all(15.h),
-            child: Column(
-              children: [
-                Image.asset('images/advert.png'),
-                SizedBox(height: 10.h),
-                Expanded(
-                  child: questions.isEmpty
-                      ? AppEmptyWidget(text: 'No History for now')
-                      : GroupedListView<QuestionModel, String>(
-                          elements: questions,
-                          groupBy: (element) => element.category,
-                          groupSeparatorBuilder: (String groupByValue) {
-                            List<String> list = groupByValue.split('-');
-                            return Padding(
-                              padding: EdgeInsets.only(bottom: 16.h),
-                              child: Row(
-                                children: [
-                                  regularText(
-                                    DateFormat('MMM dd, yyyy').format(
-                                      DateTime(
-                                        int.parse(list[2]),
-                                        int.parse(list[1]),
-                                        int.parse(list[0]),
-                                      ),
-                                    ),
-                                    other: true,
-                                    fontSize: 18.sp,
-                                    color: AppColors.white,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          itemBuilder: (context, QuestionModel element) =>
-                              item(element),
-                          itemComparator: (a, b) =>
-                              (a?.createdAt ?? '').compareTo(b?.createdAt ?? ''),
-                          useStickyGroupSeparators: true,
-                          floatingHeader: true,
-                          order: GroupedListOrder.DESC,
+              child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.h),
+                child: Image.asset('images/advert.png'),
+              ),
+              Expanded(
+                child: questions.isEmpty
+                    ? AppEmptyWidget(text: 'No History for now')
+                    : GroupedListView<QuestionModel, String>(
+                        padding: EdgeInsets.only(
+                          right: 15.h,
+                          left: 15.h,
+                          top: 15.h,
+                          bottom: 90.h,
                         ),
-                ),
-                SizedBox(height: 90.h),
-              ],
-            ),
+                        elements: questions,
+                        groupBy: (element) => element.category,
+                        groupSeparatorBuilder: (String groupByValue) {
+                          List<String> list = groupByValue.split('-');
+                          return Padding(
+                            padding: EdgeInsets.only(top: 8.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.h, vertical: 6.h),
+                                  margin: EdgeInsets.only(bottom: 16.h),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xff522051),
+                                    borderRadius: BorderRadius.circular(10.h),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      regularText(
+                                        DateFormat('MMM dd, yyyy').format(
+                                          DateTime(
+                                            int.parse(list[2]),
+                                            int.parse(list[1]),
+                                            int.parse(list[0]),
+                                          ),
+                                        ),
+                                        other: true,
+                                        fontSize: 18.sp,
+                                        color: AppColors.white,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                        itemBuilder: (context, QuestionModel element) =>
+                            item(element),
+                        itemComparator: (a, b) =>
+                            (a?.createdAt ?? '').compareTo(b?.createdAt ?? ''),
+                        useStickyGroupSeparators: true,
+                        floatingHeader: true,
+                        order: GroupedListOrder.DESC,
+                      ),
+              ),
+            ],
           )),
         ),
       ),
@@ -127,11 +146,14 @@ class _HistoryViewState extends State<HistoryView> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12.h),
             gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
               tileMode: TileMode.decal,
               stops: [0, 1],
-              colors: <Color>[Color(0xffE86FCE), Color(0xff8745C3)],
+              colors: <Color>[
+                Color(0xffE86FCE).withOpacity(.7),
+                Color(0xff8745C3)
+              ],
             )),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +161,7 @@ class _HistoryViewState extends State<HistoryView> {
             regularText(
               element.story,
               fontSize: 12.sp,
-              color: AppColors.grey,
+              color: AppColors.white,
               fontWeight: FontWeight.w300,
             ),
             SizedBox(height: 10.h),

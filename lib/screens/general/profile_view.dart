@@ -1,15 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/routes/router.dart';
+import 'package:mms_app/core/storage/local_storage.dart';
 import 'package:mms_app/core/utils/navigator.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
+import 'package:mms_app/screens/widgets/notification_manager.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:share/share.dart';
 import 'dart:io';
 import '../../locator.dart';
+import 'edit_profile.dart';
 
 class ProfileView extends StatefulWidget {
   @override
@@ -17,6 +22,14 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  @override
+  void initState() {
+    enableNotifi = AppCache.getNotification();
+    super.initState();
+  }
+
+  bool enableNotifi = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,10 +74,14 @@ class _ProfileViewState extends State<ProfileView> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () async {
-                        if (index == 4) {
-                          Share.share(
-                              'Download Trivia app from Playstore. Download Android here https://bit.ly/court_user_android or iOS here https://bit.ly/court_user',
-                              subject: 'Invite Others');
+                        if (index == 0) {
+                          await Navigator.push<void>(
+                              context,
+                              CupertinoPageRoute<dynamic>(
+                                  builder: (BuildContext context) =>
+                                      EditProfileScreen()));
+
+                          setState(() {});
                           return;
                         }
                         if (index == 3) {
@@ -129,17 +146,10 @@ class _ProfileViewState extends State<ProfileView> {
                               subject: 'Invite Others');
                           return;
                         }
-
-                        /*    await Navigator.push<void>(
-                        context,
-                        CupertinoPageRoute<dynamic>(
-                            builder: (BuildContext context) =>
-                            gotos(data()[index])[index]));
-
-                    setState(() {});*/
                       },
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        padding: EdgeInsets.symmetric(
+                            vertical: index == 1 ? 5.h : 10.h),
                         child: Row(
                           children: [
                             SizedBox(width: 12.h),
@@ -147,25 +157,41 @@ class _ProfileViewState extends State<ProfileView> {
                               data()[index],
                               style: GoogleFonts.poppins(
                                   fontSize: 20.sp,
-                                  fontWeight: FontWeight.w600,
-                                  foreground: Paint()
-                                    ..shader = LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: <Color>[
-                                        AppColors.primary,
-                                        AppColors.secondary,
-                                      ],
-                                    ).createShader(
-                                      Rect.fromLTWH(1.0, 0.0, 100, 50.0),
-                                    )),
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.secondary),
                             ),
                             Spacer(),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 16.h,
-                              color: AppColors.grey,
-                            )
+                            index == 1
+                                ? Switch.adaptive(
+                                    value: enableNotifi,
+                                    activeColor: AppColors.secondary,
+                                    onChanged: (a) async {
+                                      setState(() {
+                                        enableNotifi = a;
+                                        AppCache.setNotification(a);
+                                      });
+
+                                      String messagingToken =
+                                          await NotificationManager
+                                              .messagingToken();
+                                      String uid = AppCache.getUser.uid;
+                                      if (enableNotifi) {
+                                        await FirebaseFirestore.instance
+                                            .collection('Tokens')
+                                            .doc(uid)
+                                            .set({'token': messagingToken});
+                                      } else {
+                                        await FirebaseFirestore.instance
+                                            .collection('Tokens')
+                                            .doc(uid)
+                                            .delete();
+                                      }
+                                    })
+                                : Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 16.h,
+                                    color: AppColors.grey,
+                                  )
                           ],
                         ),
                       ),

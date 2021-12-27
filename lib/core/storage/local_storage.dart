@@ -5,6 +5,7 @@ import 'package:mms_app/core/models/login_response.dart';
 const String kUserBox = 'userBoxoioi';
 const String profileKey = 'profilejgv';
 const String isFirstKey = 'isTheFddibrbstfesgd';
+const String hasNotifiKey = 'hasNotifiKeyrer';
 
 class AppCache {
   static Future<void> init() async {
@@ -22,6 +23,17 @@ class AppCache {
     final bool data = _userBox.get(isFirstKey, defaultValue: true);
     return data;
   }
+
+
+  static void setNotification(bool val) {
+    _userBox.put(hasNotifiKey, val);
+  }
+
+  static bool getNotification() {
+    final bool data = _userBox.get(hasNotifiKey, defaultValue: true);
+    return data;
+  }
+
 
   static void setUser(Map<String, dynamic> user) {
     _userBox.put(profileKey, user);

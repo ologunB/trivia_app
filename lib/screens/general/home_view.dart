@@ -169,18 +169,37 @@ class _HomeViewState extends State<HomeView> {
   Widget item(int index) {
     QuestionModel model = questions[index];
     bool answered = answers.any((element) => element.id == model.id);
+    if (model.scheduledAt == 'null') {
+      return Container(
+        padding: EdgeInsets.all(20.h),
+        margin: EdgeInsets.only(bottom: 20.h),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.h), color: AppColors.grey),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            regularText(
+              '\nQuestion is not yet live, check back!\n',
+              fontSize: 15.sp,
+              color: AppColors.black,
+              fontWeight: FontWeight.w600,
+            ),
+          ],
+        ),
+      );
+    }
     return Container(
       padding: EdgeInsets.all(20.h),
       margin: EdgeInsets.only(bottom: 20.h),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.h),
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
             tileMode: TileMode.decal,
             stops: [0, 1],
             colors: <Color>[
-              colorTypes()[answered ? 1 : 0].primary,
+              colorTypes()[answered ? 1 : 0].primary.withOpacity(.7),
               colorTypes()[answered ? 1 : 0].secondary,
             ],
           )),
@@ -190,7 +209,7 @@ class _HomeViewState extends State<HomeView> {
           regularText(
             model.story,
             fontSize: 12.sp,
-            color: AppColors.grey,
+            color: AppColors.white,
             fontWeight: FontWeight.w300,
           ),
           SizedBox(height: 10.h),
@@ -219,6 +238,7 @@ class _HomeViewState extends State<HomeView> {
                   padding: EdgeInsets.only(left: 12.h),
                   child: InkWell(
                     onTap: () {
+                      if (controllers[index].text.trim().isEmpty) return;
                       Map<String, dynamic> data = model.toJson();
                       data.update(
                           'answer', (value) => controllers[index].text.trim());
