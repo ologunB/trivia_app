@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
@@ -55,6 +56,8 @@ class _HomeViewState extends State<HomeView> {
         .listen((event) {
       questions.clear();
       event.docs.forEach((element) {
+        Logger().d(element.data());
+        Logger().d(element.id);
         questions.add(QuestionModel.fromJson(element.data()));
         controllers.add(TextEditingController());
       });
@@ -74,12 +77,12 @@ class _HomeViewState extends State<HomeView> {
     });
 
     listener4 = firestore
-        .collection('Utils')
-        .doc('instructions')
+        .collection('Instructions')
+        .where('category', isEqualTo: date)
         .snapshots()
         .listen((event) {
-      if (event.exists) {
-        instructions = event.data()['text'];
+      if (event.docs.isNotEmpty) {
+        instructions = event.docs.first.data()['instructions'];
         setState(() {});
       }
     });
@@ -167,9 +170,12 @@ class _HomeViewState extends State<HomeView> {
   List<TextEditingController> controllers = [];
 
   Widget item(int index) {
+    //   Logger().d(TimeOfDay.now().minute);
     QuestionModel model = questions[index];
     bool answered = answers.any((element) => element.id == model.id);
-    if (model.scheduledAt == 'null') {
+    int hour = int.tryParse(model.scheduledAt.split(':').first);
+    //  int min = int.tryParse( model.scheduledAt.split(':')[1]);
+    if (TimeOfDay.now().hourOfPeriod < hour) {
       return Container(
         padding: EdgeInsets.all(20.h),
         margin: EdgeInsets.only(bottom: 20.h),

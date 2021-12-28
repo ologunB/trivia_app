@@ -17,7 +17,7 @@ class QuestionModel {
     createdAt = json['created_at'] ??'1';
     category = json['category'];
     updatedAt = json['updated_at'];
-    scheduledAt = json['scheduled_at'];
+    scheduledAt = json['scheduled_at']?.toString() ?? '10:10';
     story = json['story'];
   }
 

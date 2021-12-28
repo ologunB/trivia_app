@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:ntp/ntp.dart';
 
 class Utils {
   static void offKeyboard() async {
@@ -21,6 +22,7 @@ class Utils {
   }
 
   static String getPresentDate() {
+    //  DateTime now = await NTP.now(); print(now);
     return DateFormat('dd-MM-yyyy').format(DateTime.now());
   }
 
@@ -78,10 +80,11 @@ extension customStringExtension on String {
     return newWord;
   }
 
-
   toAmount() {
-    return NumberFormat("#,###.##", "en_US").format(double.tryParse(this) ?? 0.00);
+    return NumberFormat("#,###.##", "en_US")
+        .format(double.tryParse(this) ?? 0.00);
   }
+
   getSingleInitial() {
     return this.split('')[0].toUpperCase();
   }
