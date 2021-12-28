@@ -158,9 +158,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     String uid = AppCache.getUser.uid;
     try {
       if (imageFile != null) {
-        Reference reference = FirebaseStorage.instance
-            .ref()
-            .child("images/${Utils.randomString()}");
+        Reference reference =
+            FirebaseStorage.instance.ref().child("images/$uid");
 
         UploadTask uploadTask = reference.putFile(imageFile);
         TaskSnapshot downloadUrl = (await uploadTask.whenComplete(() => null));

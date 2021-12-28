@@ -1,8 +1,6 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:ntp/ntp.dart';
 
 class Utils {
@@ -21,9 +19,16 @@ class Utils {
     }
   }
 
+  static DateTime getDate;
+
   static String getPresentDate() {
-    //  DateTime now = await NTP.now(); print(now);
-    return DateFormat('dd-MM-yyyy').format(DateTime.now());
+    return DateFormat('dd-MM-yyyy').format(getDate);
+  }
+
+  static Future<DateTime> getInternetDate() async {
+    DateTime now = await NTP.now();
+    Logger().d(now);
+    return now;
   }
 
   static String isValidName(String value) {
@@ -31,17 +36,6 @@ class Utils {
       return 'Name cannot be empty';
     }
     return null;
-  }
-
-  static String randomString({int no = 12}) {
-    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-
-    Random rnd = Random(DateTime.now().millisecondsSinceEpoch);
-    String result = "";
-    for (var i = 0; i < no; i++) {
-      result += chars[rnd.nextInt(chars.length)];
-    }
-    return result;
   }
 
   static String validateEmail(String value) {
@@ -56,40 +50,11 @@ class Utils {
       return null;
     }
   }
-
-  static void unfocusKeyboard(BuildContext context) {
-    final FocusScopeNode currentFocus = FocusScope.of(context);
-
-    if (!currentFocus.hasPrimaryFocus) {
-      currentFocus.unfocus();
-      return;
-    }
-    currentFocus.unfocus();
-  }
 }
 
 extension customStringExtension on String {
-  toTitleCase() {
-    final words = this.toString().toLowerCase().split(' ');
-    var newWord = '';
-    for (var word in words) {
-      if (word.isNotEmpty)
-        newWord += '${word[0].toUpperCase()}${word.substring(1)} ';
-    }
-
-    return newWord;
-  }
-
   toAmount() {
     return NumberFormat("#,###.##", "en_US")
         .format(double.tryParse(this) ?? 0.00);
-  }
-
-  getSingleInitial() {
-    return this.split('')[0].toUpperCase();
-  }
-
-  sanitizeToDouble() {
-    return double.tryParse(this.replaceAll(",", ""));
   }
 }

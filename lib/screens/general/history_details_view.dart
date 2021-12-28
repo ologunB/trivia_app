@@ -78,13 +78,15 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          iconTheme: IconThemeData(
-            color: Colors.white,
-          ),
-        ),
+        appBar: widget.category == Utils.getPresentDate()
+            ? null
+            : AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                iconTheme: IconThemeData(
+                  color: Colors.white,
+                ),
+              ),
         body: Container(
           width: SizeConfig.screenWidth,
           height: SizeConfig.screenHeight,

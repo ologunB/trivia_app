@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import '../../app/size_config/config.dart';
-import 'dart:developer';
 
 class FloatingNavBar extends StatefulWidget {
   final List<FloatingNavBarItem> items;
@@ -128,12 +126,6 @@ class _FloatingNavBarState extends State<FloatingNavBar> {
   }
 
   _changePage(index) async {
-    try {
-      String a = ''; // = await FirebaseAuth.instance.currentUser.getIdToken();
-      log(a);
-    } catch (e) {
-      print(e?.message);
-    }
     currentIndex = index;
     bottomNavbarController.jumpToPage(index);
     setState(() {});

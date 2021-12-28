@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
- import 'package:mms_app/core/routes/router.dart';
+import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
 import 'package:mms_app/core/utils/navigator.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
@@ -16,7 +16,7 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 1), () async {
       if (AppCache.getUser == null) {
         if (AppCache.getIsFirst()) {
           locator<NavigationService>().pushReplace(OnboardingScreen);
@@ -24,9 +24,10 @@ class _SplashViewState extends State<SplashView> {
           locator<NavigationService>().pushReplace(LoginLayoutScreen);
         }
       } else {
-        Future.delayed(Duration(seconds: 1), () {
+        Utils.getDate = await Utils.getInternetDate();
+        if (Utils.getDate != null) {
           locator<NavigationService>().pushReplace(MainView);
-        });
+        } else {}
       }
     });
     super.initState();

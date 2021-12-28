@@ -56,8 +56,6 @@ class _HomeViewState extends State<HomeView> {
         .listen((event) {
       questions.clear();
       event.docs.forEach((element) {
-        Logger().d(element.data());
-        Logger().d(element.id);
         questions.add(QuestionModel.fromJson(element.data()));
         controllers.add(TextEditingController());
       });
@@ -86,6 +84,10 @@ class _HomeViewState extends State<HomeView> {
         setState(() {});
       }
     });
+    Future.delayed(Duration.zero, () async {
+      Utils.getDate = await Utils.getInternetDate();
+      setState(() {});
+    });
 
     super.initState();
   }
@@ -95,7 +97,7 @@ class _HomeViewState extends State<HomeView> {
     listener1?.cancel();
     listener2?.cancel();
     listener3?.cancel();
-    listener4.cancel();
+    listener4?.cancel();
     super.dispose();
   }
 
@@ -175,7 +177,7 @@ class _HomeViewState extends State<HomeView> {
     bool answered = answers.any((element) => element.id == model.id);
     int hour = int.tryParse(model.scheduledAt.split(':').first);
     //  int min = int.tryParse( model.scheduledAt.split(':')[1]);
-    if (TimeOfDay.now().hourOfPeriod < hour) {
+    if (Utils.getDate.hour < hour) {
       return Container(
         padding: EdgeInsets.all(20.h),
         margin: EdgeInsets.only(bottom: 20.h),
@@ -250,6 +252,7 @@ class _HomeViewState extends State<HomeView> {
                           'answer', (value) => controllers[index].text.trim());
                       data.putIfAbsent('name', () => AppCache.getUser.name);
                       data.update('uid', (value) => uid);
+                      data.putIfAbsent('admin_answer', () => model.answer);
                       try {
                         firestore.collection('Answers').add(data);
                       } catch (e) {

@@ -11,12 +11,12 @@ class WinnerModel {
   bool isClaimed;
 
   WinnerModel.fromJson(dynamic json) {
-    amount = json['amount'];
+   amount = json['amount'];
     name = json['name'];
     id = json['id'];
     uid = json['uid'];
     createdAt = json['created_at'];
-    position = json['position'].toInt();
+    position = json['position']?.toInt() ?? 0;
     updatedAt = json['updated_at'];
     category = json['category'];
     type = json['type'];
