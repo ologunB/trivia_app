@@ -140,9 +140,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       showSnackBar(context, null, 'Enter your name');
                       return;
                     }
+                    Utils.offKeyboard();
                     confirmProfile();
                   },
                 ),
+                SizedBox(height: 30.h),
               ],
             ),
           )),
@@ -197,7 +199,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         isLoading = false;
       });
-      showSnackBar(context, 'Error', e.toString());
+      showSnackBar(context, 'Error', e?.message ?? e.toString());
     }
   }
 

@@ -32,8 +32,8 @@ class AppEmptyWidget extends StatelessWidget {
           SizedBox(height: 10.h),
           regularText(
             text,
-            fontSize: 16.sp,
-            color: AppColors.grey,
+            fontSize: 18.sp,
+            color: AppColors.white,
           ),
         ],
       ),

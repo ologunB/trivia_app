@@ -9,6 +9,7 @@ import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/models/question_model.dart';
 import 'package:mms_app/core/routes/router.dart';
+import 'package:mms_app/screens/widgets/ad_widget.dart';
 import 'package:mms_app/screens/widgets/answer_textfield.dart';
 import 'package:mms_app/screens/widgets/app_empty_widget.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
@@ -67,7 +68,8 @@ class _HistoryViewState extends State<HistoryView> {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.h),
-                child: Image.asset('images/advert.png'),
+                child:                           AdWidget(),
+
               ),
               Expanded(
                 child: questions.isEmpty

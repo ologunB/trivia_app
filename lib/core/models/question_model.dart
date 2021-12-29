@@ -14,10 +14,10 @@ class QuestionModel {
     answer = json['answer'];
     id = json['id'];
     uid = json['uid'];
-    createdAt = json['created_at'] ??'1';
+    createdAt = json['created_at'] ?? '1';
     category = json['category'];
     updatedAt = json['updated_at'];
-    scheduledAt = json['scheduled_at']?.toString() ?? '10:10';
+    scheduledAt = json['scheduled_at'] == null ? 'empty' : json['scheduled_at'];
     story = json['story'];
   }
 

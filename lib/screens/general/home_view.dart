@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/models/question_model.dart';
 import 'package:mms_app/core/models/winner_model.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
+import 'package:mms_app/screens/widgets/ad_widget.dart';
 import 'package:mms_app/screens/widgets/answer_textfield.dart';
 import 'package:mms_app/screens/widgets/app_empty_widget.dart';
 import 'package:mms_app/screens/widgets/snackbar.dart';
@@ -57,6 +57,7 @@ class _HomeViewState extends State<HomeView> {
       questions.clear();
       event.docs.forEach((element) {
         questions.add(QuestionModel.fromJson(element.data()));
+        questions.sort((a, b) => b.id.compareTo(a.id));
         controllers.add(TextEditingController());
       });
       setState(() {});
@@ -124,7 +125,7 @@ class _HomeViewState extends State<HomeView> {
                       padding: EdgeInsets.all(15.h),
                       child: Column(
                         children: [
-                          Image.asset('images/advert.png'),
+                          AdWidget(),
                           SizedBox(height: 30.h),
                           Row(
                             children: [
@@ -147,7 +148,8 @@ class _HomeViewState extends State<HomeView> {
                           ),
                           SizedBox(height: 20.h),
                           questions.isEmpty
-                              ? AppEmptyWidget(text: 'No Questions for now')
+                              ? AppEmptyWidget(
+                                  text: 'Questions will be posted soon')
                               : ListView.builder(
                                   shrinkWrap: true,
                                   padding: EdgeInsets.zero,
@@ -175,7 +177,8 @@ class _HomeViewState extends State<HomeView> {
     //   Logger().d(TimeOfDay.now().minute);
     QuestionModel model = questions[index];
     bool answered = answers.any((element) => element.id == model.id);
-    int hour = int.tryParse(model.scheduledAt.split(':').first);
+    int hour = int.tryParse(model?.scheduledAt?.split(':')?.first) ??
+        Utils.getDate.hour;
     //  int min = int.tryParse( model.scheduledAt.split(':')[1]);
     if (Utils.getDate.hour < hour) {
       return Container(

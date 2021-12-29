@@ -12,6 +12,7 @@ import 'package:mms_app/core/models/winner_model.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
 import 'package:mms_app/screens/general/payment_screen.dart';
+import 'package:mms_app/screens/widgets/ad_widget.dart';
 import 'package:mms_app/screens/widgets/answer_textfield.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
@@ -98,7 +99,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
               child: ListView(
             padding: EdgeInsets.all(15.h),
             children: [
-              Image.asset('images/advert.png'),
+              AdWidget(),
               if (isWinner)
                 Stack(
                   alignment: Alignment.center,

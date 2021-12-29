@@ -8,6 +8,7 @@ import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
 import 'package:mms_app/core/utils/navigator.dart';
+import 'package:mms_app/screens/widgets/ad_widget.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/notification_manager.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
@@ -44,6 +45,7 @@ class _ProfileViewState extends State<ProfileView> {
           child: ListView(
             padding: EdgeInsets.all(30.h),
             children: [
+              AdWidget(),
               SizedBox(height: 30.h),
               regularText(
                 'Profile',

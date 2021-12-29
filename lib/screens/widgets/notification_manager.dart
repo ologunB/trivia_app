@@ -48,11 +48,12 @@ class NotificationManager {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       log.d(message.data);
       log.d(message.notification);
-      if (message.notification.title != null) {
+      if (message.data['type'] == 'winning') {
         flutterLocalNotificationsPlugin.cancel(message.data['id'].hashCode);
         locator<NavigationService>()
             .navigateTo(CongratsView, arguments: message.data);
-        // show(message);
+      }else{
+       show(message);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
@@ -63,6 +64,31 @@ class NotificationManager {
       }
     });
   }
+
+  static Future<void> show(RemoteMessage message) async {
+    if (message != null) {
+      final RemoteNotification notification = message.notification;
+
+      final AndroidNotificationDetails androidDetails =
+      AndroidNotificationDetails(
+        channel.id,
+        channel.name,
+        channel.description,
+        importance: Importance.max,
+        icon: 'logo',
+      );
+      const IOSNotificationDetails iSODetails = IOSNotificationDetails();
+      final NotificationDetails generalNotificationDetails =
+      NotificationDetails(android: androidDetails, iOS: iSODetails);
+
+      if (notification != null) {
+        flutterLocalNotificationsPlugin.show(notification.title.hashCode,
+            notification.title, notification.body, generalNotificationDetails,
+            payload: jsonEncode(message.data));
+      }
+    }
+  }
+
 
   static Future<String> messagingToken() async {
     return _firebaseMessaging.getToken();
