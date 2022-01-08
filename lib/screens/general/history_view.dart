@@ -68,8 +68,7 @@ class _HistoryViewState extends State<HistoryView> {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.h),
-                child:                           AdWidget(),
-
+                child: AdWidget(),
               ),
               Expanded(
                 child: questions.isEmpty

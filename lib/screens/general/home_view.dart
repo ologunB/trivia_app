@@ -138,13 +138,17 @@ class _HomeViewState extends State<HomeView> {
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 60.h),
-                            child: regularText(
-                              instructions,
-                              fontSize: 13.sp,
-                              color: AppColors.white,
-                            ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: regularText(
+                                  instructions,
+                                  fontSize: 13.sp,
+                                  color: AppColors.white,
+                                  textAlign: TextAlign.start,
+                                ),
+                              )
+                            ],
                           ),
                           SizedBox(height: 20.h),
                           questions.isEmpty

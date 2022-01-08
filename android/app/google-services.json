@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:339747895631:android:a5f503b6f85690ea95ad3a",
+        "mobilesdk_app_id": "1:339747895631:android:9e2ba50a3987bd6b95ad3a",
         "android_client_info": {
-          "package_name": "com.trivia.app"
+          "package_name": "com.trivia.apppp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "339747895631-ji6vpvub82ct04sem92nf3msbu2c6vcb.apps.googleusercontent.com",
+          "client_id": "339747895631-o2e9snuborif1ucmch2g41p9nfs4f8t8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.trivia.app",
+            "package_name": "com.trivia.apppp",
             "certificate_hash": "c6e94cdc70d739c33571dad023b3455635423255"
           }
         },
@@ -37,6 +37,13 @@
             {
               "client_id": "339747895631-u8ab5u0ajoe5h6krbbhqqdcrjtldl7q2.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "339747895631-5v6i8t65ath47ffvfm2hus6bc51vn50k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trivia.app"
+              }
             }
           ]
         }
