@@ -57,9 +57,11 @@ class _HomeViewState extends State<HomeView> {
       questions.clear();
       event.docs.forEach((element) {
         questions.add(QuestionModel.fromJson(element.data()));
-        questions.sort((a, b) => b.id.compareTo(a.id));
         controllers.add(TextEditingController());
+        //  firestore.collection('Questions').doc(element.id).delete();
       });
+
+      questions.sort((b, a) => a.id.compareTo(b.id));
       setState(() {});
     });
 
@@ -162,6 +164,31 @@ class _HomeViewState extends State<HomeView> {
                                   itemBuilder: (context, index) {
                                     return item(index);
                                   }),
+                          if (questions.any((element) =>
+                              Utils.getDate.hour <
+                              (int.tryParse(element?.scheduledAt
+                                      ?.split(':')
+                                      ?.first) ??
+                                  Utils.getDate.hour)))
+                            Container(
+                              padding: EdgeInsets.all(30.h),
+                              margin: EdgeInsets.only(bottom: 20.h),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.h),
+                                  color: AppColors.grey),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  regularText(
+                                    '\nSome questions are not yet live, check back!\n',
+                                    fontSize: 15.sp,
+                                    textAlign: TextAlign.center,
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ],
+                              ),
+                            ),
                           SizedBox(
                               height:
                                   (MediaQuery.of(context).viewInsets.bottom < 50
@@ -185,23 +212,7 @@ class _HomeViewState extends State<HomeView> {
         Utils.getDate.hour;
     //  int min = int.tryParse( model.scheduledAt.split(':')[1]);
     if (Utils.getDate.hour < hour) {
-      return Container(
-        padding: EdgeInsets.all(20.h),
-        margin: EdgeInsets.only(bottom: 20.h),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.h), color: AppColors.grey),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            regularText(
-              '\nQuestion is not yet live, check back!\n',
-              fontSize: 15.sp,
-              color: AppColors.black,
-              fontWeight: FontWeight.w600,
-            ),
-          ],
-        ),
-      );
+      return SizedBox();
     }
     return Container(
       padding: EdgeInsets.all(20.h),
@@ -222,14 +233,14 @@ class _HomeViewState extends State<HomeView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           regularText(
-            model.story,
+            model?.story,
             fontSize: 12.sp,
             color: AppColors.white,
             fontWeight: FontWeight.w300,
           ),
           SizedBox(height: 10.h),
           regularText(
-            model.question,
+            model?.question,
             fontSize: 12.sp,
             color: AppColors.white,
             fontWeight: FontWeight.w700,
@@ -252,7 +263,7 @@ class _HomeViewState extends State<HomeView> {
                 Padding(
                   padding: EdgeInsets.only(left: 12.h),
                   child: InkWell(
-                    onTap: () {
+                    onTap: () async {
                       if (controllers[index].text.trim().isEmpty) return;
                       Map<String, dynamic> data = model.toJson();
                       data.update(
@@ -261,7 +272,8 @@ class _HomeViewState extends State<HomeView> {
                       data.update('uid', (value) => uid);
                       data.putIfAbsent('admin_answer', () => model.answer);
                       try {
-                        firestore.collection('Answers').add(data);
+                        await firestore.collection('Answers').add(data);
+                        controllers[index].text = '';
                       } catch (e) {
                         showSnackBar(
                             context, 'Error', e?.message ?? e.toString());

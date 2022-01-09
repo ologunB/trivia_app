@@ -320,14 +320,14 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           regularText(
-            model.story,
+            model?.story,
             fontSize: 12.sp,
             color: AppColors.white,
             fontWeight: FontWeight.w300,
           ),
           SizedBox(height: 10.h),
           regularText(
-            model.question,
+            model?.question,
             fontSize: 12.sp,
             color: AppColors.white,
             fontWeight: FontWeight.w700,
@@ -335,7 +335,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
           SizedBox(height: 12.h),
           AnswerTextField(
             readOnly: true,
-            controller: TextEditingController(text: model.answer),
+            controller: TextEditingController(text: model?.answer),
           )
         ],
       ),

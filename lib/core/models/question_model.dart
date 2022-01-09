@@ -14,7 +14,7 @@ class QuestionModel {
     answer = json['answer'];
     id = json['id'];
     uid = json['uid'];
-    createdAt = json['created_at'] ?? '1';
+    createdAt = json['created_at'] ?? json['create_at'] ;
     category = json['category'];
     updatedAt = json['updated_at'];
     scheduledAt = json['scheduled_at'] == null ? 'empty' : json['scheduled_at'];

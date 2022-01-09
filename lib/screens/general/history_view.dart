@@ -50,6 +50,8 @@ class _HistoryViewState extends State<HistoryView> {
     super.dispose();
   }
 
+  int val = 0;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -81,9 +83,12 @@ class _HistoryViewState extends State<HistoryView> {
                           bottom: 90.h,
                         ),
                         elements: questions,
-                        groupBy: (element) => element.category,
+                        groupBy: (element) => DateTime(
+                          int.parse(element.category.split('-')[2]),
+                          int.parse(element.category.split('-')[1]),
+                          int.parse(element.category.split('-')[0]),
+                        ).millisecondsSinceEpoch.toString(),
                         groupSeparatorBuilder: (String groupByValue) {
-                          List<String> list = groupByValue.split('-');
                           return Padding(
                             padding: EdgeInsets.only(top: 8.h),
                             child: Row(
@@ -102,11 +107,8 @@ class _HistoryViewState extends State<HistoryView> {
                                     children: [
                                       regularText(
                                         DateFormat('MMM dd, yyyy').format(
-                                          DateTime(
-                                            int.parse(list[2]),
-                                            int.parse(list[1]),
-                                            int.parse(list[0]),
-                                          ),
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              int.parse(groupByValue)),
                                         ),
                                         other: true,
                                         fontSize: 18.sp,
@@ -122,8 +124,8 @@ class _HistoryViewState extends State<HistoryView> {
                         },
                         itemBuilder: (context, QuestionModel element) =>
                             item(element),
-                        itemComparator: (a, b) =>
-                            (a?.createdAt ?? '').compareTo(b?.createdAt ?? ''),
+                        itemComparator: (b, a) =>
+                            (a.createdAt).compareTo(b.createdAt),
                         useStickyGroupSeparators: true,
                         floatingHeader: true,
                         order: GroupedListOrder.DESC,
@@ -160,14 +162,14 @@ class _HistoryViewState extends State<HistoryView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             regularText(
-              element.story,
+              element?.story,
               fontSize: 12.sp,
               color: AppColors.white,
               fontWeight: FontWeight.w300,
             ),
             SizedBox(height: 10.h),
             regularText(
-              element.question,
+              element?.question,
               fontSize: 12.sp,
               color: AppColors.white,
               fontWeight: FontWeight.w700,

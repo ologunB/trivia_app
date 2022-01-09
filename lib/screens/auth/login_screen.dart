@@ -316,7 +316,7 @@ class _LoginScreenState extends State<LoginScreen> {
             .collection('Users')
             .doc(user.uid)
             .get()
-            .then((document) {
+            .then((document) async {
           setState(() {
             isLoading = false;
           });
@@ -325,8 +325,10 @@ class _LoginScreenState extends State<LoginScreen> {
           }
 
           AppCache.setUser(document.data());
-
-          locator<NavigationService>().removeUntil(MainView);
+          Utils.getDate = await Utils.getInternetDate();
+          if (Utils.getDate != null) {
+            locator<NavigationService>().removeUntil(MainView);
+          }
         }).catchError((e) {
           setState(() {
             isLoading = false;
@@ -407,22 +409,26 @@ class _LoginScreenState extends State<LoginScreen> {
                     .collection('Users')
                     .doc(value.user.uid)
                     .set(mData)
-                    .then((value) {
+                    .then((value) async {
                   setState(() {
                     isLoading = false;
                   });
 
                   AppCache.setUser(mData);
-                  locator<NavigationService>().removeUntil(MainView);
-                });
+                  Utils.getDate = await Utils.getInternetDate();
+                  if (Utils.getDate != null) {
+                    locator<NavigationService>().removeUntil(MainView);
+                  }                });
               } else {
                 setState(() {
                   isLoading = false;
                 });
 
                 AppCache.setUser(document.data());
-                locator<NavigationService>().removeUntil(MainView);
-              }
+                Utils.getDate = await Utils.getInternetDate();
+                if (Utils.getDate != null) {
+                  locator<NavigationService>().removeUntil(MainView);
+                }              }
             }).catchError((e) {
               setState(() {
                 isLoading = false;
@@ -445,6 +451,7 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() {
             isLoading = false;
           });
+          print(e.message);
           showExceptionAlertDialog(
             context: buildContext,
             exception: e.message,
@@ -474,9 +481,9 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         isLoading = false;
       });
-      showExceptionAlertDialog(
+       showExceptionAlertDialog(
         context: buildContext,
-        exception: e.message ?? e.toString(),
+        exception: e?.message ?? e.toString(),
         title: "Error",
       );
     }

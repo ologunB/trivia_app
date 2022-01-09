@@ -24,7 +24,7 @@ dependencies:
   cloud_firestore: ^2.5.1
   firebase_auth: ^3.1.0
   another_flushbar: ^1.10.20
-  google_sign_in:
+  google_sign_in: ^5.1.0
   firebase_messaging: ^11.2.4
   flutter_local_notifications: ^5.0.0+4
   grouped_list: ^4.1.0
@@ -41,7 +41,7 @@ dev_dependencies:
   flutter_native_splash: ^1.2.1
 
 flutter_native_splash:
-  color: "#F43DE3"
+  color: "#8745c3"
   image: images/logo.png
   android: true
   ios: true

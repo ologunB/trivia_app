@@ -397,22 +397,26 @@ class _SignupScreenState extends State<SignupScreen> {
                     .collection('Users')
                     .doc(value.user.uid)
                     .set(mData)
-                    .then((value) {
+                    .then((value) async {
                   setState(() {
                     isLoading = false;
                   });
 
                   AppCache.setUser(mData);
-                  locator<NavigationService>().removeUntil(MainView);
-                });
+                  Utils.getDate = await Utils.getInternetDate();
+                  if (Utils.getDate != null) {
+                    locator<NavigationService>().removeUntil(MainView);
+                  }                });
               } else {
                 setState(() {
                   isLoading = false;
                 });
 
                 AppCache.setUser(document.data());
-                locator<NavigationService>().removeUntil(MainView);
-              }
+                Utils.getDate = await Utils.getInternetDate();
+                if (Utils.getDate != null) {
+                  locator<NavigationService>().removeUntil(MainView);
+                }              }
             }).catchError((e) {
               setState(() {
                 isLoading = false;

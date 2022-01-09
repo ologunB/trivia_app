@@ -13,7 +13,7 @@ Widget regularText(
   FontWeight fontWeight,
   bool other = false,
 }) {
-  return Text(
+  return text == null ? SizedBox():Text(
     text,
     textAlign: textAlign,
     maxLines: maxLines,
