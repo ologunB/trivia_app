@@ -1,4 +1,4 @@
-//import 'dart:html';
+import 'dart:html';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -48,8 +48,7 @@ class Utils {
   }
 
   static bool getISWeb() {
-    return false;
-    final userAgent= ''; //= window.navigator.userAgent.toString().toLowerCase();
+    final userAgent = window.navigator.userAgent.toString().toLowerCase();
     if (userAgent.contains("iphone")) return false;
     if (userAgent.contains("ipad")) return false;
     if (userAgent.contains("android")) return false;
