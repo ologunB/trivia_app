@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/core/routes/router.dart';
@@ -15,14 +17,12 @@ import 'package:mms_app/core/utils/navigator.dart';
 import 'package:mms_app/core/utils/show_alert_dialog.dart';
 import 'package:mms_app/core/utils/show_exception_alert_dialog.dart';
 import 'package:mms_app/screens/auth/forgot_password_screen.dart';
-import 'package:mms_app/screens/auth/signup_screen.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/custom_textfield.dart';
 import 'package:mms_app/screens/widgets/snackbar.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
-import 'dart:io';
 import '../../locator.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool autoValidate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  bool showGoogleButton = Platform.isAndroid;
+  bool showGoogleButton = kIsWeb || PlatformCheck.isAndroid;
   final Shader linearGradient = LinearGradient(
     colors: <Color>[AppColors.primary, AppColors.secondary],
   ).createShader(
@@ -52,7 +52,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    AppCache.clear();
     GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
     listener = FirebaseFirestore.instance
@@ -60,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
         .doc('Data')
         .snapshots()
         .listen((event) {
-      if (Platform.isAndroid) {
+      if (kIsWeb || PlatformCheck.isAndroid) {
         showGoogleButton = true;
         setState(() {});
         return;
@@ -123,14 +122,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          header('Sign in'),
-                        ],
+                        children: [header('Sign in')],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           regularText(
+                            //   getOSInsideWeb()+  '\nIsAndroid: ${PlatformCheck.isAndroid}\nIsiOS: ${PlatformCheck.isIOS}\nIsWeb: ${PlatformCheck.isWeb}\n\nIsDesktop: ${ PlatformCheck.isMacOS }\n',
                             'Fill in your credentials to register',
                             fontSize: 14.sp,
                             color: AppColors.white,
@@ -248,8 +246,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontWeight: FontWeight.w900),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        navigateReplacement(
-                                            context, SignupScreen());
+                                        locator<NavigationService>()
+                                            .removeUntil(SignupLayoutScreen);
                                       })
                               ],
                             ),
@@ -418,7 +416,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Utils.getDate = await Utils.getInternetDate();
                   if (Utils.getDate != null) {
                     locator<NavigationService>().removeUntil(MainView);
-                  }                });
+                  }
+                });
               } else {
                 setState(() {
                   isLoading = false;
@@ -428,7 +427,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 Utils.getDate = await Utils.getInternetDate();
                 if (Utils.getDate != null) {
                   locator<NavigationService>().removeUntil(MainView);
-                }              }
+                }
+              }
             }).catchError((e) {
               setState(() {
                 isLoading = false;
@@ -481,9 +481,12 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         isLoading = false;
       });
-       showExceptionAlertDialog(
+      String message = e.message == 'Exception raised from GoogleAuth.signIn()'
+          ? 'Complete Google Sign in'
+          : (e?.message ?? e.toString());
+      showExceptionAlertDialog(
         context: buildContext,
-        exception: e?.message ?? e.toString(),
+        exception: message,
         title: "Error",
       );
     }

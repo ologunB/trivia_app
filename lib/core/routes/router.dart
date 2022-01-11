@@ -2,13 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mms_app/screens/auth/login_screen.dart';
 import 'package:mms_app/screens/auth/onboarding_view.dart';
+import 'package:mms_app/screens/auth/signup_screen.dart';
 import 'package:mms_app/screens/general/congrats_screen.dart';
 import 'package:mms_app/screens/general/main_layout.dart';
 
-const String OnboardingScreen = '/onboarding-view';
-const String LoginLayoutScreen = '/login-view';
-const String MainView = '/main-view';
-const String CongratsView = '/congrats-view';
+const String OnboardingScreen = '/onboard';
+const String LoginLayoutScreen = '/login';
+const String SignupLayoutScreen = '/signup';
+const String MainView = '/main';
+const String CongratsView = '/congrats';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -23,6 +25,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         view: LoginScreen(),
+        args: settings.arguments,
+      );
+    case SignupLayoutScreen:
+      return _getPageRoute(
+        routeName: settings.name,
+        view: SignupScreen(),
         args: settings.arguments,
       );
     case MainView:

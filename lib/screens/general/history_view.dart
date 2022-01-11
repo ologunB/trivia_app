@@ -68,9 +68,16 @@ class _HistoryViewState extends State<HistoryView> {
           child: SafeArea(
               child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 10.h),
-                child: AdWidget(),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 15.h, vertical: 10.h),
+                      child: AdWidget(),
+                    ),
+                  ),
+                ],
               ),
               Expanded(
                 child: questions.isEmpty
@@ -106,10 +113,7 @@ class _HistoryViewState extends State<HistoryView> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       regularText(
-                                        DateFormat('MMM dd, yyyy').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              int.parse(groupByValue)),
-                                        ),
+                                        dateToString(groupByValue),
                                         other: true,
                                         fontSize: 18.sp,
                                         color: AppColors.white,
@@ -183,5 +187,23 @@ class _HistoryViewState extends State<HistoryView> {
         ),
       ),
     );
+  }
+
+  String dateToString(String a) {
+    DateTime now = Utils.getDate;
+    DateTime then = DateTime.fromMillisecondsSinceEpoch(int.parse(a));
+
+    if (now.subtract(Duration(days: 1)).year == then.year &&
+        now.subtract(Duration(days: 1)).month == then.month &&
+        now.subtract(Duration(days: 1)).day == then.day) {
+      return 'Yesterday';
+    } else if (now.subtract(Duration(days: 2)).year == then.year &&
+        now.subtract(Duration(days: 2)).month == then.month &&
+        now.subtract(Duration(days: 2)).day == then.day) {
+      return '2 days ago';
+    } else {
+      return DateFormat('MMM dd, yyyy')
+          .format(DateTime.fromMillisecondsSinceEpoch(int.parse(a)));
+    }
   }
 }

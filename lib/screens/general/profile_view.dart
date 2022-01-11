@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
@@ -12,8 +13,7 @@ import 'package:mms_app/screens/widgets/ad_widget.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/notification_manager.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
-import 'package:share/share.dart';
-import 'dart:io';
+import 'package:share_plus/share_plus.dart';
 import '../../locator.dart';
 import 'edit_profile.dart';
 
@@ -112,6 +112,7 @@ class _ProfileViewState extends State<ProfileView> {
                                           fontWeight: FontWeight.w400,
                                           onTap: () {
                                             Navigator.pop(context);
+                                            AppCache.clear();
                                             locator<NavigationService>()
                                                 .removeUntil(LoginLayoutScreen);
                                           },
@@ -143,8 +144,8 @@ class _ProfileViewState extends State<ProfileView> {
                           return;
                         }
                         if (index == 2) {
-                          Share.share(
-                              'Download TriviaBlog app from the store. Download here ${Platform.isAndroid ? 'https://bit.ly/courtserverandroid' : 'https://bit.ly/courtserver'}',
+                          Share .share(
+                              'Download TriviaBlog app from the store. Download here ${PlatformCheck.isAndroid ? 'https://bit.ly/courtserverandroid' : 'https://bit.ly/courtserver'}',
                               subject: 'Invite Others');
                           return;
                         }

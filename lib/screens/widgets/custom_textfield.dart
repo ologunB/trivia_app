@@ -73,16 +73,21 @@ class CustomTextField extends StatelessWidget {
       maxLines: maxLines,
       maxLength: maxLength,
       textInputAction: textInputAction,
-      style: GoogleFonts.roboto(
-          fontWeight: FontWeight.w600,
-          fontSize: 15.sp,
-          letterSpacing: 0.4,
-          foreground: Paint()..shader = linearGradient()),
+      style: obscureText
+          ? GoogleFonts.inter(
+              fontWeight: FontWeight.w600,
+              fontSize: 15.sp,
+              letterSpacing: 0.4,
+              foreground: Paint()..shader = linearGradient())
+          : GoogleFonts.roboto(
+              fontWeight: FontWeight.w600,
+              fontSize: 15.sp,
+              letterSpacing: 0.4,
+              foreground: Paint()..shader = linearGradient()),
       readOnly: readOnly ?? false,
       decoration: InputDecoration(
         counterText: '',
-        contentPadding:
-            EdgeInsets.symmetric(horizontal: 15.h, vertical: 18.h),
+        contentPadding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 18.h),
         hintText: hintText,
         hintStyle: GoogleFonts.roboto(
             fontSize: 15.sp,

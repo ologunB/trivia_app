@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,7 +12,6 @@ import 'package:mms_app/screens/widgets/snackbar.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -79,7 +79,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(55.h),
                             child: imageFile != null
-                                ? Image.file(
+                                ? Image.memory(
                                     imageFile,
                                     height: 110.h,
                                     width: 110.h,
@@ -163,7 +163,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         Reference reference =
             FirebaseStorage.instance.ref().child("images/$uid");
 
-        UploadTask uploadTask = reference.putFile(imageFile);
+        UploadTask uploadTask = reference.putData(imageFile);
         TaskSnapshot downloadUrl = (await uploadTask.whenComplete(() => null));
         url = await downloadUrl.ref.getDownloadURL();
       }
@@ -204,7 +204,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   bool isLoading = false;
-  File imageFile;
+
+  Uint8List imageFile;
 
   Future<void> getImageGallery() async {
     Utils.offKeyboard();
@@ -212,7 +213,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (result != null) {
-      imageFile = File(result.path);
+      imageFile = await result.readAsBytes();
     } else {
       return;
     }

@@ -1,7 +1,11 @@
+//import 'dart:html';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
-import 'package:ntp/ntp.dart';
+
+import 'ntp-lib/ntp.dart';
 
 class Utils {
   static void offKeyboard() async {
@@ -26,7 +30,12 @@ class Utils {
   }
 
   static Future<DateTime> getInternetDate() async {
-    DateTime now = await NTP.now();
+    DateTime now;
+    if (kIsWeb) {
+      now = DateTime.now(); // TODO get internet date for web
+    } else {
+      now = await NTP.now();
+    }
     Logger().d(now);
     return now;
   }
@@ -36,6 +45,15 @@ class Utils {
       return 'Name cannot be empty';
     }
     return null;
+  }
+
+  static bool getISWeb() {
+    return false;
+    final userAgent= ''; //= window.navigator.userAgent.toString().toLowerCase();
+    if (userAgent.contains("iphone")) return false;
+    if (userAgent.contains("ipad")) return false;
+    if (userAgent.contains("android")) return false;
+    return true;
   }
 
   static String validateEmail(String value) {

@@ -65,7 +65,13 @@ class _AdWidgetState extends State<AdWidget> {
                 errorWidget:
                     (BuildContext context, String url, dynamic error) =>
                         InkWell(
-                  onTap: () => launch('https://google.com'),
+                  onTap: () {
+                    String _messageTitle = Uri.encodeComponent("Message TriviaBlog");
+                    String _messageBody = Uri.encodeComponent('I want to book an Ad...');
+                    String _url =
+                        "mailto:info@triviablog.ng?subject=$_messageTitle&body=$_messageBody";
+                    launch(_url);
+                  },
                   child: Container(
                     height: 80.h,
                     alignment: Alignment.center,

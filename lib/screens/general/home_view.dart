@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
@@ -36,6 +37,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
+    date = Utils.getPresentDate();
     listener1 = firestore
         .collection('Answers')
         .where('category', isEqualTo: date)
@@ -58,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
       event.docs.forEach((element) {
         questions.add(QuestionModel.fromJson(element.data()));
         controllers.add(TextEditingController());
-        //  firestore.collection('Questions').doc(element.id).delete();
+        //   firestore.collection('Questions').doc(element.id).delete();
       });
 
       questions.sort((b, a) => a.id.compareTo(b.id));
@@ -127,7 +129,7 @@ class _HomeViewState extends State<HomeView> {
                       padding: EdgeInsets.all(15.h),
                       child: Column(
                         children: [
-                          AdWidget(),
+                          Row(children: [Expanded(child: AdWidget())]),
                           SizedBox(height: 30.h),
                           Row(
                             children: [

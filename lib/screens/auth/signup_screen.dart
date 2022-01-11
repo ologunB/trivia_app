@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:keyboard_actions/external/platform_check/platform_check.dart';
 import 'package:logger/logger.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
@@ -16,7 +18,6 @@ import 'package:mms_app/core/utils/show_alert_dialog.dart';
 import 'package:mms_app/core/utils/show_exception_alert_dialog.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/custom_textfield.dart';
-import 'dart:io';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
@@ -41,7 +42,7 @@ class _SignupScreenState extends State<SignupScreen> {
   bool autoValidate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  bool showGoogleButton = Platform.isAndroid;
+  bool showGoogleButton = kIsWeb || PlatformCheck.isAndroid;
   final Shader linearGradient = LinearGradient(
     colors: <Color>[AppColors.primary, AppColors.secondary],
   ).createShader(
@@ -52,7 +53,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void initState() {
-    AppCache.clear();
     GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
     listener = FirebaseFirestore.instance
@@ -60,7 +60,7 @@ class _SignupScreenState extends State<SignupScreen> {
         .doc('Data')
         .snapshots()
         .listen((event) {
-      if (Platform.isAndroid) {
+      if (kIsWeb || PlatformCheck.isAndroid) {
         showGoogleButton = true;
         setState(() {});
         return;
@@ -178,7 +178,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           }
                         },
                       ),
-                       if (showGoogleButton)
+                      if (showGoogleButton)
                         Padding(
                           padding: EdgeInsets.only(top: 60.h),
                           child: Row(
@@ -232,8 +232,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         fontWeight: FontWeight.w900),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        navigateReplacement(
-                                            context, LoginScreen());
+                                        locator<NavigationService>().removeUntil(LoginLayoutScreen);
                                       })
                               ],
                             ),
@@ -406,7 +405,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   Utils.getDate = await Utils.getInternetDate();
                   if (Utils.getDate != null) {
                     locator<NavigationService>().removeUntil(MainView);
-                  }                });
+                  }
+                });
               } else {
                 setState(() {
                   isLoading = false;
@@ -416,7 +416,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 Utils.getDate = await Utils.getInternetDate();
                 if (Utils.getDate != null) {
                   locator<NavigationService>().removeUntil(MainView);
-                }              }
+                }
+              }
             }).catchError((e) {
               setState(() {
                 isLoading = false;
@@ -465,12 +466,17 @@ class _SignupScreenState extends State<SignupScreen> {
         );
       }
     } catch (e) {
+      Logger().d(e.message);
       setState(() {
         isLoading = false;
       });
+
+      String message = e.message == 'Exception raised from GoogleAuth.signIn()'
+          ? 'Complete Google Sign in'
+          : (e?.message ?? e.toString());
       showExceptionAlertDialog(
         context: buildContext,
-        exception: e.message ?? e.toString(),
+        exception: message,
         title: "Error",
       );
     }

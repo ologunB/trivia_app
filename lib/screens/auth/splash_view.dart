@@ -19,14 +19,14 @@ class _SplashViewState extends State<SplashView> {
     Future.delayed(Duration(seconds: 1), () async {
       if (AppCache.getUser == null) {
         if (AppCache.getIsFirst()) {
-          locator<NavigationService>().pushReplace(OnboardingScreen);
+          locator<NavigationService>().removeUntil(OnboardingScreen);
         } else {
-          locator<NavigationService>().pushReplace(LoginLayoutScreen);
+          locator<NavigationService>().removeUntil(LoginLayoutScreen);
         }
       } else {
         Utils.getDate = await Utils.getInternetDate();
         if (Utils.getDate != null) {
-          locator<NavigationService>().pushReplace(MainView);
+          locator<NavigationService>().removeUntil(MainView);
         } else {}
       }
     });

@@ -97,7 +97,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
           ),
           child: SafeArea(
               child: ListView(
-            padding: EdgeInsets.all(15.h),
+            padding: EdgeInsets.symmetric(horizontal:15.h),
             children: [
               AdWidget(),
               if (isWinner)

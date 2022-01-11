@@ -2,10 +2,10 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mms_app/core/models/login_response.dart';
 
-const String kUserBox = 'userBoxoioi';
-const String profileKey = 'profilejgv';
-const String isFirstKey = 'isTheFddibrbstfesgd';
-const String hasNotifiKey = 'hasNotifiKeyrer';
+const String kUserBox = 'userBoxoddioi';
+const String profileKey = 'profiddlejgv';
+const String isFirstKey = 'isTheFddibrbstddfesgd';
+const String hasNotifiKey = 'hasNotifiKeddyrer';
 
 class AppCache {
   static Future<void> init() async {
