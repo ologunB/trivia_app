@@ -1,16 +1,13 @@
-import 'dart:html';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mms_app/screens/auth/signup_screen.dart';
 import 'package:mms_app/screens/auth/splash_view.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:url_strategy/url_strategy.dart';
-
 import 'core/routes/router.dart';
 import 'core/storage/local_storage.dart';
 import 'core/utils/dialog_manager.dart';
@@ -52,59 +49,57 @@ void main() async {
 class TriviaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String url = window.location.href;
-
-    return Utils.getISWeb()
-        ? FlutterWebFrame(
-            maximumSize: Size(600.0, 812.0),
-            enabled: true,
-            backgroundColor: Color(0xffD0CBCB),
-            builder: (snapshot) {
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'TriviaBlog',
-                theme: ThemeData(
-                  textTheme:
-                      GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
-                  primaryColor: Colors.white,
-                  visualDensity: VisualDensity.adaptivePlatformDensity,
-                ),
-                home: SplashView(),
-                builder: (context, child) => Navigator(
-                  initialRoute: StartScreen,
-                  key: locator<DialogService>().dialogNavigationKey,
-                  onGenerateRoute: (RouteSettings settings) =>
-                      MaterialPageRoute<dynamic>(
-                    builder: (BuildContext context) =>
-                        DialogManager(child: child!),
+    return OverlaySupport.global(
+      child: Utils.getISWeb()
+          ? FlutterWebFrame(
+              maximumSize: Size(600.0, 812.0),
+              enabled: true,
+              backgroundColor: Color(0xffD0CBCB),
+              builder: (snapshot) {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: 'TriviaBlog',
+                  theme: ThemeData(
+                    textTheme:
+                        GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
+                    primaryColor: Colors.white,
+                    visualDensity: VisualDensity.adaptivePlatformDensity,
                   ),
-                ),
-                navigatorKey: locator<NavigationService>().navigationKey,
-                onGenerateRoute: generateRoute,
-              );
-            })
-        : MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'TriviaBlog',
-            theme: ThemeData(
-              textTheme:
-                  GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
-              primaryColor: Colors.white,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
-            //  home: SplashView(),
-
-            builder: (context, child) => Navigator(
-              initialRoute:StartScreen,
-              key: locator<DialogService>().dialogNavigationKey,
-              onGenerateRoute: (RouteSettings settings) =>
-                  MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => DialogManager(child: child!),
+                  home: SplashView(),
+                  builder: (context, child) => Navigator(
+                     key: locator<DialogService>().dialogNavigationKey,
+                    onGenerateRoute: (RouteSettings settings) =>
+                        MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) =>
+                          DialogManager(child: child!),
+                    ),
+                  ),
+                  navigatorKey: locator<NavigationService>().navigationKey,
+                  onGenerateRoute: generateRoute,
+                );
+              })
+          : MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'TriviaBlog',
+              theme: ThemeData(
+                textTheme:
+                    GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
+                primaryColor: Colors.white,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
               ),
+             home: SplashView(),
+
+              builder: (context, child) => Navigator(
+                 key: locator<DialogService>().dialogNavigationKey,
+                onGenerateRoute: (RouteSettings settings) =>
+                    MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) => DialogManager(child: child!),
+                ),
+              ),
+              navigatorKey: locator<NavigationService>().navigationKey,
+              onGenerateRoute: generateRoute,
             ),
-            navigatorKey: locator<NavigationService>().navigationKey,
-            onGenerateRoute: generateRoute,
-          );
+    );
   }
 }
 

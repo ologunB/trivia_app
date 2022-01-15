@@ -14,16 +14,16 @@ import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
-import 'package:mms_app/core/utils/navigator.dart';
-import 'package:mms_app/core/utils/show_alert_dialog.dart';
+ import 'package:mms_app/core/utils/show_alert_dialog.dart';
 import 'package:mms_app/core/utils/show_exception_alert_dialog.dart';
+import 'package:mms_app/screens/auth/login_screen.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/custom_textfield.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
 
-import '../../locator.dart';
+ import '../general/main_layout.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -225,8 +225,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         fontWeight: FontWeight.w900),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        locator<NavigationService>()
-                                            .removeUntil(LoginLayoutScreen);
+                                        removeUntil(context, LoginScreen());
                                       })
                               ],
                             ),
@@ -296,7 +295,7 @@ class _SignupScreenState extends State<SignupScreen> {
         });
         _firebaseAuth.signOut();
 
-        locator<NavigationService>().removeUntil(LoginLayoutScreen);
+        removeUntil(context, LoginScreen());
 
         showAlertDialog(
           context: context,
@@ -398,7 +397,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   AppCache.setUser(mData);
                   Utils.getDate = await Utils.getInternetDate();
                   if (Utils.getDate != null) {
-                    locator<NavigationService>().removeUntil(MainView);
+                    removeUntil(context, MainLayout());
                   }
                 });
               } else {
@@ -409,7 +408,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 AppCache.setUser(document.data());
                 Utils.getDate = await Utils.getInternetDate();
                 if (Utils.getDate != null) {
-                  locator<NavigationService>().removeUntil(MainView);
+                  removeUntil(context, MainLayout());
                 }
               }
             }).catchError((e) {

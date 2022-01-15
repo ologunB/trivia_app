@@ -22,7 +22,6 @@ dependencies:
   firebase_core: ^1.10.6
   cloud_firestore: ^3.1.6
   firebase_auth: ^3.3.5
-  another_flushbar: ^1.10.20
   google_sign_in: ^5.2.3
   firebase_messaging: ^11.2.4
   flutter_local_notifications: ^5.0.0+4
@@ -35,6 +34,7 @@ dependencies:
   universal_io: ^2.0.4
   keyboard_actions:
   flutter_web_frame: ^0.0.2
+  overlay_support: ^1.2.1
 
 dev_dependencies:
   flutter_test:

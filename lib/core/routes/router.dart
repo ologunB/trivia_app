@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:mms_app/screens/auth/login_screen.dart';
+ import 'package:mms_app/screens/auth/login_screen.dart';
 import 'package:mms_app/screens/auth/onboarding_view.dart';
 import 'package:mms_app/screens/auth/signup_screen.dart';
 import 'package:mms_app/screens/auth/splash_view.dart';
@@ -12,6 +11,7 @@ const String StartScreen = '/';
 const String LoginLayoutScreen = '/login';
 const String SignupLayoutScreen = '/signup';
 const String MainView = '/main';
+
 const String CongratsView = '/congrats';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -55,17 +55,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
 
     default:
-      return CupertinoPageRoute<dynamic>(
-        builder: (_) => Scaffold(
-          body: Center(
-            child: Text('No route defined for ${settings.name}'),
-          ),
-        ),
+      return _getPageRoute(
+        routeName: settings.name,
+        view: SplashView(),
+        args: settings.arguments,
       );
   }
 }
 
-PageRoute<dynamic> _getPageRoute({String? routeName, Widget? view, Object? args}) {
+PageRoute<dynamic> _getPageRoute(
+    {String? routeName, Widget? view, Object? args}) {
   return CupertinoPageRoute<dynamic>(
       settings: RouteSettings(name: routeName, arguments: args),
       builder: (_) => view!);
@@ -81,7 +80,19 @@ void navigateTo(BuildContext context, Widget view, {bool dialog = false}) {
   );
 }
 
-void navigateReplacement(context, Widget view, {bool dialog = false}) {
+Future<Object?> removeUntil(BuildContext context, Widget view,
+    {bool dialog = false}) {
+  return Navigator.pushAndRemoveUntil(
+    context,
+    CupertinoPageRoute(
+      builder: (_) => view,
+      fullscreenDialog: dialog,
+    ),
+    (Route<dynamic> route) => false,
+  );
+}
+
+void pushReplace(context, Widget view, {bool dialog = false}) {
   Navigator.pushReplacement(
     context,
     CupertinoPageRoute(

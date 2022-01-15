@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/core/routes/router.dart';
-import 'package:mms_app/core/utils/navigator.dart';
+ import 'package:mms_app/screens/auth/signup_screen.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 
-import '../../locator.dart';
+ import 'login_screen.dart';
 
 class OnboardingView extends StatefulWidget {
   @override
@@ -85,8 +85,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                                   'Sign up',
                                   height: 60.h,
                                   onTap: () {
-                                    locator<NavigationService>()
-                                        .removeUntil(SignupLayoutScreen);
+                                   removeUntil(context, SignupScreen());
                                   },
                                 ),
                                 SizedBox(height: 20.h),
@@ -94,8 +93,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                                   'Sign in',
                                   height: 60.h,
                                   onTap: () {
-                                    locator<NavigationService>()
-                                        .removeUntil(LoginLayoutScreen);
+
+                                  removeUntil(context, LoginScreen());
                                   },
                                 ),
                               ],

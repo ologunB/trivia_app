@@ -5,10 +5,11 @@ import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
-import 'package:mms_app/core/utils/navigator.dart';
+ import 'package:mms_app/screens/auth/login_screen.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
 
-import '../../locator.dart';
+ import '../general/main_layout.dart';
+import 'onboarding_view.dart';
 
 class SplashView extends StatefulWidget {
   @override
@@ -24,17 +25,17 @@ class _SplashViewState extends State<SplashView> {
       if (AppCache.getUser == null) {
         if (AppCache.getIsFirst()) {
           if (url.contains('onboard')) return;
-          locator<NavigationService>().removeUntil(OnboardingScreen);
+         removeUntil(context, OnboardingView());
         } else {
           if (url.contains('login') || url.contains('signup')) return;
 
-          locator<NavigationService>().removeUntil(LoginLayoutScreen);
+         removeUntil(context, LoginScreen());
         }
       } else {
         Utils.getDate = await Utils.getInternetDate();
         if (Utils.getDate != null) {
           if (url.contains('main')) return;
-          locator<NavigationService>().removeUntil(MainView);
+          removeUntil(context, MainLayout());
         } else {}
       }
     });

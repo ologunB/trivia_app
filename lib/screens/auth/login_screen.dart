@@ -13,17 +13,17 @@ import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
-import 'package:mms_app/core/utils/navigator.dart';
-import 'package:mms_app/core/utils/show_alert_dialog.dart';
+ import 'package:mms_app/core/utils/show_alert_dialog.dart';
 import 'package:mms_app/core/utils/show_exception_alert_dialog.dart';
 import 'package:mms_app/screens/auth/forgot_password_screen.dart';
+import 'package:mms_app/screens/auth/signup_screen.dart';
+import 'package:mms_app/screens/general/main_layout.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/custom_textfield.dart';
 import 'package:mms_app/screens/widgets/snackbar.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
-import '../../locator.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -240,8 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontWeight: FontWeight.w900),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        locator<NavigationService>()
-                                            .removeUntil(SignupLayoutScreen);
+                                      removeUntil(context, SignupScreen());
                                       })
                               ],
                             ),
@@ -319,7 +318,7 @@ class _LoginScreenState extends State<LoginScreen> {
           AppCache.setUser(document.data());
           Utils.getDate = await Utils.getInternetDate();
           if (Utils.getDate != null) {
-            locator<NavigationService>().removeUntil(MainView);
+          removeUntil(context, MainLayout());
           }
         }).catchError((e) {
           setState(() {
@@ -409,7 +408,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   AppCache.setUser(mData);
                   Utils.getDate = await Utils.getInternetDate();
                   if (Utils.getDate != null) {
-                    locator<NavigationService>().removeUntil(MainView);
+                    removeUntil(context, MainLayout());
                   }
                 });
               } else {
@@ -420,7 +419,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 AppCache.setUser(document.data());
                 Utils.getDate = await Utils.getInternetDate();
                 if (Utils.getDate != null) {
-                  locator<NavigationService>().removeUntil(MainView);
+                  removeUntil(context, MainLayout());
                 }
               }
             }).catchError((e) {

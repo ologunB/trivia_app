@@ -140,7 +140,7 @@ class _CongratsScreenState extends State<CongratsScreen> {
                       'Claim Prize',
                       height: 65.h,
                       onTap: () {
-                        navigateReplacement(context, PaymentScreen());
+                        pushReplace(context, PaymentScreen());
                       },
                     ),
                   ],

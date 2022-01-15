@@ -8,13 +8,12 @@ import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
-import 'package:mms_app/core/utils/navigator.dart';
-import 'package:mms_app/screens/widgets/ad_widget.dart';
+ import 'package:mms_app/screens/widgets/ad_widget.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/notification_manager.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../locator.dart';
+import '../auth/login_screen.dart';
 import 'edit_profile.dart';
 
 class ProfileView extends StatefulWidget {
@@ -113,8 +112,8 @@ class _ProfileViewState extends State<ProfileView> {
                                           onTap: () {
                                             Navigator.pop(context);
                                             AppCache.clear();
-                                            locator<NavigationService>()
-                                                .removeUntil(LoginLayoutScreen);
+                                            removeUntil(context, LoginScreen());
+
                                           },
                                         ),
                                       ),

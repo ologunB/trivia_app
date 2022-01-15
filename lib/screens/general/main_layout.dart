@@ -6,11 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
-import 'package:mms_app/core/utils/navigator.dart';
-import 'package:mms_app/screens/general/profile_view.dart';
+ import 'package:mms_app/screens/general/profile_view.dart';
 import 'package:mms_app/screens/widgets/floating_navbar.dart';
 import 'package:mms_app/screens/widgets/notification_manager.dart';
-import '../../locator.dart';
+ import '../auth/login_screen.dart';
 import 'history_view.dart';
 import 'home_view.dart';
 
@@ -35,7 +34,7 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   void initState() {
     if (uid == null) {
-      locator<NavigationService>().pushReplace(LoginLayoutScreen);
+      removeUntil(context, LoginScreen());
       return;
     }
 
