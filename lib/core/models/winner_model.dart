@@ -1,17 +1,17 @@
 class WinnerModel {
-  String name;
-  String amount;
-  String updatedAt;
-  String uid;
-  String id;
-  String createdAt;
-  int position;
-  String category;
-  String type;
-  bool isClaimed;
+  String? name;
+  String? amount;
+  String? updatedAt;
+  String? uid;
+  String? id;
+  String? createdAt;
+  int? position;
+  String? category;
+  String? type;
+  bool isClaimed = true;
 
   WinnerModel.fromJson(dynamic json) {
-   amount = json['amount'];
+    amount = json['amount'];
     name = json['name'];
     id = json['id'];
     uid = json['uid'];
@@ -20,7 +20,7 @@ class WinnerModel {
     updatedAt = json['updated_at'];
     category = json['category'];
     type = json['type'];
-    isClaimed = json['claimed'] ?? true;
+    isClaimed = json['claimed'];
   }
 /*
   Map<String, dynamic> toJson() {

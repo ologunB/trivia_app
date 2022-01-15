@@ -15,8 +15,6 @@ import 'history_view.dart';
 import 'home_view.dart';
 
 class MainLayout extends StatefulWidget {
-  const MainLayout({Key key}) : super(key: key);
-
   @override
   _MainLayoutState createState() => _MainLayoutState();
 }
@@ -30,9 +28,9 @@ class _MainLayoutState extends State<MainLayout> {
   }
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  String uid = AppCache?.getUser?.uid;
+  String? uid = AppCache.getUser?.uid;
 
-  StreamSubscription listner1, listner2;
+  StreamSubscription? listner1, listner2;
 
   @override
   void initState() {
@@ -53,6 +51,7 @@ class _MainLayoutState extends State<MainLayout> {
   Future<void> getToken() async {
     if (!kIsWeb) {
       await NotificationManager.initialize();
+
       await Firebase.initializeApp(
         options: FirebaseOptions(
           apiKey: "AIzaSyDBouuAWouF_M988RQH-IgUDWwKchbHI_I",
@@ -66,8 +65,10 @@ class _MainLayoutState extends State<MainLayout> {
       );
     }
     if (AppCache.getNotification()) {
-      String messagingToken = await NotificationManager.messagingToken();
+      String? messagingToken = await NotificationManager.messagingToken();
       print(messagingToken);
+      print(ModalRoute.of(context)?.settings.name  );
+
       await FirebaseFirestore.instance.collection('Tokens').doc(uid).set(
         {'token': messagingToken},
       );

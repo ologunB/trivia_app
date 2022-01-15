@@ -9,7 +9,7 @@ import '../../locator.dart';
 import 'dialog_service.dart';
 
 class DialogManager extends StatefulWidget {
-  const DialogManager({Key key, this.child}) : super(key: key);
+  const DialogManager({Key? key, required this.child}) : super(key: key);
 
   final Widget child;
 
@@ -62,7 +62,7 @@ class _DialogManagerState extends State<DialogManager> {
             ),
           GestureDetector(
             onTap: isFunction
-                ? () => request.onOkayClicked()
+                ? () => request.onOkayClicked!()
                 : () => _dialogService
                     .dialogComplete(DialogResponse(confirmed: true)),
             child: Container(

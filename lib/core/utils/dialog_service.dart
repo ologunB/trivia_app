@@ -6,8 +6,8 @@ import 'package:mms_app/core/models/dialog_model.dart';
 class DialogService {
   final GlobalKey<NavigatorState> _dialogNavigationKey =
       GlobalKey<NavigatorState>();
-  Function(DialogRequest) _showDialogListener;
-  Completer<DialogResponse> _dialogCompleter;
+  late Function(DialogRequest) _showDialogListener;
+  late Completer<DialogResponse> _dialogCompleter;
 
   GlobalKey<NavigatorState> get dialogNavigationKey => _dialogNavigationKey;
 
@@ -18,10 +18,10 @@ class DialogService {
 
   /// Calls the dialog listener and returns a Future that will wait for dialogComplete.
   Future<DialogResponse> showDialog({
-    String title,
-    String description,
+    required String title,
+    required String description,
     String buttonTitle = 'Ok',
-    Function onOkayClicked,
+    Function? onOkayClicked,
   }) {
     _dialogCompleter = Completer<DialogResponse>();
     _showDialogListener(DialogRequest(
@@ -35,8 +35,8 @@ class DialogService {
 
   /// Shows a confirmation dialog
   Future<DialogResponse> showConfirmationDialog(
-      {String title,
-      String description,
+      {required String title,
+      required String description,
       String confirmationTitle = 'Ok',
       String cancelTitle = 'Cancel'}) {
     _dialogCompleter = Completer<DialogResponse>();
@@ -50,8 +50,7 @@ class DialogService {
 
   /// Completes the _dialogCompleter to resume the Future's execution call
   void dialogComplete(DialogResponse response) {
-    _dialogNavigationKey.currentState.pop();
+    _dialogNavigationKey.currentState?.pop();
     _dialogCompleter.complete(response);
-    _dialogCompleter = null;
   }
 }

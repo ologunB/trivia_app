@@ -16,8 +16,8 @@ class AdWidget extends StatefulWidget {
 }
 
 class _AdWidgetState extends State<AdWidget> {
-  StreamSubscription listener;
-  AdModel adModel;
+  StreamSubscription? listener;
+  AdModel? adModel;
 
   @override
   void initState() {
@@ -49,11 +49,11 @@ class _AdWidgetState extends State<AdWidget> {
     return adModel == null
         ? SizedBox()
         : InkWell(
-            onTap: () => launch(adModel.url),
+            onTap: () => launch(adModel?.url ?? ''),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.h),
               child: CachedNetworkImage(
-                imageUrl: adModel.image ?? 'm',
+                imageUrl: adModel?.image ?? 'm',
                 height: 80.h,
                 fit: BoxFit.fitWidth,
                 placeholder: (_, __) => Image.asset(

@@ -1,3 +1,4 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
 
 import 'package:flutter/foundation.dart';
@@ -12,21 +13,21 @@ class Utils {
     await SystemChannels.textInput.invokeMethod<dynamic>('TextInput.hide');
   }
 
-  static String isValidPassword(String value) {
-    value = value.trim();
-    if (value.isEmpty) {
+  static String? isValidPassword(String? value) {
+    String val  = value?.trim() ?? '';
+    if (val.isEmpty) {
       return 'Password cannot be empty';
-    } else if (value.length < 5) {
+    } else if (val.length < 5) {
       return 'Password not long enough';
     } else {
       return null;
     }
   }
 
-  static DateTime getDate;
+  static DateTime? getDate;
 
   static String getPresentDate() {
-    return DateFormat('dd-MM-yyyy').format(getDate);
+    return DateFormat('dd-MM-yyyy').format(getDate!);
   }
 
   static Future<DateTime> getInternetDate() async {
@@ -40,8 +41,8 @@ class Utils {
     return now;
   }
 
-  static String isValidName(String value) {
-    if (value.isEmpty) {
+  static String? isValidName(String? value) {
+    if (value?.isEmpty ?? true) {
       return 'Name cannot be empty';
     }
     return null;
@@ -55,13 +56,13 @@ class Utils {
     return true;
   }
 
-  static String validateEmail(String value) {
-    value = value.trim();
+  static String? validateEmail(String? value) {
+    String val = value?.trim() ?? '';
     final RegExp regex = RegExp(
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
-    if (value.isEmpty) {
+    if (val.isEmpty) {
       return 'Email cannot be empty';
-    } else if (!regex.hasMatch(value)) {
+    } else if (!regex.hasMatch(val)) {
       return 'Enter valid email';
     } else {
       return null;

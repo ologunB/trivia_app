@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:keyboard_actions/external/platform_check/platform_check.dart';
@@ -26,8 +26,6 @@ import 'package:mms_app/screens/widgets/utils.dart';
 import '../../locator.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key key}) : super(key: key);
-
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -48,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
   );
 
-  StreamSubscription listener;
+  StreamSubscription? listener;
 
   @override
   void initState() {
@@ -64,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {});
         return;
       }
-      showGoogleButton = event.data()['show_google'];
+      showGoogleButton = event.data()!['show_google'];
       setState(() {});
     });
     super.initState();
@@ -87,11 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: AppColors.secondary,
         extendBodyBehindAppBar: true,
         key: scaffoldKey,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(color: Colors.white),
-        ),
+
         body: Form(
           key: formKey,
           autovalidateMode: autoValidate
@@ -187,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           autoValidate = true;
                           setState(() {});
-                          if (formKey.currentState.validate()) {
+                          if (formKey.currentState?.validate() ?? true) {
                             signIn();
                           }
                         },
@@ -292,10 +286,10 @@ class _LoginScreenState extends State<LoginScreen> {
       UserCredential value = await _firebaseAuth.signInWithEmailAndPassword(
           email: email.text, password: password.text);
 
-      User user = value.user;
+      User? user = value.user;
 
       if (value.user != null) {
-        if (!value.user.emailVerified) {
+        if (!(value.user?.emailVerified ?? false)) {
           setState(() {
             isLoading = false;
           });
@@ -312,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
         FirebaseFirestore.instance
             .collection('Users')
-            .doc(user.uid)
+            .doc(user?.uid)
             .get()
             .then((document) async {
           setState(() {
@@ -365,7 +359,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       await googleSignIn.signOut();
 
-      final GoogleSignInAccount googleSignInAccount =
+      final GoogleSignInAccount? googleSignInAccount =
           await googleSignIn.signIn();
       print(googleSignInAccount);
 
@@ -385,7 +379,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (value.user != null) {
             FirebaseFirestore.instance
                 .collection('Users')
-                .doc(value.user.uid)
+                .doc(value.user?.uid)
                 .get()
                 .then((document) async {
               if (!document.exists) {
@@ -396,7 +390,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mData.putIfAbsent("status", () => 'active');
                 mData.putIfAbsent("phone", () => null);
                 mData.putIfAbsent("image", () => googleSignInAccount.photoUrl);
-                mData.putIfAbsent("uid", () => value.user.uid);
+                mData.putIfAbsent("uid", () => value.user?.uid);
                 mData.putIfAbsent("type", () => "user");
                 mData.putIfAbsent(
                     "created_at", () => DateTime.now().millisecondsSinceEpoch);
@@ -405,7 +399,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 FirebaseFirestore.instance
                     .collection('Users')
-                    .doc(value.user.uid)
+                    .doc(value.user?.uid)
                     .set(mData)
                     .then((value) async {
                   setState(() {
@@ -463,7 +457,7 @@ class _LoginScreenState extends State<LoginScreen> {
           });
           showExceptionAlertDialog(
             context: buildContext,
-            exception: e.message ?? e.toString(),
+            exception: e.toString(),
             title: "Error",
           );
         }
@@ -477,16 +471,38 @@ class _LoginScreenState extends State<LoginScreen> {
           title: "Error",
         );
       }
+    } on PlatformException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      String? message = e.message == 'Exception raised from GoogleAuth.signIn()'
+          ? 'Complete Google Sign in'
+          : e.message;
+      showExceptionAlertDialog(
+        context: buildContext,
+        exception: message,
+        title: "Error",
+      );
+    } on FirebaseException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      String? message = e.message == 'Exception raised from GoogleAuth.signIn()'
+          ? 'Complete Google Sign in'
+          : e.message;
+      showExceptionAlertDialog(
+        context: buildContext,
+        exception: message,
+        title: "Error",
+      );
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      String message = e.message == 'Exception raised from GoogleAuth.signIn()'
-          ? 'Complete Google Sign in'
-          : (e?.message ?? e.toString());
+
       showExceptionAlertDialog(
         context: buildContext,
-        exception: message,
+        exception: e.toString(),
         title: "Error",
       );
     }

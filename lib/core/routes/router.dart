@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mms_app/screens/auth/login_screen.dart';
 import 'package:mms_app/screens/auth/onboarding_view.dart';
 import 'package:mms_app/screens/auth/signup_screen.dart';
+import 'package:mms_app/screens/auth/splash_view.dart';
 import 'package:mms_app/screens/general/congrats_screen.dart';
 import 'package:mms_app/screens/general/main_layout.dart';
 
 const String OnboardingScreen = '/onboard';
+const String StartScreen = '/';
 const String LoginLayoutScreen = '/login';
 const String SignupLayoutScreen = '/signup';
 const String MainView = '/main';
@@ -21,6 +23,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         args: settings.arguments,
       );
 
+    case StartScreen:
+      return _getPageRoute(
+        routeName: settings.name,
+        view: SplashView(),
+        args: settings.arguments,
+      );
     case LoginLayoutScreen:
       return _getPageRoute(
         routeName: settings.name,
@@ -57,10 +65,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   }
 }
 
-PageRoute<dynamic> _getPageRoute({String routeName, Widget view, Object args}) {
+PageRoute<dynamic> _getPageRoute({String? routeName, Widget? view, Object? args}) {
   return CupertinoPageRoute<dynamic>(
       settings: RouteSettings(name: routeName, arguments: args),
-      builder: (_) => view);
+      builder: (_) => view!);
 }
 
 void navigateTo(BuildContext context, Widget view, {bool dialog = false}) {

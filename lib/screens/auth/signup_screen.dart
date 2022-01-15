@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:keyboard_actions/external/platform_check/platform_check.dart';
@@ -23,11 +24,8 @@ import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
 
 import '../../locator.dart';
-import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key key}) : super(key: key);
-
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
@@ -49,7 +47,7 @@ class _SignupScreenState extends State<SignupScreen> {
     Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
   );
 
-  StreamSubscription listener;
+  StreamSubscription? listener;
 
   @override
   void initState() {
@@ -65,7 +63,7 @@ class _SignupScreenState extends State<SignupScreen> {
         setState(() {});
         return;
       }
-      showGoogleButton = event.data()['show_google'];
+      showGoogleButton = event.data()!['show_google'];
       setState(() {});
     });
     super.initState();
@@ -88,11 +86,6 @@ class _SignupScreenState extends State<SignupScreen> {
         backgroundColor: AppColors.secondary,
         extendBodyBehindAppBar: true,
         key: scaffoldKey,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(color: Colors.white),
-        ),
         body: Form(
           key: formKey,
           autovalidateMode: autoValidate
@@ -173,7 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         onTap: () {
                           autoValidate = true;
                           setState(() {});
-                          if (formKey.currentState.validate()) {
+                          if (formKey.currentState?.validate() ?? true) {
                             signup(context);
                           }
                         },
@@ -232,7 +225,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                         fontWeight: FontWeight.w900),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        locator<NavigationService>().removeUntil(LoginLayoutScreen);
+                                        locator<NavigationService>()
+                                            .removeUntil(LoginLayoutScreen);
                                       })
                               ],
                             ),
@@ -274,7 +268,7 @@ class _SignupScreenState extends State<SignupScreen> {
     try {
       UserCredential value = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email.text, password: password.text);
-      User user = value.user;
+      User? user = value.user;
 
       Logger().d(user?.uid);
       if (user != null) {
@@ -284,7 +278,7 @@ class _SignupScreenState extends State<SignupScreen> {
         mData.putIfAbsent("email", () => email.text);
         mData.putIfAbsent("status", () => 'active');
         mData.putIfAbsent("phone", () => null);
-        mData.putIfAbsent("uid", () => value.user.uid);
+        mData.putIfAbsent("uid", () => value.user?.uid);
         mData.putIfAbsent("type", () => "user");
         mData.putIfAbsent("image", () => null);
         mData.putIfAbsent(
@@ -354,7 +348,7 @@ class _SignupScreenState extends State<SignupScreen> {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       await googleSignIn.signOut();
 
-      final GoogleSignInAccount googleSignInAccount =
+      final GoogleSignInAccount? googleSignInAccount =
           await googleSignIn.signIn();
       print(googleSignInAccount);
 
@@ -374,7 +368,7 @@ class _SignupScreenState extends State<SignupScreen> {
           if (value.user != null) {
             FirebaseFirestore.instance
                 .collection('Users')
-                .doc(value.user.uid)
+                .doc(value.user?.uid)
                 .get()
                 .then((document) async {
               if (!document.exists) {
@@ -385,7 +379,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 mData.putIfAbsent("status", () => 'active');
                 mData.putIfAbsent("phone", () => null);
                 mData.putIfAbsent("image", () => googleSignInAccount.photoUrl);
-                mData.putIfAbsent("uid", () => value.user.uid);
+                mData.putIfAbsent("uid", () => value.user?.uid);
                 mData.putIfAbsent("type", () => "user");
                 mData.putIfAbsent(
                     "created_at", () => DateTime.now().millisecondsSinceEpoch);
@@ -394,7 +388,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 FirebaseFirestore.instance
                     .collection('Users')
-                    .doc(value.user.uid)
+                    .doc(value.user?.uid)
                     .set(mData)
                     .then((value) async {
                   setState(() {
@@ -451,7 +445,7 @@ class _SignupScreenState extends State<SignupScreen> {
           });
           showExceptionAlertDialog(
             context: buildContext,
-            exception: e.message ?? e.toString(),
+            exception: e.toString(),
             title: "Error",
           );
         }
@@ -465,18 +459,38 @@ class _SignupScreenState extends State<SignupScreen> {
           title: "Error",
         );
       }
-    } catch (e) {
-      Logger().d(e.message);
+    } on PlatformException catch (e) {
       setState(() {
         isLoading = false;
       });
-
-      String message = e.message == 'Exception raised from GoogleAuth.signIn()'
+      String? message = e.message == 'Exception raised from GoogleAuth.signIn()'
           ? 'Complete Google Sign in'
-          : (e?.message ?? e.toString());
+          : e.message;
       showExceptionAlertDialog(
         context: buildContext,
         exception: message,
+        title: "Error",
+      );
+    } on FirebaseException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      String? message = e.message == 'Exception raised from GoogleAuth.signIn()'
+          ? 'Complete Google Sign in'
+          : e.message;
+      showExceptionAlertDialog(
+        context: buildContext,
+        exception: message,
+        title: "Error",
+      );
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print(e);
+      showExceptionAlertDialog(
+        context: buildContext,
+        exception: e.toString(),
         title: "Error",
       );
     }

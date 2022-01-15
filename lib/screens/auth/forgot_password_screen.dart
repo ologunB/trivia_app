@@ -11,7 +11,6 @@ import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({Key key}) : super(key: key);
 
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
@@ -170,7 +169,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       setState(() {
         isLoading = false;
       });
-      showSnackBar(context, 'Error', e?.message ?? e.toString());
+      showSnackBar(context, 'Error',   e.toString());
     }
   }
 }

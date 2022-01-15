@@ -3,13 +3,13 @@ import 'package:flutter/services.dart';
  import 'package:mms_app/screens/widgets/snackbar.dart';
 
 Future<void> showExceptionAlertDialog({
-  @required BuildContext context,
-  @required String title,
+  required BuildContext context,
+  required String title,
   @required dynamic exception,
 }) async =>
-    showSnackBar(context, title, _message(exception));
+    showSnackBar(context, title, _message(exception)!);
 
-String _message(dynamic exception) {
+String? _message(dynamic exception) {
   if (exception is PlatformException) {
     if (exception.message == 'FIRFirestoreErrorDomain') {
       if (exception.code == 'Code 7') {

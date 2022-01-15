@@ -20,19 +20,19 @@ import 'package:mms_app/screens/widgets/utils.dart';
 class HistoryDetailsView extends StatefulWidget {
   final String category;
 
-  const HistoryDetailsView({Key key, this.category}) : super(key: key);
+  const HistoryDetailsView({Key? key, this.category = ''}) : super(key: key);
 
   @override
   _HistoryDetailsViewState createState() => _HistoryDetailsViewState();
 }
 
 class _HistoryDetailsViewState extends State<HistoryDetailsView> {
-  StreamSubscription listener1, listener2;
+  StreamSubscription? listener1, listener2;
 
   List<QuestionModel> questions = [];
   List<WinnerModel> winners = [];
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String uid = AppCache.getUser.uid;
+  String? uid = AppCache.getUser?.uid;
 
   @override
   void initState() {
@@ -96,45 +96,74 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                 image: AssetImage('images/authbg.png'), fit: BoxFit.cover),
           ),
           child: SafeArea(
-              child: ListView(
+              child: ScrollConfiguration(
+                behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                  PointerDeviceKind.touch,
+                  PointerDeviceKind.mouse,
+                }),
+                child: ListView(
             padding: EdgeInsets.symmetric(horizontal:15.h),
             children: [
-              AdWidget(),
-              if (isWinner)
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Image.asset('images/prize.png', height: 250.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '₦ ',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.inter(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 50.sp,
-                              foreground: Paint()
-                                ..shader = LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: <Color>[
-                                    Color(0xffE67E0A),
-                                    Color(0xffF2B136),
-                                  ],
-                                ).createShader(
-                                  Rect.fromLTWH(1.0, 0.0, 50.0, 10.0),
-                                )),
-                        ),
-                        Text(
-                          winners
-                              .firstWhere((element) => element.uid == uid)
-                              .amount
-                              .toAmount(),
+                AdWidget(),
+                if (isWinner)
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset('images/prize.png', height: 250.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '₦ ',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 50.sp,
+                                foreground: Paint()
+                                  ..shader = LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: <Color>[
+                                      Color(0xffE67E0A),
+                                      Color(0xffF2B136),
+                                    ],
+                                  ).createShader(
+                                    Rect.fromLTWH(1.0, 0.0, 50.0, 10.0),
+                                  )),
+                          ),
+                          Text(
+                            winners
+                                .firstWhere((element) => element.uid == uid)
+                                .amount
+                                ?.toAmount(),
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.rajdhani(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 50.sp,
+                                foreground: Paint()
+                                  ..shader = LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: <Color>[
+                                      Color(0xffE67E0A),
+                                      Color(0xffF2B136),
+                                      Color(0xffFFE865),
+                                      Color(0xffFF9C65),
+                                    ],
+                                  ).createShader(
+                                    Rect.fromLTWH(1.0, 0.0, 250, 50.0),
+                                  )),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 18.h),
+                        child: Text(
+                          '\n' + winners.firstWhere((element) => element.uid == uid).type!,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.rajdhani(
                               fontWeight: FontWeight.w700,
-                              fontSize: 50.sp,
+                              fontSize: 40.sp,
                               foreground: Paint()
                                 ..shader = LinearGradient(
                                   begin: Alignment.centerLeft,
@@ -149,152 +178,126 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                                   Rect.fromLTWH(1.0, 0.0, 250, 50.0),
                                 )),
                         ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 18.h),
-                      child: Text(
-                        '\n' +
-                            winners
-                                .firstWhere((element) => element.uid == uid)
-                                .type,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.rajdhani(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 40.sp,
-                            foreground: Paint()
-                              ..shader = LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: <Color>[
-                                  Color(0xffE67E0A),
-                                  Color(0xffF2B136),
-                                  Color(0xffFFE865),
-                                  Color(0xffFF9C65),
-                                ],
-                              ).createShader(
-                                Rect.fromLTWH(1.0, 0.0, 250, 50.0),
-                              )),
                       ),
-                    ),
-                  ],
-                ),
-              SizedBox(height: 20.h),
-              winners.isEmpty
-                  ? regularText(
-                      'No winners on ${DateFormat('MMM dd, yyyy').format(
-                        DateTime(
-                          int.parse(widget.category.split('-')[2]),
-                          int.parse(widget.category.split('-')[1]),
-                          int.parse(widget.category.split('-')[0]),
-                        ),
-                      )}',
-                      other: true,
-                      fontSize: 22.sp,
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w700,
-                    )
-                  : Row(
-                      children: [
-                        Image.asset(
-                          'images/winner1.png',
-                          height: 60.h,
-                          fit: BoxFit.contain,
-                        ),
-                        Spacer(),
-                        Image.asset(
-                          'images/winner2.png',
-                          height: 100.h,
-                          fit: BoxFit.contain,
-                        ),
-                      ],
-                    ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 20.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.h),
-                  color: AppColors.white,
-                ),
-                child: ListView.separated(
-                  separatorBuilder: (context, index) {
-                    return Container(height: 1.h, color: AppColors.primary);
-                  },
-                  itemCount: winners.length,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  physics: ClampingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    WinnerModel model = winners[index];
-                    return Container(
-                      padding: EdgeInsets.all(14.h),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(index == 0 ? 8.h : 0),
-                            topRight: Radius.circular(index == 0 ? 8.h : 0),
-                            bottomRight: Radius.circular(
-                                index == winners.length - 1 ? 8.h : 0),
-                            bottomLeft: Radius.circular(
-                                index == winners.length - 1 ? 8.h : 0),
+                    ],
+                  ),
+                SizedBox(height: 20.h),
+                winners.isEmpty
+                    ? regularText(
+                        'No winners on ${DateFormat('MMM dd, yyyy').format(
+                          DateTime(
+                            int.parse(widget.category.split('-')[2]),
+                            int.parse(widget.category.split('-')[1]),
+                            int.parse(widget.category.split('-')[0]),
                           ),
-                          gradient: model.uid == uid
-                              ? LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  stops: [0, 2],
-                                  colors: <Color>[
-                                    Color(0xffE86FCE),
-                                    Color(0xff432FBF),
-                                  ],
-                                )
-                              : null),
-                      child: Row(
+                        )}',
+                        other: true,
+                        fontSize: 22.sp,
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w700,
+                      )
+                    : Row(
                         children: [
-                          Image.asset('images/award.png', width: 27.h),
-                          SizedBox(width: 12.h),
-                          Expanded(
-                            child: regularText(
-                              model.name,
-                              other: true,
-                              fontSize: 22.sp,
-                              color: model.uid == uid
-                                  ? AppColors.white
-                                  : Color(0xff6B0B7B),
-                              fontWeight: FontWeight.w700,
-                            ),
+                          Image.asset(
+                            'images/winner1.png',
+                            height: 60.h,
+                            fit: BoxFit.contain,
                           ),
-                          SizedBox(width: 12.h),
-                          if (model.uid == uid && !model.isClaimed)
-                            InkWell(
-                                onTap: () {
-                                  navigateTo(context, PaymentScreen());
-                                },
-                                child: Image.asset('images/claim.png',
-                                    width: 65.h)),
+                          Spacer(),
+                          Image.asset(
+                            'images/winner2.png',
+                            height: 100.h,
+                            fit: BoxFit.contain,
+                          ),
                         ],
                       ),
-                    );
-                  },
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.h),
+                    color: AppColors.white,
+                  ),
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) {
+                      return Container(height: 1.h, color: AppColors.primary);
+                    },
+                    itemCount: winners.length,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    physics: ClampingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      WinnerModel model = winners[index];
+                      return Container(
+                        padding: EdgeInsets.all(14.h),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(index == 0 ? 8.h : 0),
+                              topRight: Radius.circular(index == 0 ? 8.h : 0),
+                              bottomRight: Radius.circular(
+                                  index == winners.length - 1 ? 8.h : 0),
+                              bottomLeft: Radius.circular(
+                                  index == winners.length - 1 ? 8.h : 0),
+                            ),
+                            gradient: model.uid == uid
+                                ? LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    stops: [0, 2],
+                                    colors: <Color>[
+                                      Color(0xffE86FCE),
+                                      Color(0xff432FBF),
+                                    ],
+                                  )
+                                : null),
+                        child: Row(
+                          children: [
+                            Image.asset('images/award.png', width: 27.h),
+                            SizedBox(width: 12.h),
+                            Expanded(
+                              child: regularText(
+                                model.name,
+                                other: true,
+                                fontSize: 22.sp,
+                                color: model.uid == uid
+                                    ? AppColors.white
+                                    : Color(0xff6B0B7B),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            SizedBox(width: 12.h),
+                            if (model.uid == uid && !model.isClaimed)
+                              InkWell(
+                                  onTap: () {
+                                    navigateTo(context, PaymentScreen());
+                                  },
+                                  child: Image.asset('images/claim.png',
+                                      width: 65.h)),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-              regularText(
-                'Answers',
-                other: true,
-                fontSize: 25.sp,
-                color: AppColors.white,
-                fontWeight: FontWeight.w700,
-              ),
-              SizedBox(height: 10.h),
-              ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  itemCount: questions.length,
-                  physics: ClampingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return item(questions[index]);
-                  }),
-              SizedBox(height: 90.h),
+                regularText(
+                  'Answers',
+                  other: true,
+                  fontSize: 25.sp,
+                  color: AppColors.white,
+                  fontWeight: FontWeight.w700,
+                ),
+                SizedBox(height: 10.h),
+                ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    itemCount: questions.length,
+                    physics: ClampingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return item(questions[index]);
+                    }),
+                SizedBox(height: 90.h),
             ],
-          )),
+          ),
+              )),
         ),
       ),
     );
@@ -320,14 +323,14 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           regularText(
-            model?.story,
+            model.story,
             fontSize: 12.sp,
             color: AppColors.white,
             fontWeight: FontWeight.w300,
           ),
           SizedBox(height: 10.h),
           regularText(
-            model?.question,
+            model.question,
             fontSize: 12.sp,
             color: AppColors.white,
             fontWeight: FontWeight.w700,
@@ -335,7 +338,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
           SizedBox(height: 12.h),
           AnswerTextField(
             readOnly: true,
-            controller: TextEditingController(text: model?.answer),
+            controller: TextEditingController(text: model.answer),
           )
         ],
       ),

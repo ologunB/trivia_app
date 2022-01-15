@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
@@ -16,16 +18,22 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
+    String url = window.location.href;
+
     Future.delayed(Duration(seconds: 1), () async {
       if (AppCache.getUser == null) {
         if (AppCache.getIsFirst()) {
+          if (url.contains('onboard')) return;
           locator<NavigationService>().removeUntil(OnboardingScreen);
         } else {
+          if (url.contains('login') || url.contains('signup')) return;
+
           locator<NavigationService>().removeUntil(LoginLayoutScreen);
         }
       } else {
         Utils.getDate = await Utils.getInternetDate();
         if (Utils.getDate != null) {
+          if (url.contains('main')) return;
           locator<NavigationService>().removeUntil(MainView);
         } else {}
       }

@@ -1,9 +1,12 @@
+import 'dart:html';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mms_app/screens/auth/signup_screen.dart';
 import 'package:mms_app/screens/auth/splash_view.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -28,6 +31,7 @@ void main() async {
         authDomain: "triviablog-78fd9.firebaseapp.com",
         storageBucket: "triviablog-78fd9.appspot.com",
         measurementId: "G-5GY6LQ5HRH",
+        databaseURL: 'https://triviablog-78fd9.firebaseio.com',
       ),
     );
   } else {
@@ -48,6 +52,8 @@ void main() async {
 class TriviaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String url = window.location.href;
+
     return Utils.getISWeb()
         ? FlutterWebFrame(
             maximumSize: Size(600.0, 812.0),
@@ -64,12 +70,13 @@ class TriviaApp extends StatelessWidget {
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                 ),
                 home: SplashView(),
-                builder: (BuildContext context, Widget child) => Navigator(
+                builder: (context, child) => Navigator(
+                  initialRoute: StartScreen,
                   key: locator<DialogService>().dialogNavigationKey,
                   onGenerateRoute: (RouteSettings settings) =>
                       MaterialPageRoute<dynamic>(
                     builder: (BuildContext context) =>
-                        DialogManager(child: child),
+                        DialogManager(child: child!),
                   ),
                 ),
                 navigatorKey: locator<NavigationService>().navigationKey,
@@ -85,12 +92,14 @@ class TriviaApp extends StatelessWidget {
               primaryColor: Colors.white,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home: SplashView(),
-            builder: (BuildContext context, Widget child) => Navigator(
+            //  home: SplashView(),
+
+            builder: (context, child) => Navigator(
+              initialRoute:StartScreen,
               key: locator<DialogService>().dialogNavigationKey,
               onGenerateRoute: (RouteSettings settings) =>
                   MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => DialogManager(child: child),
+                builder: (BuildContext context) => DialogManager(child: child!),
               ),
             ),
             navigatorKey: locator<NavigationService>().navigationKey,
@@ -98,3 +107,13 @@ class TriviaApp extends StatelessWidget {
           );
   }
 }
+
+/*url.contains('onboard')
+                  ? OnboardingScreen
+                  : url.contains('signup')
+                      ? SignupLayoutScreen
+                      : url.contains('login')
+                          ? LoginLayoutScreen
+                          : url.contains('main')
+                              ? MainView
+                              : StartScreen*/

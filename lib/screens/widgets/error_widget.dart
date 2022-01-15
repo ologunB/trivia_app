@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
-import 'package:mms_app/screens/widgets/text_widgets.dart';
+ import 'package:mms_app/screens/widgets/text_widgets.dart';
 
 class ErrorOccurredWidget extends StatelessWidget {
-  const ErrorOccurredWidget({Key key, this.error = 'An error occurred'})
+  const ErrorOccurredWidget({Key? key, this.error = 'An error occurred'})
       : super(key: key);
 
   final String error;

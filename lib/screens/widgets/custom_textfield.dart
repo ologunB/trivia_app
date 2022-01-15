@@ -4,24 +4,24 @@ import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 
 class CustomTextField extends StatelessWidget {
-  final Widget prefixIcon;
-  final Widget suffixIcon;
-  final Function(String) validator;
-  final Function(String) onSaved;
-  final String hintText;
-  final TextInputType textInputType;
-  final TextInputAction textInputAction;
-  final TextAlign textAlign;
-  final Function(String) onChanged;
-  final Function() onTap;
-  final TextEditingController controller;
-  final int maxLines;
-  final int maxLength;
-  final bool readOnly;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final String? Function(String?)? validator;
+  final Function(String)? onSaved;
+  final String? hintText;
+  final TextInputType? textInputType;
+  final TextInputAction? textInputAction;
+  final TextAlign? textAlign;
+  final Function(String)? onChanged;
+  final Function()? onTap;
+  final TextEditingController? controller;
+  final int? maxLines;
+  final int? maxLength;
+  final bool? readOnly;
   final bool obscureText;
   final bool autoFocus;
-  final FocusNode focusNode;
-  final String obscuringCharacter;
+  final FocusNode? focusNode;
+  final String? obscuringCharacter;
 
   CustomTextField({
     this.prefixIcon,
@@ -125,7 +125,6 @@ class CustomTextField extends StatelessWidget {
       textAlign: textAlign ?? TextAlign.start,
       keyboardType: textInputType,
       onFieldSubmitted: onSaved,
-      onSaved: onSaved,
       validator: validator,
       onChanged: onChanged,
     );

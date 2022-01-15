@@ -9,7 +9,7 @@ import 'package:mms_app/screens/widgets/buttons.dart';
 class CongratsScreen extends StatefulWidget {
   final dynamic data;
 
-  const CongratsScreen({Key key, this.data}) : super(key: key);
+  const CongratsScreen({Key? key, this.data}) : super(key: key);
 
   @override
   _CongratsScreenState createState() => _CongratsScreenState();
@@ -86,7 +86,7 @@ class _CongratsScreenState extends State<CongratsScreen> {
                                         )),
                                 ),
                                 Text(
-                                  widget?.data['amount'] ?? '2,000',
+                                  widget.data['amount'] ?? '2,000',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.rajdhani(
                                       fontWeight: FontWeight.w700,
@@ -110,7 +110,7 @@ class _CongratsScreenState extends State<CongratsScreen> {
                             Padding(
                               padding: EdgeInsets.only(top: 30.h),
                               child: Text(
-                                '\n' + widget?.data['win_type'] ?? 'cash',
+                                '\n' + widget.data['win_type'] ,
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.rajdhani(
                                     fontWeight: FontWeight.w700,

@@ -7,10 +7,10 @@ import 'text_widgets.dart';
 
 Widget buttonWithBorder(
   String text, {
-  Function onTap,
-  double fontSize,
-  double height,
-  double width,
+  Function()? onTap,
+  double? fontSize,
+  double ?height,
+  double? width,
   bool busy = false,
 }) {
   return InkWell(
@@ -55,21 +55,21 @@ Widget buttonWithBorder(
 
 Widget buttonWithBorder2(
   String text, {
-  Color buttonColor,
-  Color textColor,
-  Function onTap,
-  Color borderColor,
-  FontWeight fontWeight,
-  double fontSize,
-  double horiMargin,
-  double borderRadius,
-  double height,
-  double width,
-  String icon,
+  Color? buttonColor,
+  Color? textColor,
+  Function()? onTap,
+  Color? borderColor,
+  FontWeight? fontWeight,
+  double? fontSize,
+  double ?horiMargin,
+  double ?borderRadius,
+  double? height,
+  double ?width,
+  String ?icon,
   bool busy = false,
 }) {
   return InkWell(
-    onTap: busy ? null : onTap,
+    onTap: busy ? null : onTap!,
     child: Container(
       height: height,
       width: width,
@@ -85,7 +85,7 @@ Widget buttonWithBorder2(
               ? SizedBox(
                   child: CircularProgressIndicator(
                     strokeWidth: 3,
-                    valueColor: AlwaysStoppedAnimation<Color>(textColor),
+                    valueColor: AlwaysStoppedAnimation<Color>(textColor!),
                   ),
                   height: 20.h,
                   width: 20.h,
@@ -119,7 +119,7 @@ Widget header(String text) {
     alignment: Alignment.center,
     children: [
       Container(
-        width: SizeConfig.screenWidth - 70.h,
+        width: SizeConfig.screenWidth! - 70.h,
         child: Image.asset(
           'images/header.png',
           fit: BoxFit.fitWidth,

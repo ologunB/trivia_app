@@ -1,16 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 
 Future<bool> showAlertDialog({
-  @required BuildContext context,
-  @required String title,
-  @required String content,
-  String cancelActionText,
-  Function cancelFunction,
-  @required String defaultActionText,
+  required BuildContext context,
+  required String title,
+  required String content,
+  String? cancelActionText,
+  Function? cancelFunction,
+  required String defaultActionText,
 }) async {
   return await showDialog(
     context: context,

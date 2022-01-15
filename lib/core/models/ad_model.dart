@@ -1,7 +1,7 @@
 class AdModel {
-  String image;
-  String url;
-  String title;
+  String? image;
+  String? url;
+  String? title;
 
   AdModel.fromJson(dynamic json) {
     url = json['url'];

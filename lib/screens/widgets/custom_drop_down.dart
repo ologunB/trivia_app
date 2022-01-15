@@ -4,11 +4,11 @@ import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 
 class CustomDropDownButton extends StatefulWidget {
-  final List<String> list;
-  final Map subList;
-  final Function(String) onChanged;
-  final String value;
-  final String hintText;
+  final List<String>? list;
+  final Map? subList;
+  final void Function(String?)? onChanged;
+  final String? value;
+  final String? hintText;
 
   CustomDropDownButton(
       {this.list, this.onChanged, this.value, this.hintText, this.subList});
@@ -39,7 +39,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
         hint: Padding(
           padding: EdgeInsets.symmetric(vertical: 8.h),
           child: Text(
-            widget.hintText,
+            widget.hintText ?? '',
             style: GoogleFonts.roboto(
               color: AppColors.textGrey,
               fontSize: 17.sp,
@@ -55,7 +55,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
           size: 24.h,
         ),
         onChanged: widget.onChanged,
-        items: widget.list.map<DropdownMenuItem<String>>((String value) {
+        items: widget.list?.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Padding(
@@ -70,7 +70,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
                         )),
                     Spacer(),
                     if (widget.subList != null)
-                      Text(widget.subList[value],
+                      Text(widget.subList![value],
                           style: TextStyle(
                             color: AppColors.black,
                             fontSize: 17.sp,

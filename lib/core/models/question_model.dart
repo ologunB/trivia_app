@@ -1,13 +1,13 @@
 class QuestionModel {
-  String answer;
-  String question;
-  String updatedAt;
-  String scheduledAt;
-  String uid;
-  String id;
-  String createdAt;
-  String category;
-  String story;
+  String ?answer;
+  String? question;
+  String? updatedAt;
+  String? scheduledAt;
+  String ?uid;
+  String ?id;
+  String ?createdAt;
+  String ?category;
+  String ?story;
 
   QuestionModel.fromJson(dynamic json) {
     question = json['question'];

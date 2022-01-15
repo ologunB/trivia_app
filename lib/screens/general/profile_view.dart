@@ -86,10 +86,10 @@ class _ProfileViewState extends State<ProfileView> {
                           setState(() {});
                           return;
                         }
-                        if (index == 3) {
-                          showDialog<AlertDialog>(
+                        if (index == 3) { //ologunbabatope@gmail.com
+                          showDialog (
                             context: context,
-                            builder: (BuildContext context) => AlertDialog(
+                            builder: (  context) => AlertDialog(
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -174,10 +174,10 @@ class _ProfileViewState extends State<ProfileView> {
                                         AppCache.setNotification(a);
                                       });
 
-                                      String messagingToken =
+                                      String? messagingToken =
                                           await NotificationManager
                                               .messagingToken();
-                                      String uid = AppCache.getUser.uid;
+                                      String? uid = AppCache.getUser?.uid;
                                       if (enableNotifi) {
                                         await FirebaseFirestore.instance
                                             .collection('Tokens')

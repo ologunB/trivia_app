@@ -1,15 +1,15 @@
 class UserData {
-  int updatedAt;
-  int createdAt;
-  String email;
-  String address;
-  String plan;
-  String name;
-  String phone;
-  String type;
-  String uid;
-  String image;
-  String status;
+  int? updatedAt;
+  int? createdAt;
+  String? email;
+  String? address;
+  String? plan;
+  String? name;
+  String? phone;
+  String? type;
+  String? uid;
+  String? image;
+  String? status;
 
   UserData(
       {this.plan,

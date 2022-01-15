@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:mms_app/app/colors.dart';
+ import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import '../../app/size_config/config.dart';
 
 class FloatingNavBar extends StatefulWidget {
   final List<FloatingNavBarItem> items;
 
-  const FloatingNavBar({Key key, @required this.items});
+  const FloatingNavBar({Key? key,  required this.items});
 
   @override
   _FloatingNavBarState createState() {
@@ -142,11 +141,11 @@ class FloatingNavBarItem {
   IconData img;
   Widget page;
 
-  FloatingNavBarItem({@required this.img, @required this.page});
+  FloatingNavBarItem({required this.img, required this.page});
 }
 
 class RadiantGradientMask extends StatelessWidget {
-  const RadiantGradientMask({this.child});
+  const RadiantGradientMask({required this.child});
 
   final Widget child;
 

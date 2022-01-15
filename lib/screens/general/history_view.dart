@@ -23,7 +23,7 @@ class HistoryView extends StatefulWidget {
 }
 
 class _HistoryViewState extends State<HistoryView> {
-  StreamSubscription listener1, listener2;
+  StreamSubscription? listener1, listener2;
 
   List<QuestionModel> questions = [];
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -82,58 +82,64 @@ class _HistoryViewState extends State<HistoryView> {
               Expanded(
                 child: questions.isEmpty
                     ? AppEmptyWidget(text: 'No History for now')
-                    : GroupedListView<QuestionModel, String>(
-                        padding: EdgeInsets.only(
-                          right: 15.h,
-                          left: 15.h,
-                          top: 15.h,
-                          bottom: 90.h,
+                    : ScrollConfiguration(
+                  behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                    PointerDeviceKind.touch,
+                    PointerDeviceKind.mouse,
+                  }),
+                      child: GroupedListView<QuestionModel, String>(
+                          padding: EdgeInsets.only(
+                            right: 15.h,
+                            left: 15.h,
+                            top: 15.h,
+                            bottom: 90.h,
+                          ),
+                          elements: questions,
+                          groupBy: (element) => DateTime(
+                            int.parse(element.category!.split('-')[2]),
+                            int.parse(element.category!.split('-')[1]),
+                            int.parse(element.category!.split('-')[0]),
+                          ).millisecondsSinceEpoch.toString(),
+                          groupSeparatorBuilder: (String groupByValue) {
+                            return Padding(
+                              padding: EdgeInsets.only(top: 8.h),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.h, vertical: 6.h),
+                                    margin: EdgeInsets.only(bottom: 16.h),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff522051),
+                                      borderRadius: BorderRadius.circular(10.h),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        regularText(
+                                          dateToString(groupByValue),
+                                          other: true,
+                                          fontSize: 18.sp,
+                                          color: AppColors.white,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                          itemBuilder: (context, QuestionModel element) =>
+                              item(element),
+                          itemComparator: (b, a) =>
+                              (a.createdAt)!.compareTo(b.createdAt!),
+                          useStickyGroupSeparators: true,
+                          floatingHeader: true,
+                          order: GroupedListOrder.DESC,
                         ),
-                        elements: questions,
-                        groupBy: (element) => DateTime(
-                          int.parse(element.category.split('-')[2]),
-                          int.parse(element.category.split('-')[1]),
-                          int.parse(element.category.split('-')[0]),
-                        ).millisecondsSinceEpoch.toString(),
-                        groupSeparatorBuilder: (String groupByValue) {
-                          return Padding(
-                            padding: EdgeInsets.only(top: 8.h),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.h, vertical: 6.h),
-                                  margin: EdgeInsets.only(bottom: 16.h),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff522051),
-                                    borderRadius: BorderRadius.circular(10.h),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      regularText(
-                                        dateToString(groupByValue),
-                                        other: true,
-                                        fontSize: 18.sp,
-                                        color: AppColors.white,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                        itemBuilder: (context, QuestionModel element) =>
-                            item(element),
-                        itemComparator: (b, a) =>
-                            (a.createdAt).compareTo(b.createdAt),
-                        useStickyGroupSeparators: true,
-                        floatingHeader: true,
-                        order: GroupedListOrder.DESC,
-                      ),
+                    ),
               ),
             ],
           )),
@@ -145,7 +151,7 @@ class _HistoryViewState extends State<HistoryView> {
   Widget item(QuestionModel element) {
     return InkWell(
       onTap: () {
-        navigateTo(context, HistoryDetailsView(category: element.category));
+        navigateTo(context, HistoryDetailsView(category: element.category!));
       },
       child: Container(
         padding: EdgeInsets.all(20.h),
@@ -166,14 +172,14 @@ class _HistoryViewState extends State<HistoryView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             regularText(
-              element?.story,
+              element.story,
               fontSize: 12.sp,
               color: AppColors.white,
               fontWeight: FontWeight.w300,
             ),
             SizedBox(height: 10.h),
             regularText(
-              element?.question,
+              element.question,
               fontSize: 12.sp,
               color: AppColors.white,
               fontWeight: FontWeight.w700,
@@ -190,7 +196,7 @@ class _HistoryViewState extends State<HistoryView> {
   }
 
   String dateToString(String a) {
-    DateTime now = Utils.getDate;
+    DateTime now = Utils.getDate!;
     DateTime then = DateTime.fromMillisecondsSinceEpoch(int.parse(a));
 
     if (now.subtract(Duration(days: 1)).year == then.year &&

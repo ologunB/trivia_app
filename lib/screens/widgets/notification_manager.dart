@@ -13,7 +13,7 @@ class NotificationManager {
     // If you're going to use other Firebase services in the background, such as Firestore,
     // make sure you call `initializeApp` before using other Firebase services.
     await Firebase.initializeApp();
-    flutterLocalNotificationsPlugin.cancel(message.notification.title.hashCode);
+    flutterLocalNotificationsPlugin.cancel(message.notification?.title.hashCode?? 2);
     Logger().d(message.data);
   }
 
@@ -59,38 +59,34 @@ class NotificationManager {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       await Firebase?.initializeApp();
       log.d(message);
-      if (message.data != null) {
-        handleData(message.data);
-      }
+      handleData(message.data);
     });
   }
 
   static Future<void> show(RemoteMessage message) async {
-    if (message != null) {
-      final RemoteNotification notification = message.notification;
+    final RemoteNotification? notification = message.notification;
 
-      final AndroidNotificationDetails androidDetails =
-      AndroidNotificationDetails(
-        channel.id,
-        channel.name,
-        channel.description,
-        importance: Importance.max,
-        icon: 'logo',
-      );
-      const IOSNotificationDetails iSODetails = IOSNotificationDetails();
-      final NotificationDetails generalNotificationDetails =
-      NotificationDetails(android: androidDetails, iOS: iSODetails);
+    final AndroidNotificationDetails androidDetails =
+    AndroidNotificationDetails(
+      channel.id,
+      channel.name,
+      channel.description,
+      importance: Importance.max,
+      icon: 'logo',
+    );
+    const IOSNotificationDetails iSODetails = IOSNotificationDetails();
+    final NotificationDetails generalNotificationDetails =
+    NotificationDetails(android: androidDetails, iOS: iSODetails);
 
-      if (notification != null) {
-        flutterLocalNotificationsPlugin.show(notification.title.hashCode,
-            notification.title, notification.body, generalNotificationDetails,
-            payload: jsonEncode(message.data));
-      }
+    if (notification != null) {
+      flutterLocalNotificationsPlugin.show(notification.title.hashCode,
+          notification.title, notification.body, generalNotificationDetails,
+          payload: jsonEncode(message.data));
     }
   }
 
 
-  static Future<String> messagingToken() async {
+  static Future<String?> messagingToken() async {
     return _firebaseMessaging.getToken();
   }
 
@@ -118,31 +114,17 @@ class NotificationManager {
       sound: true,
     );
 
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('logo');
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(onDidReceiveLocalNotification:
-            (int id, String title, String body, String payload) async {
-      print('received: ' + title.toString());
-    });
 
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+
 
     configureFirebaseNotificationListeners();
   }
 
   static Future<dynamic> selectNotification(String payload) async {
     log.d(payload);
-    if (payload != null) {
-      final dynamic data = jsonDecode(payload);
-      log.d('payload is: ' + data.toString());
-      handleData(data);
-    }
+    final dynamic data = jsonDecode(payload);
+    log.d('payload is: ' + data.toString());
+    handleData(data);
   }
 
   static Future<void> handleData(dynamic data) async {

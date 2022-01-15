@@ -5,9 +5,9 @@ import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 
 class AnswerTextField extends StatelessWidget {
-  final String hintText;
+  final String? hintText;
   final bool readOnly;
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   AnswerTextField({this.hintText, this.controller, this.readOnly = false});
 

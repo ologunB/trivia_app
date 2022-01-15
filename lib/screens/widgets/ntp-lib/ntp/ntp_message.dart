@@ -1,7 +1,7 @@
 part of ntp;
 
 class _NTPMessage {
-  _NTPMessage([List<int> array]) {
+  _NTPMessage([List<int>? array]) {
     if (array != null) {
       _leapIndicator = array[0] >> 6 & 0x3;
       _version = array[0] >> 3 & 0x7;

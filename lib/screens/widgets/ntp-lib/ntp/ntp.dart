@@ -7,8 +7,8 @@ class NTP {
   static Future<int> getNtpOffset({
     String lookUpAddress = _defaultLookup,
     int port = 123,
-    DateTime localTime,
-    Duration timeout,
+    DateTime? localTime,
+    Duration? timeout,
   }) async {
     final List<InternetAddress> addresses =
         await InternetAddress.lookup(lookUpAddress);
@@ -36,7 +36,7 @@ class NTP {
     // Send buffer packet to the address [serverAddress] and port [port]
     datagramSocket.send(buffer, serverAddress, port);
     // Receive packet from socket
-    Datagram packet;
+    Datagram? packet;
 
     final receivePacket = (RawSocketEvent event) {
       if (event == RawSocketEvent.read) {
@@ -61,7 +61,7 @@ class NTP {
       return Future<int>.error('Received empty response.');
     }
 
-    final int offset = _parseData(packet.data, DateTime.now());
+    final int offset = _parseData(packet?.data, DateTime.now());
     return offset;
   }
 
@@ -69,7 +69,7 @@ class NTP {
   static Future<DateTime> now({
     String lookUpAddress = _defaultLookup,
     int port = 123,
-    Duration timeout,
+      Duration? timeout,
   }) async {
     final DateTime localTime = DateTime.now();
     final int offset = await getNtpOffset(
@@ -83,7 +83,7 @@ class NTP {
   }
 
   /// Parse data from datagram socket.
-  static int _parseData(List<int> data, DateTime time) {
+  static int _parseData(List<int>? data, DateTime time) {
     final _NTPMessage ntpMessage = _NTPMessage(data);
     final double destinationTimestamp =
         (time.millisecondsSinceEpoch / 1000.0) + 2208988800.0;

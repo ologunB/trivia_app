@@ -8,9 +8,9 @@ import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 
 class PaymentScreen extends StatefulWidget {
-  final String id;
+  final String? id;
 
-  const PaymentScreen({Key key, this.id}) : super(key: key);
+  const PaymentScreen({Key? key, this.id}) : super(key: key);
 
   @override
   _PaymentScreenState createState() => _PaymentScreenState();

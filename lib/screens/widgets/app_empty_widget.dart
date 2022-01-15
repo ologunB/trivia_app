@@ -7,15 +7,15 @@ import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 
 class AppEmptyWidget extends StatelessWidget {
-  const AppEmptyWidget({Key key, this.text, this.ratio}) : super(key: key);
+  const AppEmptyWidget({Key? key, this.text, this.ratio}) : super(key: key);
 
-  final String text;
-  final int ratio;
+  final String? text;
+  final int? ratio;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.screenHeight / (ratio ?? 3),
+      height: SizeConfig.screenHeight! / (ratio ?? 3),
       alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

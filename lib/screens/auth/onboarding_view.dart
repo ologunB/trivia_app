@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
@@ -12,8 +11,6 @@ import 'package:mms_app/app/size_config/extensions.dart';
 import '../../locator.dart';
 
 class OnboardingView extends StatefulWidget {
-  const OnboardingView({Key key}) : super(key: key);
-
   @override
   _OnboardingViewState createState() => _OnboardingViewState();
 }
@@ -29,30 +26,37 @@ class _OnboardingViewState extends State<OnboardingView> {
         backgroundColor: AppColors.secondary,
         body: Stack(
           children: [
-            PageView.builder(
-              controller: controller,
-              onPageChanged: (a) {
-                _index = a;
-                setState(() {});
-              },
-              itemCount: items().length,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: SizeConfig.screenWidth,
-                  height: SizeConfig.screenHeight,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('images/onboard${index + 1}.png'),
-                        fit: BoxFit.cover),
-                  ),
-                );
-              },
+            ScrollConfiguration(
+              behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+                PointerDeviceKind.touch,
+                PointerDeviceKind.mouse,
+              }),
+              child: PageView.builder(
+                controller: controller,
+                onPageChanged: (a) {
+                  _index = a;
+                  setState(() {});
+                },
+                itemCount: 3,
+                 itemBuilder: (context, index) {
+                  return Container(
+                    width: SizeConfig.screenWidth,
+                    height: SizeConfig.screenHeight,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('images/onboard${index + 1}.png'),
+                          fit: BoxFit.cover),
+                    ),
+                  );
+                },
+              ),
             ),
             SafeArea(
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 80.h, right: 30.h, left: 30.h),
+                  padding:
+                      EdgeInsets.only(bottom: 80.h, right: 30.h, left: 30.h),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +85,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                                   'Sign up',
                                   height: 60.h,
                                   onTap: () {
-                                    locator<NavigationService>().removeUntil(SignupLayoutScreen);
+                                    locator<NavigationService>()
+                                        .removeUntil(SignupLayoutScreen);
                                   },
                                 ),
                                 SizedBox(height: 20.h),
@@ -89,9 +94,9 @@ class _OnboardingViewState extends State<OnboardingView> {
                                   'Sign in',
                                   height: 60.h,
                                   onTap: () {
-                                    locator<NavigationService>().removeUntil(LoginLayoutScreen);
-
-                                   },
+                                    locator<NavigationService>()
+                                        .removeUntil(LoginLayoutScreen);
+                                  },
                                 ),
                               ],
                             )
@@ -142,28 +147,4 @@ class _OnboardingViewState extends State<OnboardingView> {
           ],
         ));
   }
-}
-
-class Item {
-  String title;
-  String desc;
-
-  Item({this.title, this.desc});
-}
-
-List<Item> items() {
-  return [
-    Item(
-      title: 'Process Serving',
-      desc: 'Order process serving conveniently and affordably',
-    ),
-    Item(
-      title: 'Court Filing',
-      desc: 'Find a process server near you to file your court documents',
-    ),
-    Item(
-      title: 'Court Filing',
-      desc: 'Find a process server near you to file your court documents',
-    ),
-  ];
 }

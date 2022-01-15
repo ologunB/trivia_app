@@ -23,13 +23,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController name = TextEditingController();
 
-  String imageUrl;
+  String? imageUrl;
 
   @override
   void initState() {
-    name.text = AppCache.getUser.name;
-    email.text = AppCache.getUser.email;
-    imageUrl = AppCache.getUser.image;
+    name.text = AppCache.getUser?.name?? '';
+    email.text = AppCache.getUser?.email ??'';
+    imageUrl = AppCache.getUser?.image;
     super.initState();
   }
 
@@ -80,7 +80,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             borderRadius: BorderRadius.circular(55.h),
                             child: imageFile != null
                                 ? Image.memory(
-                                    imageFile,
+                                    imageFile!,
                                     height: 110.h,
                                     width: 110.h,
                                     fit: BoxFit.cover,
@@ -156,19 +156,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       isLoading = true;
     });
 
-    String url = AppCache.getUser.image;
-    String uid = AppCache.getUser.uid;
+    String? url = AppCache.getUser?.image;
+    String? uid = AppCache.getUser?.uid;
     try {
       if (imageFile != null) {
         Reference reference =
             FirebaseStorage.instance.ref().child("images/$uid");
 
-        UploadTask uploadTask = reference.putData(imageFile);
+        UploadTask uploadTask = reference.putData(imageFile!);
         TaskSnapshot downloadUrl = (await uploadTask.whenComplete(() => null));
         url = await downloadUrl.ref.getDownloadURL();
       }
 
-      Map<String, dynamic> mData = AppCache.getUser.toJson();
+      Map<String, dynamic> mData = AppCache.getUser!.toJson();
 
       mData.update("name", (a) => name.text.trim());
       mData.update("email", (a) => email.text);
@@ -199,17 +199,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         isLoading = false;
       });
-      showSnackBar(context, 'Error', e?.message ?? e.toString());
+      showSnackBar(context, 'Error',  e.toString());
     }
   }
 
   bool isLoading = false;
 
-  Uint8List imageFile;
+  Uint8List? imageFile;
 
   Future<void> getImageGallery() async {
     Utils.offKeyboard();
-    final XFile result =
+    final XFile? result =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (result != null) {

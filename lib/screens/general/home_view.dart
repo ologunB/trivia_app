@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
@@ -23,14 +21,14 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  StreamSubscription listener1, listener2, listener3, listener4;
+  StreamSubscription? listener1, listener2, listener3, listener4;
 
   List<QuestionModel> questions = [];
   List<QuestionModel> answers = [];
   List<WinnerModel> winners = [];
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String uid = AppCache.getUser.uid;
+  String? uid = AppCache.getUser?.uid;
   String date = Utils.getPresentDate();
 
   String instructions = '';
@@ -63,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
         //   firestore.collection('Questions').doc(element.id).delete();
       });
 
-      questions.sort((b, a) => a.id.compareTo(b.id));
+      questions.sort((b, a) => a.id!.compareTo(b.id!));
       setState(() {});
     });
 
@@ -167,11 +165,10 @@ class _HomeViewState extends State<HomeView> {
                                     return item(index);
                                   }),
                           if (questions.any((element) =>
-                              Utils.getDate.hour <
-                              (int.tryParse(element?.scheduledAt
-                                      ?.split(':')
-                                      ?.first) ??
-                                  Utils.getDate.hour)))
+                              Utils.getDate!.hour <
+                              (int.tryParse(
+                                      element.scheduledAt!.split(':').first) ??
+                                  Utils.getDate!.hour)))
                             Container(
                               padding: EdgeInsets.all(30.h),
                               margin: EdgeInsets.only(bottom: 20.h),
@@ -210,10 +207,10 @@ class _HomeViewState extends State<HomeView> {
     //   Logger().d(TimeOfDay.now().minute);
     QuestionModel model = questions[index];
     bool answered = answers.any((element) => element.id == model.id);
-    int hour = int.tryParse(model?.scheduledAt?.split(':')?.first) ??
-        Utils.getDate.hour;
+    int hour = int.tryParse(model.scheduledAt!.split(':').first) ??
+        Utils.getDate!.hour;
     //  int min = int.tryParse( model.scheduledAt.split(':')[1]);
-    if (Utils.getDate.hour < hour) {
+    if (Utils.getDate!.hour < hour) {
       return SizedBox();
     }
     return Container(
@@ -235,14 +232,14 @@ class _HomeViewState extends State<HomeView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           regularText(
-            model?.story,
+            model.story,
             fontSize: 12.sp,
             color: AppColors.white,
             fontWeight: FontWeight.w300,
           ),
           SizedBox(height: 10.h),
           regularText(
-            model?.question,
+            model.question,
             fontSize: 12.sp,
             color: AppColors.white,
             fontWeight: FontWeight.w700,
@@ -256,7 +253,7 @@ class _HomeViewState extends State<HomeView> {
                     ? TextEditingController(
                         text: answers
                             .firstWhere((element) => element.id == model.id)
-                            .answer
+                            .answer!
                             .trim())
                     : controllers[index],
                 readOnly: answered,
@@ -270,15 +267,16 @@ class _HomeViewState extends State<HomeView> {
                       Map<String, dynamic> data = model.toJson();
                       data.update(
                           'answer', (value) => controllers[index].text.trim());
-                      data.putIfAbsent('name', () => AppCache.getUser.name);
+                      data.putIfAbsent('name', () => AppCache.getUser!.name);
                       data.update('uid', (value) => uid);
                       data.putIfAbsent('admin_answer', () => model.answer);
                       try {
                         await firestore.collection('Answers').add(data);
                         controllers[index].text = '';
+                      } on FirebaseException catch (e) {
+                        showSnackBar(context, 'Error', e.message);
                       } catch (e) {
-                        showSnackBar(
-                            context, 'Error', e?.message ?? e.toString());
+                        showSnackBar(context, 'Error', e.toString());
                       }
                     },
                     child: Image.asset(
