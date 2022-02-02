@@ -270,6 +270,7 @@ class _HomeViewState extends State<HomeView> {
                           'answer', (value) => controllers[index].text.trim());
                       data.putIfAbsent('name', () => AppCache.getUser.name);
                       data.update('uid', (value) => uid);
+                      data.update('last_time_won', (value) => AppCache.getUser.lastTimeWon);
                       data.putIfAbsent('admin_answer', () => model.answer);
                       try {
                         await firestore.collection('Answers').add(data);

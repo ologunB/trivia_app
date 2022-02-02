@@ -178,7 +178,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           }
                         },
                       ),
-                       if (showGoogleButton)
+                      if (showGoogleButton)
                         Padding(
                           padding: EdgeInsets.only(top: 60.h),
                           child: Row(
@@ -321,6 +321,7 @@ class _SignupScreenState extends State<SignupScreen> {
       setState(() {
         isLoading = false;
       });
+      print(e.message);
       showExceptionAlertDialog(
         context: buildContext,
         exception: e.message,
@@ -406,7 +407,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   Utils.getDate = await Utils.getInternetDate();
                   if (Utils.getDate != null) {
                     locator<NavigationService>().removeUntil(MainView);
-                  }                });
+                  }
+                });
               } else {
                 setState(() {
                   isLoading = false;
@@ -416,7 +418,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 Utils.getDate = await Utils.getInternetDate();
                 if (Utils.getDate != null) {
                   locator<NavigationService>().removeUntil(MainView);
-                }              }
+                }
+              }
             }).catchError((e) {
               setState(() {
                 isLoading = false;

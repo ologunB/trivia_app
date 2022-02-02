@@ -296,6 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       User user = value.user;
 
+
       if (value.user != null) {
         if (!value.user.emailVerified) {
           setState(() {
