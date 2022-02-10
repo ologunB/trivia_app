@@ -51,25 +51,25 @@ class _OnboardingViewState extends State<OnboardingView> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 80.h, right: 30.h, left: 30.h),
+                  padding:
+                      EdgeInsets.only(bottom: 80.h, right: 30.h, left: 30.h),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _index == 2
+                      _index == 0
                           ? Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                regularText(
-                                  'Learn More',
-                                  fontSize: 24.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.white,
-                                ),
+                                regularText('Answer interesting\nQuestions',
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.white,
+                                    textAlign: TextAlign.center),
                                 SizedBox(height: 20.h),
                                 regularText(
-                                  'Just like food nourishes our\nbodies, information and\ncontinued learning nourishes\nour minds',
+                                  'If you\'re looking for interesting\nquestions, don\'t look any\nfurther.',
                                   fontSize: 14.sp,
                                   textAlign: TextAlign.center,
                                   fontWeight: FontWeight.w400,
@@ -77,32 +77,85 @@ class _OnboardingViewState extends State<OnboardingView> {
                                 ),
                                 SizedBox(height: 30.h),
                                 buttonWithBorder(
-                                  'Sign up',
+                                  "Let’s Combat!",
                                   height: 60.h,
                                   onTap: () {
-                                    navigateReplacement(
-                                        context, SignupScreen());
+                                    controller.nextPage(
+                                        duration: Duration(milliseconds: 800),
+                                        curve: Curves.easeIn);
                                   },
-                                ),
-                                SizedBox(height: 20.h),
-                                buttonWithBorder(
-                                  'Sign in',
-                                  height: 60.h,
-                                  onTap: () {
-                                    navigateReplacement(context, LoginScreen());
-                                  },
-                                ),
+                                )
                               ],
                             )
-                          : buttonWithBorder(
-                              _index == 0 ? "Let’s Combat!" : 'Next',
-                              height: 60.h,
-                              onTap: () {
-                                controller.nextPage(
-                                    duration: Duration(milliseconds: 800),
-                                    curve: Curves.easeIn);
-                              },
-                            ),
+                          : _index == 1
+                              ? Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    regularText('Win Prizes',
+                                        fontSize: 24.sp,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.white,
+                                        textAlign: TextAlign.center),
+                                    SizedBox(height: 20.h),
+                                    regularText(
+                                      'Earn real cash by answering all\nquestions correctly\n',
+                                      fontSize: 14.sp,
+                                      textAlign: TextAlign.center,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.white,
+                                    ),
+                                    SizedBox(height: 30.h),
+                                    buttonWithBorder(
+                                      "Let’s Combat!",
+                                      height: 60.h,
+                                      onTap: () {
+                                        controller.nextPage(
+                                            duration:
+                                                Duration(milliseconds: 800),
+                                            curve: Curves.easeIn);
+                                      },
+                                    )
+                                  ],
+                                )
+                              : Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    regularText(
+                                      'Learn More',
+                                      fontSize: 24.sp,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.white,
+                                    ),
+                                    SizedBox(height: 20.h),
+                                    regularText(
+                                      'Just like food nourishes our\nbodies, information and\ncontinued learning nourishes\nour minds',
+                                      fontSize: 14.sp,
+                                      textAlign: TextAlign.center,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.white,
+                                    ),
+                                    SizedBox(height: 30.h),
+                                    buttonWithBorder(
+                                      'Sign up',
+                                      height: 60.h,
+                                      onTap: () {
+                                        navigateReplacement(
+                                            context, SignupScreen());
+                                      },
+                                    ),
+                                    SizedBox(height: 20.h),
+                                    buttonWithBorder(
+                                      'Sign in',
+                                      height: 60.h,
+                                      onTap: () {
+                                        navigateReplacement(
+                                            context, LoginScreen());
+                                      },
+                                    ),
+                                  ],
+                                ),
                     ],
                   ),
                 ),

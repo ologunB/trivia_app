@@ -44,7 +44,7 @@ class _MainLayoutState extends State<MainLayout> {
   Future<void> getToken() async {
     FirebaseDatabase.instance.setPersistenceEnabled(true);
     FirebaseDatabase.instance.setPersistenceCacheSizeBytes(100000000);
-    await NotificationManager.initialize();
+  //  await NotificationManager.initialize();
     if (AppCache.getNotification()) {
       String messagingToken = await NotificationManager.messagingToken();
       print(messagingToken);

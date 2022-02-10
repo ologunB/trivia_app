@@ -1,7 +1,7 @@
 class UserData {
   int updatedAt;
   int createdAt;
-  String lastTimeWon;
+  int lastTimeWon;
   String email;
   String address;
   String plan;

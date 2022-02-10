@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
@@ -56,6 +57,7 @@ class _HomeViewState extends State<HomeView> {
         .listen((event) {
       questions.clear();
       event.docs.forEach((element) {
+        Logger().d(element.data());
         questions.add(QuestionModel.fromJson(element.data()));
         controllers.add(TextEditingController());
         //  firestore.collection('Questions').doc(element.id).delete();
@@ -164,12 +166,8 @@ class _HomeViewState extends State<HomeView> {
                                   itemBuilder: (context, index) {
                                     return item(index);
                                   }),
-                          if (questions.any((element) =>
-                              Utils.getDate.hour <
-                              (int.tryParse(element?.scheduledAt
-                                      ?.split(':')
-                                      ?.first) ??
-                                  Utils.getDate.hour)))
+                          if (questions.any(
+                              (element) => timeChecker(element.scheduledAt)))
                             Container(
                               padding: EdgeInsets.all(30.h),
                               margin: EdgeInsets.only(bottom: 20.h),
@@ -179,12 +177,14 @@ class _HomeViewState extends State<HomeView> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  regularText(
-                                    '\nSome questions are not yet live, check back!\n',
-                                    fontSize: 15.sp,
-                                    textAlign: TextAlign.center,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600,
+                                  Expanded(
+                                    child: regularText(
+                                      '\nSome questions are not yet live, check back!\n',
+                                      fontSize: 15.sp,
+                                      textAlign: TextAlign.center,
+                                      color: AppColors.black,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -204,16 +204,40 @@ class _HomeViewState extends State<HomeView> {
 
   List<TextEditingController> controllers = [];
 
+  bool timeChecker(String a) {
+    if (a != null && a != 'empty') {
+      print(a);
+      int hour = int.tryParse(a.split(':').first);
+
+      int minute = int.tryParse(a.split(':')[1]);
+
+      if (hour >= Utils.getDate.hour && minute >= Utils.getDate.minute) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   Widget item(int index) {
     //   Logger().d(TimeOfDay.now().minute);
     QuestionModel model = questions[index];
     bool answered = answers.any((element) => element.id == model.id);
-    int hour = int.tryParse(model?.scheduledAt?.split(':')?.first) ??
-        Utils.getDate.hour;
-    //  int min = int.tryParse( model.scheduledAt.split(':')[1]);
-    if (Utils.getDate.hour < hour) {
-      return SizedBox();
+    if (model.scheduledAt != null && model?.scheduledAt != 'empty') {
+      int hour = int.tryParse(model.scheduledAt.split(':').first);
+
+      int minute = int.tryParse(model.scheduledAt.split(':')[1]);
+
+      print(
+          'value of ${model.id} is : ${Utils.getDate.hour} $hour , ${Utils.getDate.minute}, $minute');
+
+      if (hour >= Utils.getDate.hour && minute >= Utils.getDate.minute) {
+        return SizedBox();
+      }
     }
+
     return Container(
       padding: EdgeInsets.all(20.h),
       margin: EdgeInsets.only(bottom: 20.h),
@@ -270,7 +294,11 @@ class _HomeViewState extends State<HomeView> {
                           'answer', (value) => controllers[index].text.trim());
                       data.putIfAbsent('name', () => AppCache.getUser.name);
                       data.update('uid', (value) => uid);
-                      data.update('last_time_won', (value) => AppCache.getUser.lastTimeWon);
+                      data.update(
+                        'last_time_won',
+                        (value) => AppCache.getUser?.lastTimeWon,
+                        ifAbsent: () => AppCache.getUser?.lastTimeWon,
+                      );
                       data.putIfAbsent('admin_answer', () => model.answer);
                       try {
                         await firestore.collection('Answers').add(data);
