@@ -1,6 +1,7 @@
 class UserData {
   int updatedAt;
   int createdAt;
+  int lastTimeWon;
   String email;
   String address;
   String plan;
@@ -13,16 +14,16 @@ class UserData {
 
   UserData(
       {this.plan,
-      this.email,
-      this.updatedAt,
-      this.name,
-      this.phone,
-      this.type,
-      this.uid,
-      this.status,
-      this.address,
-      this.image,
-      this.createdAt});
+        this.email,
+        this.updatedAt,
+        this.name,
+        this.phone,
+        this.type,
+        this.uid,
+        this.status,
+        this.address,
+        this.image,this.lastTimeWon,
+        this.createdAt});
 
   UserData.fromJson(dynamic json) {
     plan = json['plan'];
@@ -35,6 +36,7 @@ class UserData {
     uid = json['uid'];
     type = json['type'];
     image = json['image'];
+    lastTimeWon = json['last_time_won'];
     status = json['status'];
   }
 
@@ -50,6 +52,7 @@ class UserData {
     data['phone'] = this.phone;
     data['uid'] = this.uid;
     data['status'] = this.status;
+    data['last_time_won'] = this.lastTimeWon;
     data['image'] = this.image;
     return data;
   }

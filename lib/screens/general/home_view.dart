@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
@@ -111,111 +110,133 @@ class _HomeViewState extends State<HomeView> {
     return winners.isNotEmpty
         ? HistoryDetailsView(category: date)
         : GestureDetector(
-            onTap: () {
-              Utils.offKeyboard();
-            },
-            child: Scaffold(
-              resizeToAvoidBottomInset: true,
-              body: Container(
-                width: SizeConfig.screenWidth,
-                height: SizeConfig.screenHeight,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('images/authbg.png'),
-                      fit: BoxFit.cover),
-                ),
-                child: SafeArea(
-                  child: SingleChildScrollView(
-                      padding: EdgeInsets.all(15.h),
-                      child: Column(
-                        children: [
-                          Row(children: [Expanded(child: AdWidget())]),
-                          SizedBox(height: 30.h),
-                          Row(
-                            children: [
-                              regularText(
-                                'LIVE Questions',
-                                other: true,
-                                fontSize: 40.sp,
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ],
+      onTap: () {
+        Utils.offKeyboard();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: Container(
+          width: SizeConfig.screenWidth,
+          height: SizeConfig.screenHeight,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('images/authbg.png'),
+                fit: BoxFit.cover),
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+                padding: EdgeInsets.all(15.h),
+                child: Column(
+                  children: [
+                    AdWidget(),
+                    SizedBox(height: 30.h),
+                    Row(
+                      children: [
+                        regularText(
+                          'LIVE Questions',
+                          other: true,
+                          fontSize: 40.sp,
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: regularText(
+                            instructions,
+                            fontSize: 13.sp,
+                            color: AppColors.white,
+                            textAlign: TextAlign.start,
                           ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: regularText(
-                                  instructions,
-                                  fontSize: 13.sp,
-                                  color: AppColors.white,
-                                  textAlign: TextAlign.start,
-                                ),
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 20.h),
-                          questions.isEmpty
-                              ? AppEmptyWidget(
-                                  text: 'Questions will be posted soon')
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.zero,
-                                  itemCount: questions.length,
-                                  physics: ClampingScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return item(index);
-                                  }),
-                          if (questions.any((element) =>
-                              Utils.getDate.hour <
-                              (int.tryParse(element?.scheduledAt
-                                      ?.split(':')
-                                      ?.first) ??
-                                  Utils.getDate.hour)))
-                            Container(
-                              padding: EdgeInsets.all(30.h),
-                              margin: EdgeInsets.only(bottom: 20.h),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.h),
-                                  color: AppColors.grey),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  regularText(
-                                    '\nSome questions are not yet live, check back!\n',
-                                    fontSize: 15.sp,
-                                    textAlign: TextAlign.center,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ],
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
+                    questions.isEmpty
+                        ? AppEmptyWidget(
+                        text: 'Questions will be posted soon')
+                        : ListView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        itemCount: questions.length,
+                        physics: ClampingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return item(index);
+                        }),
+                    if (questions.any(
+                            (element) => timeChecker(element.scheduledAt)))
+                      Container(
+                        padding: EdgeInsets.all(30.h),
+                        margin: EdgeInsets.only(bottom: 20.h),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.h),
+                            color: AppColors.grey),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: regularText(
+                                '\nSome questions are not yet live, check back!\n',
+                                fontSize: 15.sp,
+                                textAlign: TextAlign.center,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                          SizedBox(
-                              height:
-                                  (MediaQuery.of(context).viewInsets.bottom < 50
-                                      ? 100.h
-                                      : 0)),
-                        ],
-                      )),
-                ),
-              ),
-            ),
-          );
+                          ],
+                        ),
+                      ),
+                    SizedBox(
+                        height:
+                        (MediaQuery.of(context).viewInsets.bottom < 50
+                            ? 100.h
+                            : 0)),
+                  ],
+                )),
+          ),
+        ),
+      ),
+    );
   }
 
   List<TextEditingController> controllers = [];
+
+  bool timeChecker(String a) {
+    if (a != null && a != 'empty') {
+      print(a);
+      int hour = int.tryParse(a.split(':').first);
+
+      int minute = int.tryParse(a.split(':')[1]);
+
+      if (hour >= Utils.getDate.hour && minute >= Utils.getDate.minute) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   Widget item(int index) {
     //   Logger().d(TimeOfDay.now().minute);
     QuestionModel model = questions[index];
     bool answered = answers.any((element) => element.id == model.id);
-    int hour = int.tryParse(model?.scheduledAt?.split(':')?.first) ??
-        Utils.getDate.hour;
-    //  int min = int.tryParse( model.scheduledAt.split(':')[1]);
-    if (Utils.getDate.hour < hour) {
-      return SizedBox();
+    if (model.scheduledAt != null && model?.scheduledAt != 'empty') {
+      int hour = int.tryParse(model.scheduledAt.split(':').first);
+
+      int minute = int.tryParse(model.scheduledAt.split(':')[1]);
+
+      print(
+          'value of ${model.id} is : ${Utils.getDate.hour} $hour , ${Utils.getDate.minute}, $minute');
+
+      if (hour >= Utils.getDate.hour && minute >= Utils.getDate.minute) {
+        return SizedBox();
+      }
     }
+
     return Container(
       padding: EdgeInsets.all(20.h),
       margin: EdgeInsets.only(bottom: 20.h),
@@ -252,15 +273,15 @@ class _HomeViewState extends State<HomeView> {
             children: [
               Expanded(
                   child: AnswerTextField(
-                controller: answered
-                    ? TextEditingController(
+                    controller: answered
+                        ? TextEditingController(
                         text: answers
                             .firstWhere((element) => element.id == model.id)
                             .answer
                             .trim())
-                    : controllers[index],
-                readOnly: answered,
-              )),
+                        : controllers[index],
+                    readOnly: answered,
+                  )),
               if (!answered)
                 Padding(
                   padding: EdgeInsets.only(left: 12.h),
@@ -272,6 +293,11 @@ class _HomeViewState extends State<HomeView> {
                           'answer', (value) => controllers[index].text.trim());
                       data.putIfAbsent('name', () => AppCache.getUser.name);
                       data.update('uid', (value) => uid);
+                      data.update(
+                        'last_time_won',
+                            (value) => AppCache.getUser?.lastTimeWon,
+                        ifAbsent: () => AppCache.getUser?.lastTimeWon,
+                      );
                       data.putIfAbsent('admin_answer', () => model.answer);
                       try {
                         await firestore.collection('Answers').add(data);
