@@ -23,7 +23,6 @@ import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
 
 import '../../locator.dart';
-import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key key}) : super(key: key);
