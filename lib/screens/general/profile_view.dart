@@ -8,11 +8,12 @@ import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
 import 'package:mms_app/core/utils/navigator.dart';
+import 'package:mms_app/screens/general/rules_view.dart';
 import 'package:mms_app/screens/widgets/ad_widget.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/notification_manager.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'dart:io';
 import '../../locator.dart';
 import 'edit_profile.dart';
@@ -86,7 +87,7 @@ class _ProfileViewState extends State<ProfileView> {
                           setState(() {});
                           return;
                         }
-                        if (index == 3) {
+                        if (index == 4) {
                           showDialog<AlertDialog>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
@@ -143,6 +144,10 @@ class _ProfileViewState extends State<ProfileView> {
                           return;
                         }
                         if (index == 2) {
+                          navigateTo(context, RulesView());
+                          return;
+                        }
+                        if (index == 3) {
                           Share.share(
                               'Download TriviaBlog app from the store. Download here ${Platform.isAndroid ? 'https://bit.ly/courtserverandroid' : 'https://bit.ly/courtserver'}',
                               subject: 'Invite Others');
@@ -211,6 +216,7 @@ class _ProfileViewState extends State<ProfileView> {
   List<String> data() => [
         'Edit Profile',
         'Notifications',
+        'Rules',
         'Share',
         'Logout',
       ];

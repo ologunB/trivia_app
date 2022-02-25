@@ -44,10 +44,9 @@ class _SplashViewState extends State<SplashView> {
           image: DecorationImage(
               image: AssetImage('images/splash.png'), fit: BoxFit.cover),
         ),
-        child: Image.asset(
-          'images/splash.png',
-          height: 270.h,
-          width: 270.h,
+        child: Padding(
+          padding: EdgeInsets.all(40.h),
+          child: Image.asset('images/logo.png', height: 100.h),
         ),
       ),
     );
