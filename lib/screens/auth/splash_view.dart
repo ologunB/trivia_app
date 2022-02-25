@@ -5,10 +5,10 @@ import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
- import 'package:mms_app/screens/auth/login_screen.dart';
+import 'package:mms_app/screens/auth/login_screen.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
 
- import '../general/main_layout.dart';
+import '../general/main_layout.dart';
 import 'onboarding_view.dart';
 
 class SplashView extends StatefulWidget {
@@ -25,11 +25,11 @@ class _SplashViewState extends State<SplashView> {
       if (AppCache.getUser == null) {
         if (AppCache.getIsFirst()) {
           if (url.contains('onboard')) return;
-         removeUntil(context, OnboardingView());
+          removeUntil(context, OnboardingView());
         } else {
           if (url.contains('login') || url.contains('signup')) return;
 
-         removeUntil(context, LoginScreen());
+          removeUntil(context, LoginScreen());
         }
       } else {
         Utils.getDate = await Utils.getInternetDate();
@@ -53,10 +53,12 @@ class _SplashViewState extends State<SplashView> {
           image: DecorationImage(
               image: AssetImage('images/splash.png'), fit: BoxFit.cover),
         ),
-        child: Image.asset(
-          'images/splash.png',
-          height: 270.h,
-          width: 270.h,
+        child: Padding(
+          padding: EdgeInsets.all(30.h),
+          child: Image.asset(
+            'images/logo.png',
+            height: 60.h,
+          ),
         ),
       ),
     );

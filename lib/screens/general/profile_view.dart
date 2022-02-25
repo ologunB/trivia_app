@@ -8,7 +8,8 @@ import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/routes/router.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
- import 'package:mms_app/screens/widgets/ad_widget.dart';
+import 'package:mms_app/screens/general/rules_view.dart';
+import 'package:mms_app/screens/widgets/ad_widget.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/notification_manager.dart';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
@@ -85,10 +86,11 @@ class _ProfileViewState extends State<ProfileView> {
                           setState(() {});
                           return;
                         }
-                        if (index == 3) { //ologunbabatope@gmail.com
-                          showDialog (
+                        if (index == 4) {
+                          //ologunbabatope@gmail.com
+                          showDialog(
                             context: context,
-                            builder: (  context) => AlertDialog(
+                            builder: (context) => AlertDialog(
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -113,7 +115,6 @@ class _ProfileViewState extends State<ProfileView> {
                                             Navigator.pop(context);
                                             AppCache.clear();
                                             removeUntil(context, LoginScreen());
-
                                           },
                                         ),
                                       ),
@@ -143,7 +144,11 @@ class _ProfileViewState extends State<ProfileView> {
                           return;
                         }
                         if (index == 2) {
-                          Share .share(
+                         navigateTo(context, RulesView());
+                          return;
+                        }
+                        if (index == 3) {
+                          Share.share(
                               'Download TriviaBlog app from the store. Download here ${PlatformCheck.isAndroid ? 'https://bit.ly/courtserverandroid' : 'https://bit.ly/courtserver'}',
                               subject: 'Invite Others');
                           return;
@@ -211,6 +216,7 @@ class _ProfileViewState extends State<ProfileView> {
   List<String> data() => [
         'Edit Profile',
         'Notifications',
+        "Rules",
         'Share',
         'Logout',
       ];
