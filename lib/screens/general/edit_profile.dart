@@ -22,12 +22,17 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController name = TextEditingController();
+  TextEditingController dateOfBirth = TextEditingController();
+  TextEditingController ig = TextEditingController();
 
   String imageUrl;
 
   @override
   void initState() {
     name.text = AppCache.getUser.name;
+    email.text = AppCache.getUser.email;
+    ig.text = AppCache.getUser.ig;
+    dateOfBirth.text = AppCache.getUser.dateOfBirth;
     email.text = AppCache.getUser.email;
     imageUrl = AppCache.getUser.image;
     super.initState();
@@ -129,7 +134,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   controller: email,
                   readOnly: true,
                 ),
-                SizedBox(height: 30.h),
+                   SizedBox(height: 16.h),
+                item('Date Of birth'),
+                                   CustomTextField(
+                        hintText: 'DD-MM-YYYY',
+                        validator: (value)=>Utils.isValid(value, "Date Of Birth"),
+                        textInputType: TextInputType.datetime,
+                        textInputAction: TextInputAction.next,
+                        controller: dateOfBirth,
+                      ),
+                      SizedBox(height: 16.h),
+                item('Instagram handle'),
+                                   CustomTextField(
+                        hintText: 'Instagram handle (optional)',
+                        textInputType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        controller: ig,
+                      ),
+                      SizedBox(height: 16.h),
                 buttonWithBorder(
                   'CONFIRM',
                   height: 65.h,
@@ -145,6 +167,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   },
                 ),
                 SizedBox(height: 30.h),
+                
+                
               ],
             ),
           )),
@@ -172,6 +196,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       mData.update("name", (a) => name.text.trim());
       mData.update("email", (a) => email.text);
+      mData.update("ig", (a) => ig.text);
+      mData.update("dateOfBirth", (a) => dateOfBirth.text);
       mData.update("updated_at", (a) => DateTime.now().millisecondsSinceEpoch);
       mData.update("image", (a) => url);
 

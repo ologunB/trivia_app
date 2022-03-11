@@ -38,6 +38,13 @@ class Utils {
     return null;
   }
 
+    static String isValid(String value,String name) {
+    if (value.isEmpty) {
+      return '$name cannot be empty';
+    }
+    return null;
+  }
+
   static String validateEmail(String value) {
     value = value.trim();
     final RegExp regex = RegExp(

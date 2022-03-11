@@ -46,7 +46,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   regularText(
-                    'Message Support to claim your price with the following details :\n\n1. Your name.\n\n2. Any means of Identification.\n\n3. Date of trivia\n\n',
+                    'Message Support to claim your price with the following details :\n\n1. Your name.\n\n2. Any means of Identification.\n\n3. Date of trivia\n\n4. Bank Account information for cash reward / Phone number for airtime reward.\n\n',
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.white,

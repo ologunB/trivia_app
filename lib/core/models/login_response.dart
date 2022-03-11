@@ -4,6 +4,8 @@ class UserData {
   int lastTimeWon;
   String email;
   String address;
+  String ig;
+  String dateOfBirth;
   String plan;
   String name;
   String phone;
@@ -22,6 +24,8 @@ class UserData {
       this.uid,
       this.status,
       this.address,
+      this.ig,
+      this.dateOfBirth,
       this.image,this.lastTimeWon,
       this.createdAt});
 
@@ -32,6 +36,8 @@ class UserData {
     createdAt = json['created_at'];
     name = json['name'];
     address = json['address'];
+    ig = json['ig'];
+    dateOfBirth = json['dateOfBirth'];
     phone = json['phone'];
     uid = json['uid'];
     type = json['type'];
@@ -48,6 +54,8 @@ class UserData {
     data['created_at'] = this.createdAt;
     data['name'] = this.name;
     data['address'] = this.address;
+    data['ig'] = this.ig;
+    data['dateOfBirth'] = this.dateOfBirth;
     data['type'] = this.type;
     data['phone'] = this.phone;
     data['uid'] = this.uid;

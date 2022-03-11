@@ -175,9 +175,9 @@ class _HistoryViewState extends State<HistoryView> {
               fontWeight: FontWeight.w700,
             ),
             SizedBox(height: 12.h),
-            AnswerTextField(
+            AnswerTextField2(
               readOnly: true,
-              controller: TextEditingController(text: element.answer),
+              controller: TextEditingController(text:  "ans:  " + element.answer),
             )
           ],
         ),

@@ -48,16 +48,16 @@ android {
         minSdkVersion 20
         targetSdkVersion 30
         multiDexEnabled true
-        versionCode flutterVersionCode.toInteger()
+        versionCode 102
         versionName flutterVersionName
     }
 
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+           keyAlias keystoreProperties['keyAlias']
+           keyPassword keystoreProperties['keyPassword']
+           storeFile file(keystoreProperties['storeFile'])
+           storePassword keystoreProperties['storePassword']
         }
     }
 
