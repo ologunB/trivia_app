@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
@@ -10,6 +11,23 @@ class RulesView extends StatefulWidget {
 }
 
 class _RulesViewState extends State<RulesView> {
+  String rule = '';
+
+  @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('Utils')
+        .doc('Data')
+        .snapshots()
+        .listen((event) {
+      if (event.data() != null) {
+        rule = event.data()['app_rule'];
+        setState(() {});
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,16 +56,9 @@ class _RulesViewState extends State<RulesView> {
                 ),
                 SizedBox(height: 30.h),
                 regularText(
-                  '''
-1) Only participants that answer all Trivia questions of the day correctly are eligible to win.
-
-2) First person to answer any of the Tivia question correctly is guaranteed to win so far he or she answers all Trivia questions of the day correctly.
-
-3) You have to send your details to support@triviablogblogafrica.com to claim your prize.
-
-4) Further information will be provided in the instructions.''',
+                  rule.replaceAll('\\n', '\n'),
                   fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                   color: AppColors.white,
                 ),
               ],

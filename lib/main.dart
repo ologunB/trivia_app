@@ -38,7 +38,7 @@ class TriviaApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: SplashView(),
-      builder: (BuildContext context, Widget child) => Navigator(
+      builder: (context, child) => Navigator(
         key: locator<DialogService>().dialogNavigationKey,
         onGenerateRoute: (RouteSettings settings) => MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => DialogManager(child: child),

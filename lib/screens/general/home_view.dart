@@ -289,6 +289,7 @@ class _HomeViewState extends State<HomeView> {
                   child: InkWell(
                     onTap: () async {
                       if (controllers[index].text.trim().isEmpty) return;
+                      String now = DateTime.now().toIso8601String();
                       Map<String, dynamic> data = model.toJson();
                       data.update(
                           'answer', (value) => controllers[index].text.trim());
@@ -299,6 +300,10 @@ class _HomeViewState extends State<HomeView> {
                         (value) => AppCache.getUser?.lastTimeWon,
                         ifAbsent: () => AppCache.getUser?.lastTimeWon,
                       );
+                      data.update('created_at', (value) => now,
+                          ifAbsent: () => now);
+                      data.update('updated_at', (value) => now,
+                          ifAbsent: () => now);
                       data.putIfAbsent('admin_answer', () => model.answer);
                       try {
                         await firestore.collection('Answers').add(data);
