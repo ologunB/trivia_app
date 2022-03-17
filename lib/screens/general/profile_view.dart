@@ -149,8 +149,9 @@ class _ProfileViewState extends State<ProfileView> {
                         }
                         if (index == 3) {
                           Share.share(
-                              'Download TriviaBlog app from the store. Download here ${Platform.isAndroid ? 'https://bit.ly/courtserverandroid' : 'https://bit.ly/courtserver'}',
-                              subject: 'Invite Others');
+                            'Download TriviaBlog app from the store. Download here ${Platform.isAndroid ? 'hhttps://bit.ly/triviablog-android' : 'https://bit.ly/triviablog-android'}',
+                            subject: 'Invite Others',
+                          );
                           return;
                         }
                       },
