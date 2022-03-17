@@ -186,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                       ),
-                      if (showGoogleButton)
+              /*        if (showGoogleButton)
                         Padding(
                           padding: EdgeInsets.only(top: 60.h),
                           child: Row(
@@ -217,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ),
-                        ),
+                        ),*/
                       SizedBox(height: 60.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

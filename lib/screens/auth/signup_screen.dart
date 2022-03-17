@@ -35,6 +35,8 @@ class _SignupScreenState extends State<SignupScreen> {
 
   TextEditingController fName = TextEditingController();
   TextEditingController email = TextEditingController();
+  TextEditingController dateOfBirth = TextEditingController();
+  TextEditingController ig = TextEditingController();
   TextEditingController password = TextEditingController();
 
   bool autoValidate = false;
@@ -149,6 +151,23 @@ class _SignupScreenState extends State<SignupScreen> {
                         controller: email,
                       ),
                       SizedBox(height: 16.h),
+                      item('Date Of birth'),
+                      CustomTextField(
+                        hintText: 'DD-MM-YYYY',
+                        validator: (value)=>Utils.isValid(value!, "Date Of Birth"),
+                        textInputType: TextInputType.datetime,
+                        textInputAction: TextInputAction.next,
+                        controller: dateOfBirth,
+                      ),
+                      SizedBox(height: 16.h),
+                      item('Instagram handle'),
+                      CustomTextField(
+                        hintText: 'Instagram handle (optional)',
+                        textInputType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        controller: ig,
+                      ),
+                      SizedBox(height: 16.h),
                       item('Password'),
                       CustomTextField(
                         hintText: 'Enter password',
@@ -171,7 +190,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           }
                         },
                       ),
-                      if (showGoogleButton)
+    /*                     if (showGoogleButton)
+
                         Padding(
                           padding: EdgeInsets.only(top: 60.h),
                           child: Row(
@@ -203,6 +223,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ],
                           ),
                         ),
+*/
                       SizedBox(height: 80.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -275,9 +296,11 @@ class _SignupScreenState extends State<SignupScreen> {
         Map<String, dynamic> mData = Map();
         mData.putIfAbsent("name", () => fName.text);
         mData.putIfAbsent("email", () => email.text);
+        mData.putIfAbsent("ig", () => ig.text);
+        mData.putIfAbsent("dateOfBirth", () =>dateOfBirth.text);
         mData.putIfAbsent("status", () => 'active');
         mData.putIfAbsent("phone", () => null);
-        mData.putIfAbsent("uid", () => value.user?.uid);
+        mData.putIfAbsent("uid", () => value.user!.uid);
         mData.putIfAbsent("type", () => "user");
         mData.putIfAbsent("image", () => null);
         mData.putIfAbsent(

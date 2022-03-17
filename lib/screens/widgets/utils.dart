@@ -47,6 +47,13 @@ class Utils {
     }
     return null;
   }
+  static String? isValid(String value,String name) {
+    if (value.isEmpty) {
+      return '$name cannot be empty';
+    }
+    return null;
+  }
+
 
   static bool getISWeb() {
     final userAgent = window.navigator.userAgent.toString().toLowerCase();

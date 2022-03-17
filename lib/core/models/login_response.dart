@@ -1,6 +1,7 @@
 class UserData {
   int? updatedAt;
   int? createdAt;
+  int? lastTimeWon;
   String? email;
   String? address;
   String? plan;
@@ -20,7 +21,7 @@ class UserData {
       this.type,
       this.uid,
       this.status,
-      this.address,
+      this.address,this.lastTimeWon,
       this.image,
       this.createdAt});
 
@@ -34,6 +35,7 @@ class UserData {
     phone = json['phone'];
     uid = json['uid'];
     type = json['type'];
+    lastTimeWon = json['last_time_won'];
     image = json['image'];
     status = json['status'];
   }
@@ -41,6 +43,7 @@ class UserData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['plan'] = this.plan;
+    data['last_time_won'] = this.lastTimeWon;
     data['email'] = this.email;
     data['updated_at'] = this.updatedAt;
     data['created_at'] = this.createdAt;
