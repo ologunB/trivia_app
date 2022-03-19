@@ -294,10 +294,10 @@ class _SignupScreenState extends State<SignupScreen> {
       if (user != null) {
         await user.sendEmailVerification();
         Map<String, dynamic> mData = Map();
-        mData.putIfAbsent("name", () => fName.text);
+        mData.putIfAbsent("name", () => fName.text.trim());
         mData.putIfAbsent("email", () => email.text.trim());
-        mData.putIfAbsent("ig", () => ig.text);
-        mData.putIfAbsent("dateOfBirth", () =>dateOfBirth.text);
+        mData.putIfAbsent("ig", () => ig.text.trim());
+        mData.putIfAbsent("dateOfBirth", () =>dateOfBirth.text.trim());
         mData.putIfAbsent("status", () => 'active');
         mData.putIfAbsent("phone", () => null);
         mData.putIfAbsent("uid", () => value.user!.uid);
