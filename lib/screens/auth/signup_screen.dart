@@ -159,8 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                        SizedBox(height: 16.h),
                       item('Date Of birth'),
-                      SizedBox(height: 16.h),
-                                   CustomTextField(
+                   CustomTextField(
                         hintText: 'DD-MM-YYYY',
                         validator: (value)=>Utils.isValid(value, "Date Of Birth"),
                         textInputType: TextInputType.datetime,
