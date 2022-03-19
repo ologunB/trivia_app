@@ -287,7 +287,7 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     try {
       UserCredential value = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email.text, password: password.text);
+          email: email.text.trim(), password: password.text);
       User? user = value.user;
 
       Logger().d(user?.uid);
@@ -295,7 +295,7 @@ class _SignupScreenState extends State<SignupScreen> {
         await user.sendEmailVerification();
         Map<String, dynamic> mData = Map();
         mData.putIfAbsent("name", () => fName.text);
-        mData.putIfAbsent("email", () => email.text);
+        mData.putIfAbsent("email", () => email.text.trim());
         mData.putIfAbsent("ig", () => ig.text);
         mData.putIfAbsent("dateOfBirth", () =>dateOfBirth.text);
         mData.putIfAbsent("status", () => 'active');
