@@ -1,11 +1,13 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mms_app/core/models/login_response.dart';
+import 'package:mms_app/core/models/question_model.dart';
 
 const String kUserBox = 'userBoxoioi';
 const String profileKey = 'profilejgv';
 const String isFirstKey = 'isTheFddibrbstfesgd';
 const String hasNotifiKey = 'hasNotifiKeyrer';
+const String historyKey = 'historyKeyertdfgh';
 
 class AppCache {
   static Future<void> init() async {
@@ -24,7 +26,6 @@ class AppCache {
     return data;
   }
 
-
   static void setNotification(bool val) {
     _userBox.put(hasNotifiKey, val);
   }
@@ -33,7 +34,6 @@ class AppCache {
     final bool data = _userBox.get(hasNotifiKey, defaultValue: true);
     return data;
   }
-
 
   static void setUser(Map<String, dynamic> user) {
     _userBox.put(profileKey, user);
@@ -50,6 +50,23 @@ class AppCache {
 
   static Future<void> clear() async {
     await _userBox.clear();
+  }
+
+  static void setHistory(List<QuestionModel> val) {
+    List data = [];
+    val.forEach((element) {
+      data.add(element.toJson());
+    });
+    _userBox.put(historyKey, data);
+  }
+
+  static List<QuestionModel> getHistory() {
+    final List data = _userBox.get(historyKey, defaultValue: []);
+    List<QuestionModel> val = [];
+    data.forEach((element) {
+      val.add(QuestionModel.fromJson(element));
+    });
+    return val;
   }
 
   static void clean(String key) {

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
@@ -57,7 +56,6 @@ class _HomeViewState extends State<HomeView> {
         .listen((event) {
       questions.clear();
       event.docs.forEach((element) {
-        Logger().d(element.data());
         questions.add(QuestionModel.fromJson(element.data()));
         controllers.add(TextEditingController());
         //  firestore.collection('Questions').doc(element.id).delete();
