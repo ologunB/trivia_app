@@ -4,11 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/core/models/question_model.dart';
 import 'package:mms_app/core/routes/router.dart';
+import 'package:mms_app/core/storage/local_storage.dart';
 import 'package:mms_app/screens/widgets/ad_widget.dart';
 import 'package:mms_app/screens/widgets/answer_textfield.dart';
 import 'package:mms_app/screens/widgets/app_empty_widget.dart';
@@ -30,16 +32,29 @@ class _HistoryViewState extends State<HistoryView> {
 
   @override
   void initState() {
-    listener2 = firestore.collection('Questions').snapshots().listen((event) {
-      questions.clear();
-      event.docs.forEach((element) {
-        QuestionModel model = QuestionModel.fromJson(element.data());
-        if (model.category != Utils.getPresentDate()) {
-          questions.add(model);
-        }
+    DateTime yeste =
+        (Utils.getDate ?? DateTime.now()).subtract(Duration(days: 1));
+    String yesterdayDate = DateFormat('dd-MM-yyyy').format(yeste);
+    if (AppCache.getHistory()
+        .every((element) => element.category != yesterdayDate)) {
+      Logger().d('getting new data');
+
+       listener2 = firestore.collection('Questions').snapshots().listen((event) {
+        questions.clear();
+        event.docs.forEach((element) {
+          QuestionModel model = QuestionModel.fromJson(element.data());
+          if (model.category != Utils.getPresentDate()) {
+            questions.add(model);
+          }
+        });
+        AppCache.setHistory(questions);
+        setState(() {});
       });
-      setState(() {});
-    });
+    } else {
+      Logger().d('getting old data');
+      questions = AppCache.getHistory();
+    }
+
     super.initState();
   }
 
@@ -83,11 +98,12 @@ class _HistoryViewState extends State<HistoryView> {
                 child: questions.isEmpty
                     ? AppEmptyWidget(text: 'No History for now')
                     : ScrollConfiguration(
-                  behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-                    PointerDeviceKind.touch,
-                    PointerDeviceKind.mouse,
-                  }),
-                      child: GroupedListView<QuestionModel, String>(
+                        behavior: ScrollConfiguration.of(context)
+                            .copyWith(dragDevices: {
+                          PointerDeviceKind.touch,
+                          PointerDeviceKind.mouse,
+                        }),
+                        child: GroupedListView<QuestionModel, String>(
                           padding: EdgeInsets.only(
                             right: 15.h,
                             left: 15.h,
@@ -139,7 +155,7 @@ class _HistoryViewState extends State<HistoryView> {
                           floatingHeader: true,
                           order: GroupedListOrder.DESC,
                         ),
-                    ),
+                      ),
               ),
             ],
           )),
