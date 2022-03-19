@@ -292,7 +292,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       UserCredential value = await _firebaseAuth.signInWithEmailAndPassword(
-          email: email.text, password: password.text);
+          email: email.text.trim(), password: password.text);
 
       User user = value.user;
 
