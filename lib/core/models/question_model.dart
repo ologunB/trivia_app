@@ -17,7 +17,11 @@ class QuestionModel {
     createdAt = json['created_at'] ?? json['create_at'];
     category = json['category'];
     updatedAt = json['updated_at'];
-    scheduledAt = json['scheduled_at'] == null ? 'empty' : json['scheduled_at'];
+    scheduledAt = json['scheduled_at'] == null
+        ? 'empty'
+        : json['scheduled_at'].isEmpty
+            ? 'empty'
+            : json['scheduled_at'];
     story = json['story'];
   }
 
