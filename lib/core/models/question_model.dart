@@ -1,23 +1,27 @@
 class QuestionModel {
-  String ?answer;
+  String? answer;
   String? question;
   String? updatedAt;
   String? scheduledAt;
-  String ?uid;
-  String ?id;
-  String ?createdAt;
-  String ?category;
-  String ?story;
+  String? uid;
+  String? id;
+  String? createdAt;
+  String? category;
+  String? story;
 
   QuestionModel.fromJson(dynamic json) {
     question = json['question'];
     answer = json['answer'];
     id = json['id'];
     uid = json['uid'];
-    createdAt = json['created_at'] ?? json['create_at'] ;
+    createdAt = json['created_at'] ?? json['create_at'];
     category = json['category'];
     updatedAt = json['updated_at'];
-    scheduledAt = json['scheduled_at'] == null ? 'empty' : json['scheduled_at'];
+    scheduledAt = json['scheduled_at'] == null
+        ? 'empty'
+        : json['scheduled_at'].isEmpty
+            ? 'empty'
+            : json['scheduled_at'];
     story = json['story'];
   }
 
