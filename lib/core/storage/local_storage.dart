@@ -52,7 +52,7 @@ class AppCache {
   }
 
   static void setHistory(List<QuestionModel> val) {
-    List<Map<String, dynamic>> data = [];
+    List data = [];
     val.forEach((element) {
       data.add(element.toJson());
     });
@@ -60,8 +60,7 @@ class AppCache {
   }
 
   static List<QuestionModel> getHistory() {
-    final List<Map<String, dynamic>> data =
-        _userBox.get(historyKey, defaultValue: []);
+    final List data = _userBox.get(historyKey, defaultValue: []);
     List<QuestionModel> val = [];
     data.forEach((element) {
       val.add(QuestionModel.fromJson(element));
