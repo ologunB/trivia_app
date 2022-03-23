@@ -97,13 +97,13 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
           ),
           child: SafeArea(
               child: ScrollConfiguration(
-                behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
-                  PointerDeviceKind.touch,
-                  PointerDeviceKind.mouse,
-                }),
-                child: ListView(
-            padding: EdgeInsets.symmetric(horizontal:15.h),
-            children: [
+            behavior: ScrollConfiguration.of(context).copyWith(dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+            }),
+            child: ListView(
+              padding: EdgeInsets.symmetric(horizontal: 15.h),
+              children: [
                 AdWidget(),
                 if (isWinner)
                   Stack(
@@ -159,7 +159,10 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                       Padding(
                         padding: EdgeInsets.only(top: 18.h),
                         child: Text(
-                          '\n' + winners.firstWhere((element) => element.uid == uid).type!,
+                          '\n' +
+                              winners
+                                  .firstWhere((element) => element.uid == uid)
+                                  .type!,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.rajdhani(
                               fontWeight: FontWeight.w700,
@@ -255,7 +258,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                             SizedBox(width: 12.h),
                             Expanded(
                               child: regularText(
-                                model.name,
+                                model.name?.toUpperCase(),
                                 other: true,
                                 fontSize: 22.sp,
                                 color: model.uid == uid
@@ -295,9 +298,9 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                       return item(questions[index]);
                     }),
                 SizedBox(height: 90.h),
-            ],
-          ),
-              )),
+              ],
+            ),
+          )),
         ),
       ),
     );
@@ -338,7 +341,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
           SizedBox(height: 12.h),
           AnswerTextField(
             readOnly: true,
-            controller: TextEditingController(text: model.answer),
+            controller: TextEditingController(text: 'Ans: ' + model.answer!),
           )
         ],
       ),

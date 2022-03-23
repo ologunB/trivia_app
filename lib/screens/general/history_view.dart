@@ -203,7 +203,7 @@ class _HistoryViewState extends State<HistoryView> {
             SizedBox(height: 12.h),
             AnswerTextField(
               readOnly: true,
-              controller: TextEditingController(text: element.answer),
+              controller: TextEditingController(text:'Ans: '+ element.answer!),
             )
           ],
         ),

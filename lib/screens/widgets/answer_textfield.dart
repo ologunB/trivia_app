@@ -28,14 +28,15 @@ class AnswerTextField extends StatelessWidget {
         fontSize: 12.sp,
         color: AppColors.white,
       ),
-      padding: EdgeInsets.symmetric(horizontal: 15.h, vertical: 8.h),
+      padding:
+          EdgeInsets.symmetric(horizontal: readOnly ? 0 : 15.h, vertical: 8.h),
       placeholderStyle: GoogleFonts.poppins(
         fontSize: 12.sp,
         color: AppColors.white.withOpacity(.2),
       ),
       placeholder: hintText ?? 'Type in answer...',
       decoration: BoxDecoration(
-          color: Colors.white.withOpacity(.07),
+          color: readOnly ? null : Colors.white.withOpacity(.07),
           borderRadius: BorderRadius.circular(8.h)),
       controller: controller,
     );
