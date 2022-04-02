@@ -253,7 +253,7 @@ class _HistoryDetailsViewState extends State<HistoryDetailsView> {
                           SizedBox(width: 12.h),
                           Expanded(
                             child: regularText(
-                              model.name,
+                              model.name.toUpperCase(),
                               other: true,
                               fontSize: 22.sp,
                               color: model.uid == uid
