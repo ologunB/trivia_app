@@ -8,6 +8,7 @@ import 'package:mms_app/screens/general/payment_screen.dart';
 import 'package:mms_app/screens/general/profile_view.dart';
 import 'package:mms_app/screens/widgets/floating_navbar.dart';
 import 'package:mms_app/screens/widgets/notification_manager.dart';
+import 'edit_profile.dart';
 import 'history_view.dart';
 import 'home_view.dart';
 
@@ -36,6 +37,7 @@ class _MainLayoutState extends State<MainLayout> {
     listner1 =
         _firestore.collection('Users').doc(uid).snapshots().listen((event) {
       AppCache.setUser(event.data());
+      setState(() {});
     });
 
     getToken();
@@ -45,7 +47,7 @@ class _MainLayoutState extends State<MainLayout> {
   Future<void> getToken() async {
     FirebaseDatabase.instance.setPersistenceEnabled(true);
     FirebaseDatabase.instance.setPersistenceCacheSizeBytes(100000000);
-  //  await NotificationManager.initialize();
+    //  await NotificationManager.initialize();
     if (AppCache.getNotification()) {
       String messagingToken = await NotificationManager.messagingToken();
       print(messagingToken);
@@ -67,16 +69,18 @@ class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: FloatingNavBar(
-        items: [
-          FloatingNavBarItem(img: Icons.history, page: HistoryView()),
-          FloatingNavBarItem(img: Icons.home, page: HomeView()),
-          FloatingNavBarItem(
-              img: Icons.person_outline_outlined, page: ProfileView()),
-        ],
-      ),
-    );
+    return AppCache.getUser.chipperTag.isEmpty
+        ? EditProfileScreen()
+        : Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: FloatingNavBar(
+              items: [
+                FloatingNavBarItem(img: Icons.history, page: HistoryView()),
+                FloatingNavBarItem(img: Icons.home, page: HomeView()),
+                FloatingNavBarItem(
+                    img: Icons.person_outline_outlined, page: ProfileView()),
+              ],
+            ),
+          );
   }
 }

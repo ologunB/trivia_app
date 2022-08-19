@@ -12,6 +12,7 @@ class UserData {
   String type;
   String uid;
   String image;
+  String chipperTag;
   String status;
 
   UserData(
@@ -26,7 +27,9 @@ class UserData {
       this.address,
       this.ig,
       this.dateOfBirth,
-      this.image,this.lastTimeWon,
+      this.image,
+      this.lastTimeWon,
+      this.chipperTag,
       this.createdAt});
 
   UserData.fromJson(dynamic json) {
@@ -42,6 +45,7 @@ class UserData {
     uid = json['uid'];
     type = json['type'];
     image = json['image'];
+    chipperTag = json['chipper_tag'] ?? '';
     lastTimeWon = json['last_time_won'];
     status = json['status'];
   }
@@ -59,6 +63,7 @@ class UserData {
     data['type'] = this.type;
     data['phone'] = this.phone;
     data['uid'] = this.uid;
+    data['chipper_tag'] = this.chipperTag;
     data['status'] = this.status;
     data['last_time_won'] = this.lastTimeWon;
     data['image'] = this.image;

@@ -13,6 +13,7 @@ import 'locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Paint.enableDithering = true;
   await Firebase.initializeApp();
   await AppCache.init(); //Initialize Hive for Flutter
   setupLocator();

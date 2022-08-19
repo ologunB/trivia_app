@@ -21,11 +21,11 @@ class NotificationManager {
   static AndroidNotificationChannel channel = const AndroidNotificationChannel(
     'trivia_notification_id',
     'Trivia Notification',
-    'This channel is used for important notifications about trivia blog',
+    description:
+        'This channel is used for important notifications about trivia blog',
     importance: Importance.high,
     enableVibration: true,
     playSound: true,
-
   );
 
   static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -52,8 +52,8 @@ class NotificationManager {
         flutterLocalNotificationsPlugin.cancel(message.data['id'].hashCode);
         locator<NavigationService>()
             .navigateTo(CongratsView, arguments: message.data);
-      }else{
-       show(message);
+      } else {
+        show(message);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
@@ -70,16 +70,16 @@ class NotificationManager {
       final RemoteNotification notification = message.notification;
 
       final AndroidNotificationDetails androidDetails =
-      AndroidNotificationDetails(
+          AndroidNotificationDetails(
         channel.id,
         channel.name,
-        channel.description,
+        channelDescription: channel.description,
         importance: Importance.max,
         icon: 'logo',
       );
       const IOSNotificationDetails iSODetails = IOSNotificationDetails();
       final NotificationDetails generalNotificationDetails =
-      NotificationDetails(android: androidDetails, iOS: iSODetails);
+          NotificationDetails(android: androidDetails, iOS: iSODetails);
 
       if (notification != null) {
         flutterLocalNotificationsPlugin.show(notification.title.hashCode,
@@ -88,7 +88,6 @@ class NotificationManager {
       }
     }
   }
-
 
   static Future<String> messagingToken() async {
     return _firebaseMessaging.getToken();

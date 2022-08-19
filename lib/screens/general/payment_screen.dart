@@ -28,7 +28,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         .snapshots()
         .listen((event) {
       if (event.data() != null) {
-        rule = event.data()['payment_rule'];
+        rule = event.data()['new_payment_rule'];
         email = event.data()['payment_email'];
         setState(() {});
       }

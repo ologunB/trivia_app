@@ -6,7 +6,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/core/routes/router.dart';
@@ -53,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     AppCache.clear();
-    GoogleSignIn().signOut();
+    //   GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
     listener = FirebaseFirestore.instance
         .collection('Utils')
@@ -296,7 +295,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       User user = value.user;
 
-
       if (value.user != null) {
         if (!value.user.emailVerified) {
           setState(() {
@@ -360,6 +358,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+/*
   Future signInWithGoogle(BuildContext buildContext) async {
     setState(() {
       isLoading = true;
@@ -489,4 +488,5 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+*/
 }

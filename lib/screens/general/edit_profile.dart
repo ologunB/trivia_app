@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
 import 'package:mms_app/core/storage/local_storage.dart';
+import 'package:mms_app/core/utils/show_alert_dialog.dart';
 import 'package:mms_app/screens/widgets/buttons.dart';
 import 'package:mms_app/screens/widgets/custom_textfield.dart';
 import 'package:mms_app/screens/widgets/snackbar.dart';
@@ -24,6 +25,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController dateOfBirth = TextEditingController();
   TextEditingController ig = TextEditingController();
+  TextEditingController chipper = TextEditingController();
 
   String imageUrl;
 
@@ -35,6 +37,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     dateOfBirth.text = AppCache.getUser.dateOfBirth;
     email.text = AppCache.getUser.email;
     imageUrl = AppCache.getUser.image;
+    chipper.text = AppCache.getUser.chipperTag;
+    if (chipper.text.isEmpty)
+      Future.delayed(Duration(seconds: 1), () {
+        showAlertDialog(
+          context: context,
+          title: 'Alert',
+          content:
+              "We updated our policies, Payment are made through Chipper now, Update your Chipper ID, for you to use the App",
+          defaultActionText: 'OKAY',
+        );
+      });
     super.initState();
   }
 
@@ -134,24 +147,33 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   controller: email,
                   readOnly: true,
                 ),
-                   SizedBox(height: 16.h),
+                SizedBox(height: 16.h),
+                item('Chipper ID'),
+                CustomTextField(
+                  hintText: 'Enter Chipper ID',
+                  validator: Utils.isValidChipper,
+                  textInputType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  controller: chipper,
+                ),
+                SizedBox(height: 16.h),
                 item('Date Of birth'),
-                                   CustomTextField(
-                        hintText: 'DD-MM-YYYY',
-                        validator: (value)=>Utils.isValid(value, "Date Of Birth"),
-                        textInputType: TextInputType.datetime,
-                        textInputAction: TextInputAction.next,
-                        controller: dateOfBirth,
-                      ),
-                      SizedBox(height: 16.h),
+                CustomTextField(
+                  hintText: 'DD-MM-YYYY',
+                  validator: (value) => Utils.isValid(value, "Date Of Birth"),
+                  textInputType: TextInputType.datetime,
+                  textInputAction: TextInputAction.next,
+                  controller: dateOfBirth,
+                ),
+                SizedBox(height: 16.h),
                 item('Instagram handle'),
-                                   CustomTextField(
-                        hintText: 'Instagram handle (optional)',
-                        textInputType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        controller: ig,
-                      ),
-                      SizedBox(height: 16.h),
+                CustomTextField(
+                  hintText: 'Instagram handle (optional)',
+                  textInputType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  controller: ig,
+                ),
+                SizedBox(height: 16.h),
                 buttonWithBorder(
                   'CONFIRM',
                   height: 65.h,
@@ -162,13 +184,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       showSnackBar(context, null, 'Enter your name');
                       return;
                     }
+                    if (chipper.text.isEmpty) {
+                      showSnackBar(context, null, 'Enter your Chipper ID');
+                      return;
+                    }
                     Utils.offKeyboard();
                     confirmProfile();
                   },
                 ),
                 SizedBox(height: 30.h),
-                
-                
               ],
             ),
           )),
@@ -192,16 +216,55 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         url = await downloadUrl.ref.getDownloadURL();
       }
 
+      String chip = chipper.text.trim();
+
+      dynamic _doesTagExists = await Utils.checkChipperTag(chip);
+
+      if (_doesTagExists is String) {
+        showAlertDialog(
+          context: context,
+          title: 'Alert',
+          content: _doesTagExists,
+          defaultActionText: 'OKAY',
+        );
+
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
+      FirebaseFirestore _firestore = FirebaseFirestore.instance;
+      QuerySnapshot<Map<String, dynamic>> query = await _firestore
+          .collection('Users')
+          .where('chipper_tag', isEqualTo: chip)
+          .get();
+
+      if (query.docs.isNotEmpty) {
+        if (query.docs.first.id != AppCache.getUser.uid)
+          showAlertDialog(
+            context: context,
+            title: 'Alert',
+            content: "Chipper Tag has already been chosen",
+            defaultActionText: 'OKAY',
+          );
+
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
       Map<String, dynamic> mData = AppCache.getUser.toJson();
 
       mData.update("name", (a) => name.text.trim());
-      mData.update("email", (a) => email.text);
-      mData.update("ig", (a) => ig.text);
-      mData.update("dateOfBirth", (a) => dateOfBirth.text);
+      mData.update("email", (a) => email.text.trim());
+      mData.update("chipper_tag", (a) => chip);
+      mData.update("ig", (a) => ig.text.trim());
+      mData.update("dateOfBirth", (a) => dateOfBirth.text.trim());
       mData.update("updated_at", (a) => DateTime.now().millisecondsSinceEpoch);
       mData.update("image", (a) => url);
 
-      FirebaseFirestore _firestore = FirebaseFirestore.instance;
       DocumentReference userRef = _firestore.collection("Users").doc(uid);
 
       WriteBatch writeBatch = _firestore.batch();

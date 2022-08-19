@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 import 'package:mms_app/app/colors.dart';
 import 'package:mms_app/app/size_config/config.dart';
@@ -20,6 +19,7 @@ import 'dart:io';
 import 'package:mms_app/screens/widgets/text_widgets.dart';
 import 'package:mms_app/app/size_config/extensions.dart';
 import 'package:mms_app/screens/widgets/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../locator.dart';
 import 'login_screen.dart';
@@ -39,6 +39,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController dateOfBirth = TextEditingController();
   TextEditingController ig = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController chipperId = TextEditingController();
 
   bool autoValidate = false;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -55,7 +56,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   void initState() {
     AppCache.clear();
-    GoogleSignIn().signOut();
+    // GoogleSignIn().signOut();
     FirebaseAuth.instance.signOut();
     listener = FirebaseFirestore.instance
         .collection('Utils')
@@ -93,7 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: AppColors.white),
         ),
         body: Form(
           key: formKey,
@@ -157,18 +158,19 @@ class _SignupScreenState extends State<SignupScreen> {
                         textInputAction: TextInputAction.next,
                         controller: email,
                       ),
-                       SizedBox(height: 16.h),
+                      SizedBox(height: 16.h),
                       item('Date Of birth'),
-                   CustomTextField(
+                      CustomTextField(
                         hintText: 'DD-MM-YYYY',
-                        validator: (value)=>Utils.isValid(value, "Date Of Birth"),
+                        validator: (value) =>
+                            Utils.isValid(value, "Date Of Birth"),
                         textInputType: TextInputType.datetime,
                         textInputAction: TextInputAction.next,
                         controller: dateOfBirth,
                       ),
                       SizedBox(height: 16.h),
-                item('Instagram handle'),
-                                   CustomTextField(
+                      item('Instagram handle'),
+                      CustomTextField(
                         hintText: 'Instagram handle (optional)',
                         textInputType: TextInputType.name,
                         textInputAction: TextInputAction.next,
@@ -185,6 +187,81 @@ class _SignupScreenState extends State<SignupScreen> {
                         textInputAction: TextInputAction.done,
                       ),
                       SizedBox(height: 30.h),
+                      Container(
+                        padding: EdgeInsets.all(20.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: LinearGradient(
+                            colors: <Color>[
+                              Color(0xffF43DE3),
+                              Color(0xff430E3E),
+                            ],
+                            stops: [0.0, .4],
+                            end: Alignment.bottomRight,
+                            begin: Alignment.topLeft,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            regularText(
+                              'Trivia Blog x Chipper',
+                              fontSize: 20.sp,
+                              color: AppColors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            SizedBox(height: 18.h),
+                            RichText(
+                              textAlign: TextAlign.start,
+                              text: TextSpan(
+                                text:
+                                    'TriviaBlog will pay your prize money automatically through Chipper.\n\nIf you dont have a Chipper ID, ',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 12.sp,
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                children: [
+                                  TextSpan(
+                                      text: 'create an account with chipper',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 12.sp,
+                                        color: AppColors.blue,
+                                        fontWeight: FontWeight.w600,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          String url = Platform.isAndroid
+                                              ? 'https://play.google.com/store/apps/details?id=com.chippercash&hl=en_US'
+                                              : 'https://apps.apple.com/us/app/chipper-cash/id1353631552';
+                                          launch(url);
+                                        }),
+                                  TextSpan(
+                                    text:
+                                        ' and enter your Chipper ID here to start receiving your TriviaBlog winnings',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12.sp,
+                                      color: AppColors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 30.h),
+                            CustomTextField(
+                              hintText: 'Chipper ID',
+                              validator: Utils.isValidChipper,
+                              textInputType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              controller: chipperId,
+                            ),
+                            SizedBox(height: 40.h),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 40.h),
                       buttonWithBorder(
                         'Sign up',
                         height: 65.h,
@@ -291,7 +368,47 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       isLoading = true;
     });
+
+    String chip = chipperId.text.trim();
     try {
+      // check if it exists in chipper db
+      dynamic _doesTagExists = await Utils.checkChipperTag(chip);
+
+      if (_doesTagExists is String) {
+        showAlertDialog(
+          context: context,
+          title: 'Alert',
+          content: _doesTagExists,
+          defaultActionText: 'OKAY',
+        );
+
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
+      // check if it exists in db
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      QuerySnapshot<Map<String, dynamic>> query = await firestore
+          .collection('Users')
+          .where('chipper_tag', isEqualTo: chip)
+          .get();
+
+      if (query.docs.isNotEmpty) {
+        showAlertDialog(
+          context: context,
+          title: 'Alert',
+          content: "Chipper Tag has already been chosen",
+          defaultActionText: 'OKAY',
+        );
+
+        setState(() {
+          isLoading = false;
+        });
+        return;
+      }
+
       UserCredential value = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email.text.trim(), password: password.text);
       User user = value.user;
@@ -302,8 +419,9 @@ class _SignupScreenState extends State<SignupScreen> {
         Map<String, dynamic> mData = Map();
         mData.putIfAbsent("name", () => fName.text.trim());
         mData.putIfAbsent("email", () => email.text.trim());
+        mData.putIfAbsent("chipper_tag", () => chip);
         mData.putIfAbsent("ig", () => ig.text.trim());
-        mData.putIfAbsent("dateOfBirth", () =>dateOfBirth.text.trim());
+        mData.putIfAbsent("dateOfBirth", () => dateOfBirth.text.trim());
         mData.putIfAbsent("status", () => 'active');
         mData.putIfAbsent("phone", () => null);
         mData.putIfAbsent("uid", () => value.user.uid);
@@ -314,10 +432,7 @@ class _SignupScreenState extends State<SignupScreen> {
         mData.putIfAbsent(
             "updated_at", () => DateTime.now().millisecondsSinceEpoch);
 
-        await FirebaseFirestore.instance
-            .collection("Users")
-            .doc(user.uid)
-            .set(mData);
+        await firestore.collection("Users").doc(user.uid).set(mData);
 
         setState(() {
           isLoading = false;
@@ -369,6 +484,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
+/*
   Future signInWithGoogle(BuildContext buildContext) async {
     setState(() {
       isLoading = true;
@@ -499,4 +615,5 @@ class _SignupScreenState extends State<SignupScreen> {
       );
     }
   }
+*/
 }

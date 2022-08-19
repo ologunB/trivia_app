@@ -106,6 +106,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    print(AppCache.getUser.uid);
     return winners.isNotEmpty
         ? HistoryDetailsView(category: date)
         : GestureDetector(
