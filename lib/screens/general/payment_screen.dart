@@ -89,17 +89,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         ),
                       ),
                       SizedBox(width: 10.h),
-                      InkWell(
-                        onTap: () {
-                          Clipboard.setData(ClipboardData(text: email));
-                          showSnackBar(context, null, 'Email Copied');
-                        },
-                        child: Icon(
-                          Icons.copy_rounded,
-                          color: AppColors.white,
-                          size: 24.h,
-                        ),
-                      )
+                      if (email.isNotEmpty)
+                        IconButton(
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(text: email));
+                            showSnackBar(context, null, 'Email Copied');
+                          },
+                          icon: Icon(
+                            Icons.copy_rounded,
+                            color: AppColors.white,
+                            size: 24.h,
+                          ),
+                        )
                     ],
                   )
                 ],
